@@ -1,0 +1,38 @@
+#!/usr/bin/env node
+
+const { exec } = require("child_process");
+
+args = process.argv.slice(2);
+
+const isRectangle = args.includes("-r");
+const area = isRectangle ? "rectangle" : "all";
+
+const num = (v) => v >= 10 ? v : `0${v}`;
+const tmp = "~/Pictures";
+const now = new Date();
+
+const date = `${now.getFullYear()}-${num(now.getMonth() + 1)}-${num(now.getDate())}`;
+const hours = `${num(now.getHours())}-${num(now.getMinutes())}-${num(now.getSeconds())}`;
+const fileName = `${tmp}/${date}_${hours}_scrot.png`;
+
+const spawn = (cline) => {
+  const proc = exec(cline, (err, stdout, stderr) => {
+    if (err) {
+      console.log(`Error starting ${cline}`, error.code, error.signal);
+    }
+  });
+  return proc;
+};
+
+switch (area) {
+  case "all":
+    spawn(`scrot ${fileName} -e 'gwenview $f'`);
+    break;
+  case "rectangle":
+    spawn(`scrot --line style=dash,width=3,color="red" --select ${fileName} -e 'gwenview $f'`);
+  default:
+    break;
+}
+
+return 0
+

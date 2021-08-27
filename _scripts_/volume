@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ $(pgrep pulseaudio) ]; then
+		volume_command=pulseaudio-ctl
+	else
+		volume_command=`dirname $0`/avol
+fi
+
+$volume_command $@
