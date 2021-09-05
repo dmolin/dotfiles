@@ -105,7 +105,8 @@ bindsym $mod+Shift+b move container to workspace back_and_forth; workspace back_
 # split orientation
 bindsym $mod+h split h;exec notify-send 'tile horizontally'
 bindsym $mod+v split v;exec notify-send 'tile vertically'
-#bindsym $mod+t split toggle
+bindsym $mod+$Alt+Right splitposition after
+bindsym $mod+$Alt+Left  splitposition before
 
 # toggle fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -119,7 +120,7 @@ bindsym $mod+w layout toggle split
 bindsym $mod+t floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+Shift+t focus mode_toggle
+#bindsym $mod+Shift+t focus mode_toggle
 bindsym $mod+Tab focus mode_toggle
 
 # toggle sticky
@@ -354,7 +355,7 @@ set_from_resource $term_color15    color15
 # Theme colors
 # class                   border  backgr. text    indic.   child_border
   #client.focused          #556064 #556064 #80FFF9 #FDF6E3
-  client.focused          #3EC2FF #556064 #80FFF9 #3EC2FF #3EC2FF
+  client.focused          #3EC2FF #556064 #80FFF9 #FFFFFF #3EC2FF
   client.focused_inactive #2F3D44 #2F3D44 #1ABC9C #454948
   client.unfocused        #2F3D44 #2F3D44 #1ABC9C #454948
   client.urgent           #CB4B16 #FDF6E3 #1ABC9C #268BD2
