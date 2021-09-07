@@ -1,7 +1,7 @@
 configuration {
 	modi: "combi";
 	combi-modi: "window,drun";
-	font: "Cantarell 13";
+	font: "Cantarell 12";
 	display-window: "w";
 	display-drun: "";
 	display-combi: "";
