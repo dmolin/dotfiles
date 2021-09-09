@@ -6,6 +6,8 @@
 # Apply autorandr profile
 #exec --no-startup-id ~/.screenlayout/desktop.sh
 
+# focus wrapping
+focus_wrapping no
 
 # We don't want new windows to steal the focus
 #no_focus [floating]
@@ -211,7 +213,7 @@ bindsym $mod+$Alt+Down move workspace to output down
 
 # Open applications on specific workspaces
 assign [class="jetbrains-webstorm"] $ws2
-assign [class="Chromium"] $ws3
+#assign [class="Chromium"] $ws3
 assign [class="NoSQLBooster"] $ws3
 assign [class="Slack"] $ws10
 
