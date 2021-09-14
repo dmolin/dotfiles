@@ -263,6 +263,9 @@ for_window [class="Steam"] floating enable
 for_window [class="Kooha"] floating enable
 for_window [class="Kazam"] floating enable
 for_window [class="Blueman-manager"] floating enable
+for_window [class="Blanket"] floating enable
+for_window [class="Cypress"] floating enable
+for_window [title="int_test - Chromium"] floating enable
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus
 
@@ -294,9 +297,9 @@ mode "$mode_system" {
 
 # Resize window (you can also use the mouse for that)
 bindsym $mod+ctrl+Left resize shrink width 5 px or 5 ppt
-bindsym $mod+ctrl+Down resize grow height 5 px or 5 ppt
-bindsym $mod+ctrl+Up resize shrink height 5 px or 5 ppt
 bindsym $mod+ctrl+Right resize grow width 5 px or 5 ppt
+bindsym $mod+ctrl+Down resize shrink height 5 px or 5 ppt
+bindsym $mod+ctrl+Up resize grow height 5 px or 5 ppt
 
 # Lock screen
 bindsym $mod+l exec --no-startup-id blurlock

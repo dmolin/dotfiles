@@ -1,4 +1,4 @@
 #!/bin/bash
 :
 WALLPAPERS_PATH=~/Pictures/wallpapers/
-hsetroot -root -fill ${WALLPAPERS_PATH}/$1
+hsetroot -fill ${WALLPAPERS_PATH}/$1
