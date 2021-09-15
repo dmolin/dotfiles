@@ -214,7 +214,7 @@ bindsym $mod+$Alt+Down move workspace to output down
 # Open applications on specific workspaces
 assign [class="jetbrains-webstorm"] $ws2
 #assign [class="Chromium"] $ws3
-assign [class="NoSQLBooster"] $ws3
+assign [class="NoSQLBooster"] $ws4
 assign [class="Slack"] $ws10
 
 # Open specific applications in floating mode
