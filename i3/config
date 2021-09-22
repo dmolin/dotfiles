@@ -250,7 +250,7 @@ for_window [class="Gnome-disks"] floating enable
 for_window [class="Gnome-calendar"] floating enable
 for_window [class="Gnome-control-center"] floating enable
 for_window [class="gwenview"] floating enable
-for_window [class="dolphin"] floating enable
+for_window [class="dolphin"] floating enable move position center
 for_window [class="Tresorit"] floating enable
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="scratchpad"] move scratchpad
@@ -264,8 +264,9 @@ for_window [class="Kooha"] floating enable
 for_window [class="Kazam"] floating enable
 for_window [class="Blueman-manager"] floating enable
 for_window [class="Blanket"] floating enable
+#for_window [instance="Cypress/cy/production/browsers"] fullscreen enable floating enable 
 for_window [class="Cypress"] floating enable
-for_window [title="int_test - Chromium"] floating enable
+for_window [title="int_test - Chromium"] floating enable fullscreen enable
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus
 
