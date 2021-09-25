@@ -265,6 +265,7 @@ for_window [class="Blanket"] floating enable
 #for_window [instance="Cypress/cy/production/browsers"] fullscreen enable floating enable 
 for_window [class="Cypress"] floating enable
 for_window [title="int_test - Chromium"] floating enable fullscreen enable
+for_window [class="Ptxconf.py"] floating enable move position center
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus
 
@@ -323,6 +324,7 @@ exec_always --no-startup-id fix_xcursor
 exec --no-startup-id ~/.config/picom/start_picom.sh
 exec --no-startup-id ~/.config/_scripts_/redshift.sh &
 exec --no-startup-id terminator -r scratchpad &
+exec --no-startup-id ~/.config/_scripts_/post.sh &
 
 #exec --no-startup-id ~/.config/_scripts_/start_variety.sh &
 
