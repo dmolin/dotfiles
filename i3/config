@@ -63,8 +63,12 @@ bindsym $mod+d exec --no-startup-id dmenu_recency
 #exec --no-startup-id volumeicon
 #bindsym $mod+Ctrl+m exec terminator -e 'alsamixer'
 exec --no-startup-id ~/.config/_scripts_/start_audio.sh &
-exec --no-startup-id pa-applet
+#exec --no-startup-id pa-applet
 bindsym $mod+Ctrl+m exec pavucontrol
+
+bindsym XF86AudioRaiseVolume exec --no-startup-id "amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)"
+ bindsym XF86AudioLowerVolume exec --no-startup-id "amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)"
+ bindsym XF86AudioMute exec --no-startup-id "amixer set Master toggle && if amixer get Master | grep -Fq '[off]'; then volnoti-show -m; else volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1); fi"
 
 ################################################################################################
 
@@ -307,6 +311,7 @@ bindsym $mod+l exec --no-startup-id blurlock
 # ================================================
 # Autostart applications
 # ================================================
+exec --no-startup-id volnoti -a 0.9
 exec --no-startup-id ~/.xprofile
 exec --no-startup-id ~/.config/_scripts_/set_wallpaper artistic__landscape_4k_8k_hd-5120x2880.jpg
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
