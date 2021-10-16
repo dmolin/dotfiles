@@ -1,0 +1,8 @@
+{
+  "groups": {
+      "gitstatus": { "fg": "grey8", "bg": "mediumorange", "attrs": [] },
+      "gitstatus_branch": { "fg": "grey100", "bg": "darkorange", "attrs": [] },
+      "gitstatus_branch_clean": { "fg": "grey100", "bg": "darkorange", "attrs": [] },
+      "gitstatus_branch_dirty": { "fg": "grey100", "bg": "darkorange", "attrs": [] }
+  }
+}
