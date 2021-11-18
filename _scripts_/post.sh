@@ -4,4 +4,5 @@ if [ "$outcome" != "0" ]; then
 fi
 
 echo "Mapping tablet pen to screen"
-xinput map-to-output 8 HDMI-1
+id=`xinput | grep "stylus" | awk '{ print $6 }' | awk 'BEGIN {FS="="} { print $2 }'`
+xinput map-to-output ${id} HDMI-1
