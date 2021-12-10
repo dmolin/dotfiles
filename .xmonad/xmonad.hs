@@ -10,6 +10,7 @@
 import XMonad
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
+import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.EwmhDesktops
@@ -95,7 +96,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((0, xK_Pause), spawn "amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)")
     , ((0, xK_Scroll_Lock), spawn "amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)")
     , ((modm .|. controlMask, xK_m), spawn "pavucontrol")
-
+    -- XF86AudioRaiseVolume
+    , ((modm, xK_F6), spawn "amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)")
+    -- XF86AudioLowerVolume
+    , ((modm, xK_F5), spawn "amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)")
     -- screenshots
     , ((0, xK_Print), spawn "flameshot gui -p ~/Pictures")
 
@@ -303,7 +307,7 @@ myLogHook = fadeInactiveCurrentWSLogHook fadeAmount
 myStartupHook = do
         spawn "~/.xmonad/xmonad-startup.sh"
         spawnOnce "volnoti -a 0.9"
-        spawnOnce "hsetroot -cover ~/Pictures/wallpapers/wallhaven-m9opk1.jpg"
+        spawnOnce "hsetroot -cover ~/.xmonad/wallpapers/wp2608227-wallpaper-4k.jpg"
         spawnOnce "~/Applications/pcloud &"
         spawnOnce "conky &"
         spawnOnce "xautolock -time 40 -locker blurlock"
