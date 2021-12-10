@@ -68,8 +68,14 @@ exec --no-startup-id ~/.config/_scripts_/start_audio.sh &
 bindsym $mod+Ctrl+m exec pavucontrol
 
 bindsym XF86AudioRaiseVolume exec --no-startup-id "amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)"
- bindsym XF86AudioLowerVolume exec --no-startup-id "amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)"
- bindsym XF86AudioMute exec --no-startup-id "amixer set Master toggle && if amixer get Master | grep -Fq '[off]'; then volnoti-show -m; else volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1); fi"
+bindsym XF86AudioLowerVolume exec --no-startup-id "amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)"
+bindsym XF86AudioMute exec --no-startup-id "amixer set Master toggle && if amixer get Master | grep -Fq '[off]'; then volnoti-show -m; else volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1); fi"
+
+# Volume controls
+#bindsym Pause exec --no-startup-id ~/.config/_scripts_/volume up
+#bindsym Scroll_Lock exec --no-startup-id ~/.config/_scripts_/volume down
+bindsym Pause exec --no-startup-id "amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)"  
+bindsym Scroll_Lock exec --no-startup-id "amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)" 
 
 ################################################################################################
 
@@ -89,7 +95,11 @@ bindsym $mod+Print --release exec --no-startup-id ~/.config/_scripts_/screenshot
 #bindsym Ctrl+Print exec --no-startup-id ~/.config/_scripts_/screenshot-i3
 bindsym Ctrl+Print exec --no-startup-id flameshot screen -c -p ~/Pictures
 # bindsym $mod+Shift+h exec xdg-open /usr/share/doc/manjaro/i3_help.pdf
-bindsym $mod+Shift+space exec --no-startup-id rofi -show
+
+# my conf: bindsym $mod+Shift+space exec --no-startup-id rofi -show
+
+bindsym $mod+Shift+space exec --no-startup-id rofi -modi drun -show drun
+bindsym $mod+space exec --no-startup-id rofi -show window
 
 focus_follows_mouse yes
 
@@ -143,10 +153,6 @@ bindsym $mod+Shift+minus move scratchpad
 # Show the next scratchpad window or hide the focused scratchpad window.
 # If there are multiple scratchpad windows, this command cycles through them.
 bindsym Ctrl+grave scratchpad show
-
-# Volume controls
-bindsym Pause exec --no-startup-id ~/.config/_scripts_/volume up
-bindsym Scroll_Lock exec --no-startup-id ~/.config/_scripts_/volume down
 
 #navigate workspaces next / previous
 #bindsym $mod+Ctrl+Right workspace next
@@ -275,7 +281,8 @@ for_window [class="Cypress"] floating enable
 for_window [title="int_test - Chromium"] floating enable fullscreen enable
 for_window [class="Ptxconf.py"] floating enable move position center
 for_window [class="Kvantum Manager"] floating enable move position center
-for_window [class="Eddie"] floating enable move position center
+for_window [class="Gufw.py"] floating enable move position center
+for_window [class="bauh"] floating enable move position center
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus
 
@@ -318,10 +325,10 @@ bindsym $mod+l exec --no-startup-id blurlock
 # Autostart applications
 # ================================================
 exec --no-startup-id volnoti -a 0.9
-exec --no-startup-id ~/.xprofile
-exec --no-startup-id ~/.config/_scripts_/set_wallpaper artistic__landscape_4k_8k_hd-5120x2880.jpg
+#exec --no-startup-id ~/.xprofile
+exec --no-startup-id ~/.config/_scripts_/set_wallpaper backgrounds/mi3_solarized4_16x9.jpg
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec --no-startup-id ~/.config/polybar/launch.sh &
+exec --no-startup-id ~/.config/polybar/launch.sh i3 &
 exec --no-startup-id nm-applet
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id pamac-tray
@@ -330,7 +337,6 @@ exec --no-startup-id ~/Applications/pcloud &
 # exec --no-startup-id blueman-applet
 exec --no-startup-id conky &
 exec --no-startup-id xautolock -time 40 -locker blurlock
-exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id fix_xcursor
 exec --no-startup-id ~/.config/picom/start_picom.sh
 exec --no-startup-id ~/.config/_scripts_/redshift.sh &
