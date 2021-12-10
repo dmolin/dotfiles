@@ -25,6 +25,7 @@ import Data.Monoid
 import System.Exit
 -- import XMonad.Layout.MultiToggle
 -- import XMonad.Layout.MultiToggle.Instances
+import XMonad.Hooks.SetWMName
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -310,10 +311,12 @@ myStartupHook = do
         spawnOnce "hsetroot -cover ~/.xmonad/wallpapers/wp2608227-wallpaper-4k.jpg"
         spawnOnce "~/Applications/pcloud &"
         spawnOnce "conky &"
+        spawnOnce "nm-applet"
         spawnOnce "xautolock -time 40 -locker blurlock"
         spawnOnce "fix-cursor"
         spawnOnce "~/.config/picom/start_picom.sh"
         spawnOnce "~/.config/_scripts_/redshift.sh &"
+        setWMName "LG3D"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
