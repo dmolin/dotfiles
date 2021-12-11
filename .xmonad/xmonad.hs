@@ -30,6 +30,7 @@ import XMonad.Hooks.SetWMName
 import XMonad.Actions.CycleWS
 import XMonad.Layout.IndependentScreens
 import XMonad.Layout.LayoutCombinators
+import XMonad.Util.WorkspaceCompare (getSortByXineramaRule)
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -342,6 +343,7 @@ xmobarCurrentWorkspaceColor = "#CEFFAC"
 myPP = def {
     ppTitle = xmobarColor xmobarTitleColor "" . shorten 50
   , ppSep = "   "
+  -- , ppSort    = getSortByXineramaRule
   }
 
 -- Run xmonad with the settings you specify. No need to modify this.
