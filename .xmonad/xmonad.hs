@@ -109,6 +109,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- screenshots
     , ((0, xK_Print), spawn "flameshot gui -p ~/Pictures")
 
+    -- Lock the screen with mod + F1
+    , ((modm, xK_F1), spawn "betterlockscreen -l")
+
     ---------------------------------------------------
     -- Windows and Workspaces
     ---------------------------------------------------
