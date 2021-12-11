@@ -7,12 +7,13 @@
 -- Normally, you'd only override those defaults you care about.
 --
 
-import XMonad
+import XMonad hiding ((|||))
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat, doCenterFloat)
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Layout.Tabbed
 import XMonad.Layout.ThreeColumns
@@ -28,6 +29,7 @@ import System.Exit
 import XMonad.Hooks.SetWMName
 import XMonad.Actions.CycleWS
 import XMonad.Layout.IndependentScreens
+import XMonad.Layout.LayoutCombinators
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -117,6 +119,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_space ), spawn "rofi -modi drun -show drun")
     , ((modm, xK_g ), spawn "rofi -show window")
 
+    -- Switch to specific layouts
+    , ((modm, xK_f), sendMessage $ JumpToLayout "Full")
+
     --  Reset the layouts on the current workspace to default
     , ((modm, xK_0 ), setLayout $ XMonad.layoutHook conf)
 
@@ -205,6 +210,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
         | (key, sc) <- zip [xK_F11, xK_F10, xK_F12] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+ 
 ------------------------------------------------------------------------
 -- Mouse bindings: default actions bound to mouse events
 --
@@ -275,8 +281,8 @@ myManageHook = composeAll
     , className =? "Lightdm-settings" --> doFloat
     , className =? "Lxappearance" --> doFloat
     , className =? "Manjaro Settings Manager" --> doFloat
-    , className =? "Pamac-manager" --> doFloat
-    , className =? "Pavucontrol" --> doFloat
+    , className =? "Pamac-manager" --> doCenterFloat
+    , className =? "Pavucontrol" --> doCenterFloat
     , className =? "qt5ct" --> doFloat
     , className =? "Skype" --> doFloat
     , className =? "(?i)virtualbox manager" --> doFloat
@@ -300,8 +306,9 @@ myEventHook = mempty
 -- Perform an arbitrary action on each internal state change or X event.
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 --
-myLogHook = fadeInactiveCurrentWSLogHook fadeAmount
-     where fadeAmount = 0.8
+myLogHook = do
+    fadeInactiveCurrentWSLogHook fadeAmount
+      where fadeAmount = 0.8
 
 ------------------------------------------------------------------------
 -- Startup hook
@@ -327,10 +334,28 @@ myStartupHook = do
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 
+-- Color of current window title in xmobar.
+xmobarTitleColor = "#FFB6B0"
+-- Color of current workspace in xmobar.
+xmobarCurrentWorkspaceColor = "#CEFFAC"
+
+myPP = def {
+    ppTitle = xmobarColor xmobarTitleColor "" . shorten 50
+  , ppSep = "   "
+  }
+
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 main = do
-  xmonad $ ewmh (docks defaults)
+  h <- spawnPipe "xmobar -x 0 ~/.config/xmobar/xmobar.config"
+  xmonad $ ewmh (docks defaults {
+        -- logHook            = dynamicLogWithPP $ def myLogHook,
+        logHook = do
+                     dynamicLogWithPP myPP {
+                       ppOutput = hPutStrLn h
+                     }
+                     fadeInactiveCurrentWSLogHook 0.8
+  })
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
@@ -357,7 +382,6 @@ defaults = def {
         layoutHook         = myLayout,
         manageHook         = myManageHook,
         handleEventHook    = myEventHook,
-        logHook            = myLogHook,
         startupHook        = myStartupHook
     }
 
