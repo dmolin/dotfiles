@@ -118,10 +118,12 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
      -- Rotate through the available layout algorithms
     , ((modm,               xK_space ), sendMessage NextLayout)
     , ((modm .|. shiftMask, xK_space ), spawn "rofi -modi drun -show drun")
-    , ((modm, xK_g ), spawn "rofi -show window")
+    , ((modm, xK_d ), spawn "rofi -show window")
 
     -- Switch to specific layouts
     , ((modm, xK_f), sendMessage $ JumpToLayout "Full")
+    , ((modm, xK_t), sendMessage $ JumpToLayout "Spacing ResizableTall")
+    , ((modm, xK_e), sendMessage $ JumpToLayout "Tabbed Simplest")
 
     --  Reset the layouts on the current workspace to default
     , ((modm, xK_0 ), setLayout $ XMonad.layoutHook conf)
@@ -164,7 +166,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm,               xK_f     ), sendMessage $ Toggle NBFULL)
 
     -- Push window back into tiling
-    , ((modm,               xK_t     ), withFocused $ windows . W.sink)
+    , ((modm .|. shiftMask,    xK_t     ), withFocused $ windows . W.sink)
 
     -- Increment the number of windows in the master area
     , ((modm              , xK_comma ), sendMessage (IncMasterN 1))
@@ -202,11 +204,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
     -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
     --
-    [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
-        , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+    --[((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
+    --    | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
+    --    , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
-    ++
+    -- ++
 
     [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
         | (key, sc) <- zip [xK_F11, xK_F10, xK_F12] [0..]
