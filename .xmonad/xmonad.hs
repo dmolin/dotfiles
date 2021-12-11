@@ -26,6 +26,8 @@ import System.Exit
 -- import XMonad.Layout.MultiToggle
 -- import XMonad.Layout.MultiToggle.Instances
 import XMonad.Hooks.SetWMName
+import XMonad.Actions.CycleWS
+import XMonad.Layout.IndependentScreens
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -116,7 +118,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, xK_g ), spawn "rofi -show window")
 
     --  Reset the layouts on the current workspace to default
-    , ((modm, xK_d ), setLayout $ XMonad.layoutHook conf)
+    , ((modm, xK_0 ), setLayout $ XMonad.layoutHook conf)
 
     -- Resize viewed windows to the correct size
     , ((modm,               xK_n     ), refresh)
@@ -187,7 +189,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     --
     [((m .|. modm, k), windows $ f i)
         | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
-        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
+        , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
     ++
 
     --
@@ -198,7 +200,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
+    ++
 
+    [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
+        | (key, sc) <- zip [xK_F11, xK_F10, xK_F12] [0..]
+        , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 ------------------------------------------------------------------------
 -- Mouse bindings: default actions bound to mouse events
 --
