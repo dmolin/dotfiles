@@ -127,6 +127,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, xK_f), sendMessage $ JumpToLayout "Full")
     , ((modm, xK_t), sendMessage $ JumpToLayout "Spacing ResizableTall")
     , ((modm, xK_e), sendMessage $ JumpToLayout "Tabbed Simplest")
+    , ((modm, xK_r), windows W.shiftMaster)
 
     --  Reset the layouts on the current workspace to default
     , ((modm, xK_0 ), setLayout $ XMonad.layoutHook conf)
@@ -328,6 +329,9 @@ myStartupHook = do
         spawn "~/.xmonad/xmonad-startup.sh"
         spawnOnce "volnoti -a 0.9"
         spawnOnce "hsetroot -cover ~/.xmonad/wallpapers/wp2608227-wallpaper-4k.jpg"
+        spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+        spawnOnce "xfce4-power-manager"
+        spawnOnce "pamac-tray"
         spawnOnce "~/Applications/pcloud &"
         spawnOnce "conky &"
         spawnOnce "nm-applet"
