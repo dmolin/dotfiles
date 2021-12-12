@@ -31,7 +31,7 @@ import XMonad.Actions.CycleWS
 import XMonad.Layout.IndependentScreens
 import XMonad.Layout.LayoutCombinators
 import XMonad.Util.WorkspaceCompare (getSortByXineramaRule)
-
+import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
@@ -74,6 +74,16 @@ myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
 --
 myNormalBorderColor  = "#dddddd"
 myFocusedBorderColor = "#ff0000"
+
+-- Toggle float/tiled mode for a window
+toggleFloat :: Window -> X ()
+toggleFloat w =
+  windows
+    ( \s ->
+        if M.member w (W.floating s)
+          then W.sink w s
+          else (W.float w (W.RationalRect (1 / 3) (1 / 4) (1 / 2) (1 / 2)) s)
+    )
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -127,7 +137,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, xK_f), sendMessage $ JumpToLayout "Full")
     , ((modm, xK_t), sendMessage $ JumpToLayout "Spacing ResizableTall")
     , ((modm, xK_e), sendMessage $ JumpToLayout "Tabbed Simplest")
-    , ((modm, xK_r), windows W.shiftMaster)
+    -- , ((modm, xK_r), windows W.shiftMaster)
+    , ((modm, xK_r), withFocused toggleFloat)
 
     --  Reset the layouts on the current workspace to default
     , ((modm, xK_0 ), setLayout $ XMonad.layoutHook conf)
@@ -166,11 +177,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Expand the master area
     , ((modm,               xK_l     ), sendMessage Expand)
 
-    -- Toggle fullscreen (doesn't work)
-    -- , ((modm,               xK_f     ), sendMessage $ Toggle NBFULL)
-
-    -- Push window back into tiling
-    , ((modm .|. shiftMask,    xK_t     ), withFocused $ windows . W.sink)
+    -- Push window back into tiling (no need. modm + r does it all)
+    -- , ((modm .|. shiftMask,    xK_t     ), withFocused $ windows . W.sink)
 
     -- Increment the number of windows in the master area
     , ((modm              , xK_comma ), sendMessage (IncMasterN 1))
@@ -339,6 +347,7 @@ myStartupHook = do
         spawnOnce "fix-cursor"
         spawnOnce "~/.config/picom/start_picom.sh"
         spawnOnce "~/.config/_scripts_/redshift.sh &"
+        spawn "~/.config/_scripts_/post.sh"
         setWMName "LG3D"
 
 ------------------------------------------------------------------------
