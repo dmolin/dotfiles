@@ -6,8 +6,10 @@
 --
 -- Normally, you'd only override those defaults you care about.
 --
+import GHC.IO.Handle.Types (Handle)
 
-import XMonad hiding ((|||))
+import XMonad (MonadIO, WorkspaceId, Layout, Window, ScreenId, ScreenDetail, WindowSet, layoutHook, logHook, X, io, ScreenId(..), gets, windowset, xmonad)
+import XMonad hiding ((|||), float, Screen)
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
 import XMonad.Hooks.DynamicLog
@@ -28,11 +30,13 @@ import System.Exit
 -- import XMonad.Layout.MultiToggle.Instances
 import XMonad.Hooks.SetWMName
 import XMonad.Actions.CycleWS
-import XMonad.Layout.IndependentScreens
+import XMonad.Layout.IndependentScreens (countScreens)
 import XMonad.Layout.LayoutCombinators
 import XMonad.Util.WorkspaceCompare (getSortByXineramaRule)
+
 import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 import qualified XMonad.StackSet as W
+import XMonad.StackSet (current, screen, visible, Screen, workspace, tag, sink, float, floating, RationalRect) 
 import qualified Data.Map        as M
 
 -- The preferred terminal program, which is used in a binding below and by
@@ -261,7 +265,7 @@ myLayout = avoidStruts $ smartBorders $ lessBorders Screen (tiled ||| Mirror til
   where
      spacing = 5
      -- default tiling algorithm partitions the screen into two panes
-     tiled   = spacingRaw True (Border spacing spacing spacing spacing) True (Border spacing spacing spacing spacing) True $ ResizableTall nmaster delta ratio []
+     tiled   = spacingRaw False (Border spacing spacing spacing spacing) True (Border spacing spacing spacing spacing) True $ ResizableTall nmaster delta ratio []
 
      -- The default number of windows in the master pane
      nmaster = 1
@@ -322,9 +326,9 @@ myEventHook = mempty
 -- Perform an arbitrary action on each internal state change or X event.
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 --
-myLogHook = do
-    fadeInactiveCurrentWSLogHook fadeAmount
-      where fadeAmount = 0.8
+--myLogHook = do
+    --fadeInactiveCurrentWSLogHook fadeAmount
+      --where fadeAmount = 0.8
 
 ------------------------------------------------------------------------
 -- Startup hook
@@ -366,19 +370,49 @@ myPP = def {
   -- , ppSort    = getSortByXineramaRule
   }
 
+type ScreenFoo = Screen WorkspaceId (Layout Window) Window ScreenId ScreenDetail
+
+visibleScreens :: WindowSet -> [ScreenFoo]
+visibleScreens cws = ([current cws]) ++ (visible cws)
+
+joinToString :: [String] -> String
+joinToString workspaceIds = foldl (++) "" workspaceIds
+
+spawnXMobar :: MonadIO m => Int -> m (Int, Handle)
+spawnXMobar i = (spawnPipe $ "xmobar" ++ " -x " ++ show i ++ " ~/.config/xmobar/xmobar.config." ++ show i) >>= (\handle -> return (i, handle))
+
+spawnXMobars :: MonadIO m => Int -> m [(Int, Handle)]
+spawnXMobars n = mapM spawnXMobar [0..n-1]
+
+-- This shows only the ws on the current screen but it loses the advantage of dynamicLogWithPP (that is, showing the other workspaces and the current running app)
+myLogHookForPipe :: WindowSet -> (Int, Handle) -> X ()
+myLogHookForPipe currentWindowSet (i, xmobarPipe) =
+  io $ hPutStrLn xmobarPipe $
+  joinToString $ map (tag . workspace) $
+  filter ((==) (S i) . screen) $
+  visibleScreens currentWindowSet
+
+mySimpleLogHookForPipe :: Handle -> X ()
+mySimpleLogHookForPipe xmobarPipe =
+  dynamicLogWithPP myPP { ppOutput = hPutStrLn xmobarPipe } 
+
+myLogHook :: [Handle] -> X ()
+myLogHook xmobarPipes = do
+  fadeInactiveCurrentWSLogHook 0.8
+  -- currentWindowSet <- gets windowset
+  -- mapM_ (myLogHookForPipe currentWindowSet) xmobarPipes
+  mapM_ mySimpleLogHookForPipe xmobarPipes
+
+
+
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 main = do
-  h <- spawnPipe "xmobar -x 0 ~/.config/xmobar/xmobar.config"
-  h2 <- spawnPipe "xmobar -x 1 ~/.config/xmobar/xmobar.externals.config"
+  n <- countScreens
+  xmobarPipes <- mapM (\i -> spawnPipe ("xmobar -x " ++ show i ++ " ~/.config/xmobar/xmobar.config." ++ show i)) [0..n-1]
+  -- xmobarPipes <- spawnXMobars n
   xmonad $ ewmh (docks defaults {
-        -- logHook            = dynamicLogWithPP $ def myLogHook,
-        logHook = do
-                     dynamicLogWithPP myPP {
-                       ppOutput = \x -> hPutStrLn h x
-                                     >> hPutStrLn h2 x
-                     }
-                     fadeInactiveCurrentWSLogHook 0.8
+        logHook = myLogHook xmobarPipes
   })
 
 -- A structure containing your configuration settings, overriding
