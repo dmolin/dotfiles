@@ -39,6 +39,7 @@ import qualified Data.Map        as M
 -- certain contrib modules.
 --
 myTerminal      = "alacritty"
+color06         = "#ffffff"
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -359,7 +360,8 @@ xmobarTitleColor = "#FFB6B0"
 xmobarCurrentWorkspaceColor = "#CEFFAC"
 
 myPP = def {
-    ppTitle = xmobarColor xmobarTitleColor "" . shorten 50
+    ppCurrent = xmobarColor color06 "" . wrap ("<box type=Bottom width=2 mb=2 color=" ++ xmobarTitleColor ++ ">") "</box>"
+  , ppTitle = xmobarColor xmobarTitleColor "" . shorten 50
   , ppSep = "   "
   -- , ppSort    = getSortByXineramaRule
   }
@@ -368,11 +370,13 @@ myPP = def {
 --
 main = do
   h <- spawnPipe "xmobar -x 0 ~/.config/xmobar/xmobar.config"
+  h2 <- spawnPipe "xmobar -x 1 ~/.config/xmobar/xmobar.externals.config"
   xmonad $ ewmh (docks defaults {
         -- logHook            = dynamicLogWithPP $ def myLogHook,
         logHook = do
                      dynamicLogWithPP myPP {
-                       ppOutput = hPutStrLn h
+                       ppOutput = \x -> hPutStrLn h x
+                                     >> hPutStrLn h2 x
                      }
                      fadeInactiveCurrentWSLogHook 0.8
   })
