@@ -261,11 +261,14 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = avoidStruts $ smartBorders $ lessBorders Screen (tiled ||| Mirror tiled ||| simpleTabbed ||| Grid ||| layoutFull)
+myLayout = avoidStruts $ smartBorders (tiled ||| Mirror tiled ||| simpleTabbed ||| grid ||| layoutFull)
+-- myLayout = avoidStruts $ smartBorders $ lessBorders Screen (tiled ||| Mirror tiled ||| simpleTabbed ||| Grid ||| layoutFull)
   where
      spacing = 5
      -- default tiling algorithm partitions the screen into two panes
      tiled   = spacingRaw False (Border spacing spacing spacing spacing) True (Border spacing spacing spacing spacing) True $ ResizableTall nmaster delta ratio []
+
+     grid   = spacingRaw False (Border spacing spacing spacing spacing) True (Border spacing spacing spacing spacing) True $ Grid 
 
      -- The default number of windows in the master pane
      nmaster = 1
@@ -275,7 +278,8 @@ myLayout = avoidStruts $ smartBorders $ lessBorders Screen (tiled ||| Mirror til
 
      -- Percent of screen to increment by when resizing panes
      delta   = 3/100
-     layoutFull = noBorders Full
+     --layoutFull = noBorders Full
+     layoutFull = Full
 
 ------------------------------------------------------------------------
 -- Window rules:
