@@ -7,6 +7,7 @@
 -- Normally, you'd only override those defaults you care about.
 --
 import GHC.IO.Handle.Types (Handle)
+import Data.Ratio
 
 import XMonad (MonadIO, WorkspaceId, Layout, Window, ScreenId, ScreenDetail, WindowSet, layoutHook, logHook, X, io, ScreenId(..), gets, windowset, xmonad)
 import XMonad hiding ((|||), float, Screen)
@@ -15,7 +16,7 @@ import XMonad.Util.Run
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat, doCenterFloat)
+import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat, doCenterFloat, doRectFloat, isDialog)
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Layout.Tabbed
 import XMonad.Layout.ThreeColumns
@@ -109,6 +110,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
 
     -- file manager
+    , ((modm, xK_F2), spawn "terminator --geometry 1600x1000 --role pop-up -e ranger")
     , ((modm, xK_F3), spawn "pcmanfm-qt")
 
     ---------------------------------------------------
@@ -142,8 +144,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Switch to specific layouts
     , ((modm, xK_f), sendMessage $ JumpToLayout "Full")
     , ((modm, xK_t), sendMessage $ JumpToLayout "Spacing ResizableTall")
-    , ((modm, xK_e), sendMessage $ JumpToLayout "Tabbed Simplest")
-    -- , ((modm, xK_r), windows W.shiftMaster)
+    , ((modm, xK_a), sendMessage $ JumpToLayout "Tabbed Simplest")
     , ((modm, xK_r), withFocused toggleFloat)
 
     --  Reset the layouts on the current workspace to default
@@ -314,7 +315,11 @@ myManageHook = composeAll
     , className =? "Skype" --> doFloat
     , className =? "(?i)virtualbox manager" --> doFloat
     , className =? "(?i)virtualbox machine" --> doFloat
-    , resource  =? "kdesktop"       --> doIgnore ]
+    , resource  =? "kdesktop"       --> doIgnore
+    , role  =? "pop-up" --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
+    , isDialog --> doCenterFloat
+    ]
+  where role = stringProperty "WM_WINDOW_ROLE"
 
 ------------------------------------------------------------------------
 -- Event handling
