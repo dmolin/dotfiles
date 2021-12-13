@@ -317,6 +317,7 @@ myManageHook = composeAll
     , className =? "(?i)virtualbox manager" --> doFloat
     , className =? "(?i)virtualbox machine" --> doFloat
     , resource  =? "kdesktop"       --> doIgnore
+    , className =? "GParted" --> doCenterFloat
     , role  =? "pop-up" --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
     , role  =? "GtkFileChooserDialog" --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
     , isDialog --> doCenterFloat
