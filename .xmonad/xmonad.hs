@@ -30,6 +30,7 @@ import System.Exit
 -- import XMonad.Layout.MultiToggle.Instances
 import XMonad.Hooks.SetWMName
 import XMonad.Actions.CycleWS
+import XMonad.Actions.UpdatePointer (updatePointer)
 import XMonad.Layout.IndependentScreens (countScreens)
 import XMonad.Layout.LayoutCombinators
 import XMonad.Util.WorkspaceCompare (getSortByXineramaRule)
@@ -261,7 +262,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = avoidStruts $ smartBorders (tiled ||| Mirror tiled ||| simpleTabbed ||| grid ||| layoutFull)
+myLayout = avoidStruts $ smartBorders (tiled ||| Mirror tiled ||| tabbed ||| grid ||| layoutFull)
 -- myLayout = avoidStruts $ smartBorders $ lessBorders Screen (tiled ||| Mirror tiled ||| simpleTabbed ||| Grid ||| layoutFull)
   where
      spacing = 5
@@ -269,6 +270,8 @@ myLayout = avoidStruts $ smartBorders (tiled ||| Mirror tiled ||| simpleTabbed |
      tiled   = spacingRaw False (Border spacing spacing spacing spacing) True (Border spacing spacing spacing spacing) True $ ResizableTall nmaster delta ratio []
 
      grid   = spacingRaw False (Border spacing spacing spacing spacing) True (Border spacing spacing spacing spacing) True $ Grid 
+
+     tabbed = noBorders simpleTabbed
 
      -- The default number of windows in the master pane
      nmaster = 1
@@ -403,6 +406,7 @@ mySimpleLogHookForPipe xmobarPipe =
 myLogHook :: [Handle] -> X ()
 myLogHook xmobarPipes = do
   fadeInactiveCurrentWSLogHook 0.8
+  updatePointer (0.5, 0.5) (0, 0)
   -- currentWindowSet <- gets windowset
   -- mapM_ (myLogHookForPipe currentWindowSet) xmobarPipes
   mapM_ mySimpleLogHookForPipe xmobarPipes
