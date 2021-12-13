@@ -144,7 +144,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Switch to specific layouts
     , ((modm, xK_f), sendMessage $ JumpToLayout "Full")
     , ((modm, xK_t), sendMessage $ JumpToLayout "Spacing ResizableTall")
-    , ((modm, xK_a), sendMessage $ JumpToLayout "Tabbed Simplest")
+    , ((modm, xK_e), sendMessage $ JumpToLayout "Tabbed Simplest")
     , ((modm, xK_r), withFocused toggleFloat)
 
     --  Reset the layouts on the current workspace to default
@@ -317,6 +317,7 @@ myManageHook = composeAll
     , className =? "(?i)virtualbox machine" --> doFloat
     , resource  =? "kdesktop"       --> doIgnore
     , role  =? "pop-up" --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
+    , role  =? "GtkFileChooserDialog" --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
     , isDialog --> doCenterFloat
     ]
   where role = stringProperty "WM_WINDOW_ROLE"
