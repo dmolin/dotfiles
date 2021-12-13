@@ -300,6 +300,10 @@ myLayout = avoidStruts $ smartBorders (tiled ||| Mirror tiled ||| tabbed ||| gri
 -- To match on the WM_NAME, you can use 'title' in the same way that
 -- 'className' and 'resource' are used below.
 --
+
+doRectProps :: Integer -> Integer -> W.RationalRect
+doRectProps propY propX = W.RationalRect (1 % propY) (1 % propY) (1 % propX) (1 % propX)
+
 myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
@@ -320,7 +324,8 @@ myManageHook = composeAll
     , role  =? "GtkFileChooserDialog" --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
     , isDialog --> doCenterFloat
     ]
-  where role = stringProperty "WM_WINDOW_ROLE"
+  where 
+    role = stringProperty "WM_WINDOW_ROLE"
 
 ------------------------------------------------------------------------
 -- Event handling
