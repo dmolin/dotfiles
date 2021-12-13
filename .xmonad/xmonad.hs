@@ -301,9 +301,6 @@ myLayout = avoidStruts $ smartBorders (tiled ||| Mirror tiled ||| tabbed ||| gri
 -- 'className' and 'resource' are used below.
 --
 
-doRectProps :: Integer -> Integer -> W.RationalRect
-doRectProps propY propX = W.RationalRect (1 % propY) (1 % propY) (1 % propX) (1 % propX)
-
 myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
@@ -313,7 +310,7 @@ myManageHook = composeAll
     , className =? "Lightdm-settings" --> doFloat
     , className =? "Lxappearance" --> doFloat
     , className =? "Manjaro Settings Manager" --> doFloat
-    , className =? "Pamac-manager" --> doCenterFloat
+    , className =? "Pamac-manager" --> doRectFloat (W.RationalRect (1 %4) (1 %4) (1 % 2) (1 % 2))
     , className =? "Pavucontrol" --> doCenterFloat
     , className =? "qt5ct" --> doFloat
     , className =? "Skype" --> doFloat
