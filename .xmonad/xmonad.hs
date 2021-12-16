@@ -391,6 +391,7 @@ myPP = def {
   -- , ppSort    = getSortByXineramaRule
   }
 
+-- this all section is actually not used
 type ScreenFoo = Screen WorkspaceId (Layout Window) Window ScreenId ScreenDetail
 
 visibleScreens :: WindowSet -> [ScreenFoo]
@@ -412,6 +413,7 @@ myLogHookForPipe currentWindowSet (i, xmobarPipe) =
   joinToString $ map (tag . workspace) $
   filter ((==) (S i) . screen) $
   visibleScreens currentWindowSet
+-- end of unused section
 
 mySimpleLogHookForPipe :: Handle -> X ()
 mySimpleLogHookForPipe xmobarPipe =
@@ -422,8 +424,6 @@ myLogHook xmobarPipes = do
   fadeInactiveCurrentWSLogHook 0.8
   updatePointer (0.5, 0.5) (0, 0)
   mapM_ mySimpleLogHookForPipe xmobarPipes
-
-
 
 -- Run xmonad with the settings you specify. No need to modify this.
 --
