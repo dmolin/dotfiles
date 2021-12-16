@@ -41,6 +41,8 @@ import qualified XMonad.StackSet as W
 import XMonad.StackSet (current, screen, visible, Screen, workspace, tag, sink, float, floating, RationalRect) 
 import qualified Data.Map        as M
 
+import XMonad.Hooks.FullscreenSupported (setFullscreenSupported)
+
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
@@ -334,7 +336,10 @@ myManageHook = composeAll
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
-myEventHook = mempty
+-- myEventHook = mempty
+myEventHook = do
+  ewmhDesktopsEventHook
+  fullscreenEventHook
 
 ------------------------------------------------------------------------
 -- Status bars and logging
@@ -416,8 +421,6 @@ myLogHook :: [Handle] -> X ()
 myLogHook xmobarPipes = do
   fadeInactiveCurrentWSLogHook 0.8
   updatePointer (0.5, 0.5) (0, 0)
-  -- currentWindowSet <- gets windowset
-  -- mapM_ (myLogHookForPipe currentWindowSet) xmobarPipes
   mapM_ mySimpleLogHookForPipe xmobarPipes
 
 
@@ -427,7 +430,6 @@ myLogHook xmobarPipes = do
 main = do
   n <- countScreens
   xmobarPipes <- mapM (\i -> spawnPipe ("xmobar -x " ++ show i ++ " ~/.config/xmobar/xmobar.config." ++ show i)) [0..n-1]
-  -- xmobarPipes <- spawnXMobars n
   xmonad $ ewmh (docks defaults {
         logHook = myLogHook xmobarPipes
   })
@@ -457,7 +459,7 @@ defaults = def {
         layoutHook         = myLayout,
         manageHook         = myManageHook,
         handleEventHook    = myEventHook,
-        startupHook        = myStartupHook
+        startupHook        = myStartupHook 
     }
 
 -- | Finally, a copy of the default bindings in simple textual tabular format.
