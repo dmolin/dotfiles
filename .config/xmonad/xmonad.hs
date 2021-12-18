@@ -338,10 +338,7 @@ myManageHook = composeAll
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
--- myEventHook = mempty
-myEventHook = do
-  ewmhDesktopsEventHook
-  fullscreenEventHook
+myEventHook = mempty
 
 ------------------------------------------------------------------------
 -- Status bars and logging
@@ -432,7 +429,7 @@ myLogHook xmobarPipes = do
 main = do
   n <- countScreens
   xmobarPipes <- mapM (\i -> spawnPipe ("xmobar -x " ++ show i ++ " ~/.config/xmobar/xmobar.config." ++ show i)) [0..n-1]
-  xmonad $ ewmh (docks defaults {
+  xmonad $ ewmhFullscreen $ ewmh (docks defaults {
         logHook = myLogHook xmobarPipes
   })
 
