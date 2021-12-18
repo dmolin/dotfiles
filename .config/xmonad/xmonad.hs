@@ -183,10 +183,12 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Shrink the master area
     , ((modm,               xK_h     ), sendMessage Shrink)
     , ((modm .|. mod1Mask,  xK_Left  ), sendMessage Shrink)
+    , ((modm .|. mod1Mask,  xK_Down    ), sendMessage MirrorShrink)
 
     -- Expand the master area
     , ((modm,               xK_l     ), sendMessage Expand)
     , ((modm .|. mod1Mask,  xK_Right ), sendMessage Expand)
+    , ((modm .|. mod1Mask,  xK_Up  ), sendMessage MirrorExpand)
 
     -- Push window back into tiling (no need. modm + r does it all)
     -- , ((modm .|. shiftMask,    xK_t     ), withFocused $ windows . W.sink)
@@ -244,7 +246,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- mod-button1, Set the window to floating mode and move by dragging
     [ ((modm, button1), (\w -> focus w >> mouseMoveWindow w
-                                       >> windows W.shiftMaster))
+                                      >> windows W.shiftMaster))
 
     -- mod-button2, Raise the window to the top of the stack
     , ((modm, button2), (\w -> focus w >> windows W.shiftMaster))
