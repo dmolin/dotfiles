@@ -182,9 +182,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Shrink the master area
     , ((modm,               xK_h     ), sendMessage Shrink)
+    , ((modm .|. mod1Mask,  xK_Left  ), sendMessage Shrink)
 
     -- Expand the master area
     , ((modm,               xK_l     ), sendMessage Expand)
+    , ((modm .|. mod1Mask,  xK_Right ), sendMessage Expand)
 
     -- Push window back into tiling (no need. modm + r does it all)
     -- , ((modm .|. shiftMask,    xK_t     ), withFocused $ windows . W.sink)
