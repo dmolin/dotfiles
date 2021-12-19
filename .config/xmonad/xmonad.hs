@@ -8,6 +8,7 @@
 --
 import GHC.IO.Handle.Types (Handle)
 import Data.Ratio
+import Data.List (isInfixOf)
 
 import XMonad (MonadIO, WorkspaceId, Layout, Window, ScreenId, ScreenDetail, WindowSet, layoutHook, logHook, X, io, ScreenId(..), gets, windowset, xmonad)
 import XMonad hiding ((|||), float, Screen)
@@ -306,6 +307,10 @@ myLayout = avoidStruts $ smartBorders (tiled ||| Mirror tiled ||| tabbed ||| gri
 -- To match on the WM_NAME, you can use 'title' in the same way that
 -- 'className' and 'resource' are used below.
 --
+--
+
+(~?) :: (Eq a, Functor m) => m [a] -> [a] -> m Bool
+q ~? x = fmap (x `isInfixOf`) q
 
 myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
@@ -320,8 +325,7 @@ myManageHook = composeAll
     , className =? "Pavucontrol" --> doCenterFloat
     , className =? "qt5ct" --> doFloat
     , className =? "Skype" --> doFloat
-    , className =? "(?i)virtualbox manager" --> doFloat
-    , className =? "(?i)virtualbox machine" --> doFloat
+    , className =? "VirtualBox Manager" --> doCenterFloat
     , resource  =? "kdesktop"       --> doIgnore
     , className =? "GParted" --> doCenterFloat
     , role  =? "pop-up" --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
