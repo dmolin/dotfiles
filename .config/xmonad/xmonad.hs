@@ -361,7 +361,7 @@ myEventHook = mempty
 --
 -- By default, do nothing.
 myStartupHook = do
-        spawn "~/.xmonad/xmonad-startup.sh"
+        spawn "~/.config/xmonad/xmonad-startup.sh"
         spawnOnce "volnoti -a 0.9"
         spawnOnce "hsetroot -cover ~/.config/xmonad/wallpapers/wp2608227-wallpaper-4k.jpg"
         spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
