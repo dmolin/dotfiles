@@ -19,6 +19,7 @@ import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat, doCenterFloat, doRectFloat, isDialog)
 import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.WorkspaceHistory (workspaceHistoryHook)
 import XMonad.Layout.Tabbed
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Grid
@@ -85,6 +86,9 @@ myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
 myNormalBorderColor  = "#dddddd"
 myFocusedBorderColor = "#ff0000"
 
+toggleGreedyWS :: X ()
+toggleGreedyWS = toggleOrDoSkip [] W.greedyView =<< gets (W.currentTag . windowset)
+
 -- Toggle float/tiled mode for a window
 toggleFloat :: Window -> X ()
 toggleFloat w =
@@ -149,6 +153,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, xK_t), sendMessage $ JumpToLayout "Spacing ResizableTall")
     , ((modm, xK_e), sendMessage $ JumpToLayout "Tabbed Simplest")
     , ((modm, xK_r), withFocused toggleFloat)
+
+    -- Toggle last workspace
+    -- , ((modm, xK_BackSpace), toggleWS' ["NSP"])
+    , ((modm, xK_BackSpace), toggleGreedyWS)
 
     --  Reset the layouts on the current workspace to default
     , ((modm, xK_0 ), setLayout $ XMonad.layoutHook conf)
@@ -223,7 +231,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     --
     [((m .|. modm, k), windows $ f i)
         | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
-        , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
     ++
 
     --
@@ -270,7 +278,13 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = avoidStruts $ smartBorders (tiled ||| Mirror tiled ||| tabbed ||| grid ||| layoutFull)
+myTabConfig = def {
+  inactiveBorderColor = "#222222",
+  fontName = "xft:agave Nerd Font:pixelsize=13:antialias=true:hinting=true",
+  inactiveBorderWidth = 0
+}
+
+myLayout = avoidStruts $ smartBorders (tiled ||| Mirror tiled ||| tabs ||| grid ||| layoutFull)
 -- myLayout = avoidStruts $ smartBorders $ lessBorders Screen (tiled ||| Mirror tiled ||| simpleTabbed ||| Grid ||| layoutFull)
   where
      spacing = 5
@@ -279,7 +293,7 @@ myLayout = avoidStruts $ smartBorders (tiled ||| Mirror tiled ||| tabbed ||| gri
 
      grid   = spacingRaw False (Border spacing spacing spacing spacing) True (Border spacing spacing spacing spacing) True $ Grid 
 
-     tabbed = noBorders simpleTabbed
+     tabs = noBorders (tabbed shrinkText myTabConfig)
 
      -- The default number of windows in the master pane
      nmaster = 1
@@ -309,9 +323,6 @@ myLayout = avoidStruts $ smartBorders (tiled ||| Mirror tiled ||| tabbed ||| gri
 --
 --
 
-(~?) :: (Eq a, Functor m) => m [a] -> [a] -> m Bool
-q ~? x = fmap (x `isInfixOf`) q
-
 myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
@@ -321,13 +332,14 @@ myManageHook = composeAll
     , className =? "Lightdm-settings" --> doFloat
     , className =? "Lxappearance" --> doFloat
     , className =? "Manjaro Settings Manager" --> doFloat
-    , className =? "Pamac-manager" --> doRectFloat (W.RationalRect (1 %4) (1 %4) (1 % 2) (1 % 2))
+    , className =? "Pamac-manager" --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
     , className =? "Pavucontrol" --> doCenterFloat
     , className =? "qt5ct" --> doFloat
     , className =? "Skype" --> doFloat
     , className =? "VirtualBox Manager" --> doCenterFloat
     , resource  =? "kdesktop"       --> doIgnore
     , className =? "GParted" --> doCenterFloat
+    , className =? "Gnome-calendar" --> doCenterFloat
     , role  =? "pop-up" --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
     , role  =? "GtkFileChooserDialog" --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
     , isDialog --> doCenterFloat
@@ -426,6 +438,7 @@ mySimpleLogHookForPipe xmobarPipe =
 
 myLogHook :: [Handle] -> X ()
 myLogHook xmobarPipes = do
+  workspaceHistoryHook
   fadeInactiveCurrentWSLogHook 0.8
   updatePointer (0.5, 0.5) (0, 0)
   mapM_ mySimpleLogHookForPipe xmobarPipes
@@ -435,9 +448,10 @@ myLogHook xmobarPipes = do
 main = do
   n <- countScreens
   xmobarPipes <- mapM (\i -> spawnPipe ("xmobar -x " ++ show i ++ " ~/.config/xmobar/xmobar.config." ++ show i)) [0..n-1]
-  xmonad $ ewmhFullscreen $ ewmh (docks defaults {
-        logHook = myLogHook xmobarPipes
-  })
+  --xmonad $ ewmhFullscreen $ ewmh (docks defaults {
+        --logHook = workspaceHistoryHook >> myLogHook xmobarPipes
+  --})
+  xmonad $ ewmhFullscreen $ ewmh $ docks $ defaults xmobarPipes
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
@@ -445,7 +459,7 @@ main = do
 --
 -- No need to modify this.
 --
-defaults = def {
+defaults xmobadPipes = def {
       -- simple stuff
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
@@ -464,7 +478,8 @@ defaults = def {
         layoutHook         = myLayout,
         manageHook         = myManageHook,
         handleEventHook    = myEventHook,
-        startupHook        = myStartupHook 
+        startupHook        = myStartupHook,
+        logHook            = myLogHook xmobadPipes
     }
 
 -- | Finally, a copy of the default bindings in simple textual tabular format.
