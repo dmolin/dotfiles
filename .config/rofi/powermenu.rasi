@@ -23,8 +23,8 @@ window {
     transparency:                   "real";
 }
 listview {
-    lines:                          1;
-    columns:                        4;
+    lines:                          6;
+    columns:                        1;
     scrollbar:                     false;
 }
 element {
