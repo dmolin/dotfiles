@@ -1,0 +1,14 @@
+;;;; Imports
+(include "eww_widgets.yuck")
+
+(defwindow powermenu
+	:wm-ignore true
+	:monitor 0
+	:windowtype "dialog"
+	:geometry (geometry :x "0px"
+		:y "0%"
+		:width "20%"
+		:height "10%"
+		:anchor "center center")
+(powermenu))
+

@@ -154,9 +154,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, xK_e), sendMessage $ JumpToLayout "Tabbed Simplest")
     , ((modm, xK_r), withFocused toggleFloat)
 
-    -- Toggle last workspace
+    -- Toggle powermenu
     -- , ((modm, xK_BackSpace), toggleWS' ["NSP"])
-    , ((modm, xK_BackSpace), toggleGreedyWS)
+    , ((modm, xK_BackSpace), spawn "~/.config/_scripts_/toggle_powermenu.sh")
 
     --  Reset the layouts on the current workspace to default
     , ((modm, xK_0 ), setLayout $ XMonad.layoutHook conf)
@@ -380,6 +380,7 @@ myEventHook = mempty
 -- By default, do nothing.
 myStartupHook = do
         spawn "~/.config/xmonad/xmonad-startup.sh"
+        spawnOnce "~/Applications/eww/target/release/eww daemon"
         spawnOnce "volnoti -a 0.9"
         spawnOnce "hsetroot -cover ~/.config/xmonad/wallpapers/wp2608227-wallpaper-4k.jpg"
         spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
