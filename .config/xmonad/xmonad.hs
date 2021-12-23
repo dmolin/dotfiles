@@ -103,7 +103,7 @@ toggleFloat w =
 scratchpads :: [NamedScratchpad]
 scratchpads = [
   NS "term" "terminator -r scratchpad" (stringProperty "WM_WINDOW_ROLE" =? "scratchpad")
-    (customFloating $ W.RationalRect (3/5) (4/6) (1/5) (1/6))
+    (customFloating $ W.RationalRect (1/4) (2/4) (3/4) (1/4))
   ]
 
 ------------------------------------------------------------------------
