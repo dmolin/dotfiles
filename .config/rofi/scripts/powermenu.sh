@@ -14,8 +14,8 @@ option3="shutdown"
 # options passed into variable
 options="$option0\n$option1\n$option2\n$option3"
 
-#chosen="$(echo -e "$options" | rofi -lines 4 -dmenu -p "power" -config ~/.config/rofi/powermenu.rasi)"
-chosen="$(echo -e "$options" | rofi -lines 4 -dmenu -p "power")"
+chosen="$(echo -e "$options" | rofi -lines 4 -dmenu -p "power" -config ~/.config/rofi/powermenu.rasi)"
+#chosen="$(echo -e "$options" | rofi -lines 4 -dmenu -p "power")"
 echo "chosen = $chosen"
 case $chosen in
     $option0)
