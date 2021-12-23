@@ -37,6 +37,7 @@ import XMonad.Actions.UpdatePointer (updatePointer)
 import XMonad.Layout.IndependentScreens (countScreens)
 import XMonad.Layout.LayoutCombinators
 import XMonad.Util.WorkspaceCompare (getSortByXineramaRule)
+import XMonad.Util.NamedScratchpad
 
 import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 import qualified XMonad.StackSet as W
@@ -99,6 +100,12 @@ toggleFloat w =
           else (W.float w (W.RationalRect (1 / 3) (1 / 4) (1 / 2) (1 / 2)) s)
     )
 
+scratchpads :: [NamedScratchpad]
+scratchpads = [
+  NS "term" "terminator -r scratchpad" (stringProperty "WM_WINDOW_ROLE" =? "scratchpad")
+    (customFloating $ W.RationalRect (3/5) (4/6) (1/5) (1/6))
+  ]
+
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 --
@@ -153,6 +160,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, xK_t), sendMessage $ JumpToLayout "Spacing ResizableTall")
     , ((modm, xK_e), sendMessage $ JumpToLayout "Tabbed Simplest")
     , ((modm, xK_r), withFocused toggleFloat)
+
+    ---------------------------------------------
+    -- scratchpad
+    ---------------------------------------------
+    , ((modm, xK_grave), namedScratchpadAction scratchpads "term")
 
     -- Toggle powermenu
     -- , ((modm, xK_BackSpace), toggleWS' ["NSP"])
@@ -344,6 +356,7 @@ myManageHook = composeAll
     , role  =? "GtkFileChooserDialog" --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
     , name =? "win0" --> doCenterFloat
     , isDialog --> doCenterFloat
+    , role =? "scratchpad" --> doCenterFloat
     ]
   where 
     role = stringProperty "WM_WINDOW_ROLE"
