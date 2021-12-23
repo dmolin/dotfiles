@@ -342,10 +342,12 @@ myManageHook = composeAll
     , className =? "Gnome-calendar" --> doCenterFloat
     , role  =? "pop-up" --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
     , role  =? "GtkFileChooserDialog" --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
+    , name =? "win0" --> doCenterFloat
     , isDialog --> doCenterFloat
     ]
   where 
     role = stringProperty "WM_WINDOW_ROLE"
+    name = stringProperty "WM_NAME"
 
 ------------------------------------------------------------------------
 -- Event handling
