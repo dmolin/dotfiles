@@ -474,7 +474,7 @@ main = do
 --
 -- No need to modify this.
 --
-defaults xmobadPipes = def {
+defaults xmobarPipes = def {
       -- simple stuff
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
@@ -494,7 +494,7 @@ defaults xmobadPipes = def {
         manageHook         = myManageHook,
         handleEventHook    = myEventHook,
         startupHook        = myStartupHook,
-        logHook            = myLogHook xmobadPipes
+        logHook            = myLogHook xmobarPipes
     }
 
 -- | Finally, a copy of the default bindings in simple textual tabular format.
