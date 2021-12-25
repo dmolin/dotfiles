@@ -851,3 +851,5 @@ font:
 
   # Print all received window events.
   #print_events: false
+  #
+background_opacity: 0.96
