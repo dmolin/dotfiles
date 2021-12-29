@@ -14,6 +14,7 @@ import XMonad (MonadIO, WorkspaceId, Layout, Window, ScreenId, ScreenDetail, Win
 import XMonad hiding ((|||), float, Screen)
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
+import XMonad.Util.EZConfig (additionalKeysP)
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.ManageDocks
@@ -32,9 +33,10 @@ import System.Exit
 -- import XMonad.Layout.MultiToggle
 -- import XMonad.Layout.MultiToggle.Instances
 import XMonad.Hooks.SetWMName
-import XMonad.Actions.CycleWS
+import XMonad.Actions.CycleWS (prevScreen, nextScreen, shiftPrevScreen, shiftNextScreen, swapNextScreen, swapPrevScreen, toggleOrDoSkip)
+import XMonad.Actions.PhysicalScreens (getScreen, viewScreen, sendToScreen, onNextNeighbour, onPrevNeighbour)
 import XMonad.Actions.UpdatePointer (updatePointer)
-import XMonad.Layout.IndependentScreens (countScreens)
+import XMonad.Layout.IndependentScreens (countScreens, withScreens)
 import XMonad.Layout.LayoutCombinators
 import XMonad.Util.WorkspaceCompare (getSortByXineramaRule)
 import XMonad.Util.NamedScratchpad
@@ -220,6 +222,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Deincrement the number of windows in the master area
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
 
+    -- Workspace controls
+
     -- Toggle the status bar gap
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
     -- See also the statusBar function from Hooks.DynamicLog.
@@ -230,7 +234,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_z     ), io (exitWith ExitSuccess))
 
     -- Restart xmonad
-    , ((modm .|. shiftMask, xK_m     ), spawn "xmonad --recompile; xmonad --restart")
+    , ((modm .|. shiftMask, xK_m     ), spawn "killall xmobar; xmonad --recompile; xmonad --restart")
 
     -- Run xmessage with a summary of the default keybindings (useful for beginners)
     , ((modm .|. shiftMask, xK_slash ), spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
@@ -259,7 +263,14 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
         | (key, sc) <- zip [xK_F11, xK_F10, xK_F12] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
- 
+
+myAdditionalKeys :: [(String, X ())]
+myAdditionalKeys =
+    -- workspace control
+  [ ("M-]", onNextNeighbour def W.view)
+  , ("M-[", onPrevNeighbour def W.view)
+  ]
+
 ------------------------------------------------------------------------
 -- Mouse bindings: default actions bound to mouse events
 --
@@ -495,7 +506,7 @@ defaults xmobarPipes = def {
         handleEventHook    = myEventHook,
         startupHook        = myStartupHook,
         logHook            = myLogHook xmobarPipes
-    }
+    } `additionalKeysP` myAdditionalKeys
 
 -- | Finally, a copy of the default bindings in simple textual tabular format.
 help :: String
