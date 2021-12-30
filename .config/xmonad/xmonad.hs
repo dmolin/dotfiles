@@ -481,27 +481,21 @@ myStatusBarSpawner (S s) = do
          
 myXmobarPP :: ScreenId -> PP
 myXmobarPP s  = filterOutWsPP [scratchpadWorkspaceTag] . marshallPP s $ def
-  { ppSep = ""
-  , ppWsSep = ""
-  , ppCurrent = xmobarColor cyan "" . clickable wsIconFull
-  , ppVisible = xmobarColor grey4 "" . clickable wsIconFull
-  , ppVisibleNoWindows = Just (xmobarColor grey4 "" . clickable wsIconFull)
-  , ppHidden = xmobarColor grey2 "" . clickable wsIconHidden
-  , ppHiddenNoWindows = xmobarColor grey2 "" . clickable wsIconEmpty
-  , ppUrgent = xmobarColor orange "" . clickable wsIconFull
+  { ppSep = " "
+  , ppWsSep = " "
+  , ppCurrent = xmobarColor color06 "" . wrap ("<box type=Bottom width=2 mb=2 color=" ++ xmobarTitleColor ++ ">") "</box>"
+  , ppTitle = xmobarColor xmobarTitleColor "" . shorten 50
+  -- , ppVisible = xmobarColor grey4 "" . wrap ("") ""
+  -- , ppVisibleNoWindows = Just(xmobarColor grey4 "")
+  -- , ppHidden = xmobarColor grey2 "" 
+  -- , ppHiddenNoWindows = xmobarColor grey2 ""
+  -- , ppUrgent = xmobarColor orange "" . clickable wsIconFull
   , ppOrder = \(ws : _ : _ : extras) -> ws : extras
-  , ppExtras  = [ wrapL (actionPrefix ++ "n" ++ actionButton ++ "1>") actionSuffix
-                $ wrapL (actionPrefix ++ "Left" ++ actionButton ++ "4>") actionSuffix
-                $ wrapL (actionPrefix ++ "Right" ++ actionButton ++ "5>") actionSuffix
-                $ wrapL "    " "    " $ layoutColorIsActive s (logLayoutOnScreen s)
-                , wrapL (actionPrefix ++ "q" ++ actionButton ++ "2>") actionSuffix
-                $  titleColorIsActive s (shortenL 90 $ logTitleOnScreen s)
+  , ppExtras  = [ layoutColorIsActive s (logLayoutOnScreen s)
+                ,  titleColorIsActive s (shortenL 90 $ logTitleOnScreen s)
                 ]
   }
   where
-    wsIconFull   = "  <fn=2>\xf111</fn>   "
-    wsIconHidden = "  <fn=2>\xf111</fn>   "
-    wsIconEmpty  = "  <fn=2>\xf10c</fn>   "
     titleColorIsActive n l = do
       c <- withWindowSet $ return . W.screen . W.current
       if n == c then xmobarColorL cyan "" l else xmobarColorL grey3 "" l
@@ -515,7 +509,7 @@ myXmobarPP s  = filterOutWsPP [scratchpadWorkspaceTag] . marshallPP s $ def
 main = do
   n <- countScreens
   -- xmobarPipes <- mapM (\i -> spawnPipe ("xmobar -x " ++ show i ++ " ~/.config/xmobar/xmobar.config." ++ show i)) [0..n-1]
-  xmonad $ ewmh $ ewmhFullscreen $ dynamicSBs myStatusBarSpawner $ docks $ defaults
+  xmonad $ ewmh $ ewmhFullscreen $ dynamicSBs myStatusBarSpawner $ docks $ defaults n
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
@@ -523,14 +517,14 @@ main = do
 --
 -- No need to modify this.
 --
-defaults = def {
+defaults screens = def {
       -- simple stuff
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
         clickJustFocuses   = myClickJustFocuses,
         borderWidth        = myBorderWidth,
         modMask            = myModMask,
-        workspaces         = withScreens 3 myWorkspaces,
+        workspaces         = withScreens screens myWorkspaces,
         normalBorderColor  = myNormalBorderColor,
         focusedBorderColor = myFocusedBorderColor,
 
