@@ -9,6 +9,7 @@
 import GHC.IO.Handle.Types (Handle)
 import Data.Ratio
 import Data.List (isInfixOf)
+import Data.Maybe (fromJust)
 
 import XMonad (MonadIO, WorkspaceId, Layout, Window, ScreenId, ScreenDetail, WindowSet, layoutHook, logHook, X, io, ScreenId(..), gets, windowset, xmonad)
 import XMonad hiding ((|||), float, Screen)
@@ -21,6 +22,7 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat, doCenterFloat, doRectFloat, isDialog)
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.WorkspaceHistory (workspaceHistoryHook)
+import XMonad.Hooks.StatusBar
 import XMonad.Layout.Tabbed
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Grid
@@ -36,10 +38,11 @@ import XMonad.Hooks.SetWMName
 import XMonad.Actions.CycleWS (prevScreen, nextScreen, shiftPrevScreen, shiftNextScreen, swapNextScreen, swapPrevScreen, toggleOrDoSkip)
 import XMonad.Actions.PhysicalScreens (getScreen, viewScreen, sendToScreen, onNextNeighbour, onPrevNeighbour)
 import XMonad.Actions.UpdatePointer (updatePointer)
-import XMonad.Layout.IndependentScreens (countScreens, withScreens)
+import XMonad.Layout.IndependentScreens
 import XMonad.Layout.LayoutCombinators
 import XMonad.Util.WorkspaceCompare (getSortByXineramaRule)
 import XMonad.Util.NamedScratchpad
+import XMonad.Util.Loggers (logLayoutOnScreen, logTitleOnScreen, shortenL, wrapL, xmobarColorL)
 
 import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 import qualified XMonad.StackSet as W
@@ -53,6 +56,25 @@ import XMonad.Hooks.FullscreenSupported (setFullscreenSupported)
 --
 myTerminal      = "alacritty"
 color06         = "#ffffff"
+
+grey1, grey2, grey3, grey4, cyan, orange :: String
+grey1  = "#2B2E37"
+grey2  = "#555E70"
+grey3  = "#697180"
+grey4  = "#8691A8"
+cyan   = "#8BABF0"
+orange = "#C45500"
+
+actionPrefix, actionButton, actionSuffix :: [Char]
+actionPrefix = "<action=`xdotool key super+"
+actionButton = "` button="
+actionSuffix = "</action>"
+
+addActions :: [(String, Int)] -> String -> String
+addActions [] ws = ws
+addActions (x:xs) ws = addActions xs (actionPrefix ++ k ++ actionButton ++ show b ++ ">" ++ ws ++ actionSuffix)
+    where k = fst x
+          b = snd x
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -236,8 +258,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Restart xmonad
     , ((modm .|. shiftMask, xK_m     ), spawn "killall xmobar; xmonad --recompile; xmonad --restart")
 
-    -- Run xmessage with a summary of the default keybindings (useful for beginners)
-    , ((modm .|. shiftMask, xK_slash ), spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
     ]
     ++
 
@@ -368,6 +388,7 @@ myManageHook = composeAll
     , className =? "Cypress" --> doCenterFloat
     , name =? "int_test - Chromium" --> doCenterFloat
     , name =? "win0" --> doCenterFloat
+    , name =? "Firewall" --> doCenterFloat
     , isDialog --> doCenterFloat
     , role =? "scratchpad" --> doCenterFloat
     ]
@@ -424,6 +445,13 @@ myStartupHook = do
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 
+myWorkspaceIndices :: M.Map [Char] Integer
+myWorkspaceIndices = M.fromList $ zip myWorkspaces [1..]
+
+clickable :: [Char] -> [Char] -> [Char]
+clickable icon ws = addActions [ (show i, 1), ("q", 2), ("Left", 4), ("Right", 5) ] icon
+                    where i = fromJust $ M.lookup ws myWorkspaceIndices
+
 -- Color of current window title in xmobar.
 xmobarTitleColor = "#FFB6B0"
 -- Color of current workspace in xmobar.
@@ -436,50 +464,52 @@ myPP = def {
   -- , ppSort    = getSortByXineramaRule
   }
 
--- this all section is actually not used
-type ScreenFoo = Screen WorkspaceId (Layout Window) Window ScreenId ScreenDetail
-
-visibleScreens :: WindowSet -> [ScreenFoo]
-visibleScreens cws = ([current cws]) ++ (visible cws)
-
-joinToString :: [String] -> String
-joinToString workspaceIds = foldl (++) "" workspaceIds
-
-spawnXMobar :: MonadIO m => Int -> m (Int, Handle)
-spawnXMobar i = (spawnPipe $ "xmobar" ++ " -x " ++ show i ++ " ~/.config/xmobar/xmobar.config." ++ show i) >>= (\handle -> return (i, handle))
-
-spawnXMobars :: MonadIO m => Int -> m [(Int, Handle)]
-spawnXMobars n = mapM spawnXMobar [0..n-1]
-
--- This shows only the ws on the current screen but it loses the advantage of dynamicLogWithPP (that is, showing the other workspaces and the current running app)
-myLogHookForPipe :: WindowSet -> (Int, Handle) -> X ()
-myLogHookForPipe currentWindowSet (i, xmobarPipe) =
-  io $ hPutStrLn xmobarPipe $
-  joinToString $ map (tag . workspace) $
-  filter ((==) (S i) . screen) $
-  visibleScreens currentWindowSet
--- end of unused section
-
 mySimpleLogHookForPipe :: Handle -> X ()
 mySimpleLogHookForPipe xmobarPipe =
   dynamicLogWithPP myPP { ppOutput = hPutStrLn xmobarPipe } 
 
-myLogHook :: [Handle] -> X ()
-myLogHook xmobarPipes = do
+myLogHook = do
   workspaceHistoryHook
   fadeInactiveCurrentWSLogHook 0.8
   updatePointer (0.5, 0.5) (0, 0)
-  mapM_ mySimpleLogHookForPipe xmobarPipes
 
+myStatusBarSpawner :: Applicative f => ScreenId -> f StatusBarConfig
+myStatusBarSpawner (S s) = do
+  pure $ statusBarPropTo ("_XMONAD_LOG_" ++ show s)
+         ("xmobar -x " ++ show s ++ " ~/.config/xmobar/xmobar.config." ++ show s)
+         (pure $ myXmobarPP (S s))
+         
+myXmobarPP :: ScreenId -> PP
+myXmobarPP s  = filterOutWsPP [scratchpadWorkspaceTag] . marshallPP s $ def
+  { ppSep = " "
+  , ppWsSep = " "
+  , ppCurrent = xmobarColor color06 "" . wrap ("<box type=Bottom width=2 mb=2 color=" ++ xmobarTitleColor ++ ">") "</box>"
+  , ppTitle = xmobarColor xmobarTitleColor "" . shorten 50
+  -- , ppVisible = xmobarColor grey4 "" . wrap ("") ""
+  -- , ppVisibleNoWindows = Just(xmobarColor grey4 "")
+  -- , ppHidden = xmobarColor grey2 "" 
+  -- , ppHiddenNoWindows = xmobarColor grey2 ""
+  -- , ppUrgent = xmobarColor orange "" . clickable wsIconFull
+  , ppOrder = \(ws : _ : _ : extras) -> ws : extras
+  , ppExtras  = [ layoutColorIsActive s (logLayoutOnScreen s)
+                ,  titleColorIsActive s (shortenL 90 $ logTitleOnScreen s)
+                ]
+  }
+  where
+    titleColorIsActive n l = do
+      c <- withWindowSet $ return . W.screen . W.current
+      if n == c then xmobarColorL cyan "" l else xmobarColorL grey3 "" l
+    layoutColorIsActive n l = do
+      c <- withWindowSet $ return . W.screen . W.current
+      if n == c then wrapL "<icon=" "_selected.xpm/>" l else wrapL "<icon=" ".xpm/>" l
+         
+                          
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 main = do
   n <- countScreens
-  xmobarPipes <- mapM (\i -> spawnPipe ("xmobar -x " ++ show i ++ " ~/.config/xmobar/xmobar.config." ++ show i)) [0..n-1]
-  --xmonad $ ewmhFullscreen $ ewmh (docks defaults {
-        --logHook = workspaceHistoryHook >> myLogHook xmobarPipes
-  --})
-  xmonad $ ewmhFullscreen $ ewmh $ docks $ defaults xmobarPipes
+  -- xmobarPipes <- mapM (\i -> spawnPipe ("xmobar -x " ++ show i ++ " ~/.config/xmobar/xmobar.config." ++ show i)) [0..n-1]
+  xmonad $ ewmh $ ewmhFullscreen $ dynamicSBs myStatusBarSpawner $ docks $ defaults n
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
@@ -487,14 +517,14 @@ main = do
 --
 -- No need to modify this.
 --
-defaults xmobarPipes = def {
+defaults screens = def {
       -- simple stuff
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
         clickJustFocuses   = myClickJustFocuses,
         borderWidth        = myBorderWidth,
         modMask            = myModMask,
-        workspaces         = myWorkspaces,
+        workspaces         = withScreens screens myWorkspaces,
         normalBorderColor  = myNormalBorderColor,
         focusedBorderColor = myFocusedBorderColor,
 
@@ -507,56 +537,6 @@ defaults xmobarPipes = def {
         manageHook         = myManageHook,
         handleEventHook    = myEventHook,
         startupHook        = myStartupHook,
-        logHook            = myLogHook xmobarPipes
+        logHook            = myLogHook
     } `additionalKeysP` myAdditionalKeys
 
--- | Finally, a copy of the default bindings in simple textual tabular format.
-help :: String
-help = unlines ["The default modifier key is 'alt'. Default keybindings:",
-    "",
-    "-- launching and killing programs",
-    "mod-Shift-Enter  Launch xterminal",
-    "mod-p            Launch dmenu",
-    "mod-Shift-p      Launch gmrun",
-    "mod-Shift-c      Close/kill the focused window",
-    "mod-Space        Rotate through the available layout algorithms",
-    "mod-Shift-Space  Reset the layouts on the current workSpace to default",
-    "mod-n            Resize/refresh viewed windows to the correct size",
-    "",
-    "-- move focus up or down the window stack",
-    "mod-Tab        Move focus to the next window",
-    "mod-Shift-Tab  Move focus to the previous window",
-    "mod-j          Move focus to the next window",
-    "mod-k          Move focus to the previous window",
-    "mod-m          Move focus to the master window",
-    "",
-    "-- modifying the window order",
-    "mod-Return   Swap the focused window and the master window",
-    "mod-Shift-j  Swap the focused window with the next window",
-    "mod-Shift-k  Swap the focused window with the previous window",
-    "",
-    "-- resizing the master/slave ratio",
-    "mod-h  Shrink the master area",
-    "mod-l  Expand the master area",
-    "",
-    "-- floating layer support",
-    "mod-t  Push window back into tiling; unfloat and re-tile it",
-    "",
-    "-- increase or decrease number of windows in the master area",
-    "mod-comma  (mod-,)   Increment the number of windows in the master area",
-    "mod-period (mod-.)   Deincrement the number of windows in the master area",
-    "",
-    "-- quit, or restart",
-    "mod-Shift-q  Quit xmonad",
-    "mod-q        Restart xmonad",
-    "mod-[1..9]   Switch to workSpace N",
-    "",
-    "-- Workspaces & screens",
-    "mod-Shift-[1..9]   Move client to workspace N",
-    "mod-{w,e,r}        Switch to physical/Xinerama screens 1, 2, or 3",
-    "mod-Shift-{w,e,r}  Move client to screen 1, 2, or 3",
-    "",
-    "-- Mouse bindings: default actions bound to mouse events",
-    "mod-button1  Set the window to floating mode and move by dragging",
-    "mod-button2  Raise the window to the top of the stack",
-    "mod-button3  Set the window to floating mode and resize by dragging"]
