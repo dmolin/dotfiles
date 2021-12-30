@@ -365,6 +365,8 @@ myManageHook = composeAll
     , className =? "Gnome-calendar" --> doCenterFloat
     , role  =? "pop-up" --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
     , role  =? "GtkFileChooserDialog" --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
+    , className =? "Cypress" --> doCenterFloat
+    , name =? "int_test - Chromium" --> doCenterFloat
     , name =? "win0" --> doCenterFloat
     , isDialog --> doCenterFloat
     , role =? "scratchpad" --> doCenterFloat
