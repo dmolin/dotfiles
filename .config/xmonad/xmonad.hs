@@ -10,12 +10,17 @@ import GHC.IO.Handle.Types (Handle)
 import Data.Ratio
 import Data.List (isInfixOf)
 import Data.Maybe (fromJust)
+import Control.Monad (unless, when)
+import Foreign.C (CInt)
+import Data.Foldable (find)
 
 import XMonad (MonadIO, WorkspaceId, Layout, Window, ScreenId, ScreenDetail, WindowSet, layoutHook, logHook, X, io, ScreenId(..), gets, windowset, xmonad)
 import XMonad hiding ((|||), float, Screen)
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
 import XMonad.Util.EZConfig (additionalKeysP)
+
+import XMonad.Hooks.DynamicProperty
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.ManageDocks
@@ -23,6 +28,7 @@ import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat, doCenterFloat, doR
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.WorkspaceHistory (workspaceHistoryHook)
 import XMonad.Hooks.StatusBar
+
 import XMonad.Layout.Tabbed
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Grid
@@ -63,7 +69,7 @@ grey2  = "#555E70"
 grey3  = "#697180"
 grey4  = "#8691A8"
 cyan   = "#8BABF0"
-orange = "#C45500"
+orange = "#ff7812"
 
 actionPrefix, actionButton, actionSuffix :: [Char]
 actionPrefix = "<action=`xdotool key super+"
@@ -289,6 +295,8 @@ myAdditionalKeys =
     -- workspace control
   [ ("M-]", onNextNeighbour def W.view)
   , ("M-[", onPrevNeighbour def W.view)
+  , ("M-S-]", onNextNeighbour def W.shift)
+  , ("M-S-[", onPrevNeighbour def W.shift)
   ]
 
 ------------------------------------------------------------------------
@@ -405,7 +413,37 @@ myManageHook = composeAll
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
-myEventHook = mempty
+myEventHook :: Event -> X All
+--myEventHook = mempty
+myEventHook = dynamicPropertyChange "WM_NAME" (title =? "Slack" --> doShift "1_9")
+  <+> multiScreenFocusHook
+
+multiScreenFocusHook :: Event -> X All
+multiScreenFocusHook MotionEvent { ev_x = x, ev_y = y } = do
+  ms <- getScreenForPos x y
+  case ms of
+    Just cursorScreen -> do
+      let cursorScreenID = W.screen cursorScreen
+      focussedScreenID <- gets (W.screen . W.current . windowset)
+      when (cursorScreenID /= focussedScreenID) (focusWS $ W.tag $ W.workspace cursorScreen)
+      return (All True)
+    _ -> return (All True)
+  where getScreenForPos :: CInt -> CInt
+            -> X (Maybe (W.Screen WorkspaceId (Layout Window) Window ScreenId ScreenDetail))
+        getScreenForPos x y = do
+          ws <- windowset <$> get
+          let screens = W.current ws : W.visible ws
+              inRects = map (inRect x y . screenRect . W.screenDetail) screens
+          return $ fst <$> find snd (zip screens inRects)
+        inRect :: CInt -> CInt -> Rectangle -> Bool
+        inRect x y rect = let l = fromIntegral (rect_x rect)
+                              r = l + fromIntegral (rect_width rect)
+                              t = fromIntegral (rect_y rect)
+                              b = t + fromIntegral (rect_height rect)
+                           in x >= l && x < r && y >= t && y < b
+        focusWS :: WorkspaceId -> X ()
+        focusWS ids = windows (W.view ids)
+multiScreenFocusHook _ = return (All True)
 
 ------------------------------------------------------------------------
 -- Status bars and logging
@@ -457,17 +495,6 @@ xmobarTitleColor = "#FFB6B0"
 -- Color of current workspace in xmobar.
 xmobarCurrentWorkspaceColor = "#CEFFAC"
 
-myPP = def {
-    ppCurrent = xmobarColor color06 "" . wrap ("<box type=Bottom width=2 mb=2 color=" ++ xmobarTitleColor ++ ">") "</box>"
-  , ppTitle = xmobarColor xmobarTitleColor "" . shorten 50
-  , ppSep = "   "
-  -- , ppSort    = getSortByXineramaRule
-  }
-
-mySimpleLogHookForPipe :: Handle -> X ()
-mySimpleLogHookForPipe xmobarPipe =
-  dynamicLogWithPP myPP { ppOutput = hPutStrLn xmobarPipe } 
-
 myLogHook = do
   workspaceHistoryHook
   fadeInactiveCurrentWSLogHook 0.8
@@ -481,17 +508,17 @@ myStatusBarSpawner (S s) = do
          
 myXmobarPP :: ScreenId -> PP
 myXmobarPP s  = filterOutWsPP [scratchpadWorkspaceTag] . marshallPP s $ def
-  { ppSep = " "
+  { ppSep = "  "
   , ppWsSep = " "
   , ppCurrent = xmobarColor color06 "" . wrap ("<box type=Bottom width=2 mb=2 color=" ++ xmobarTitleColor ++ ">") "</box>"
   , ppTitle = xmobarColor xmobarTitleColor "" . shorten 50
-  -- , ppVisible = xmobarColor grey4 "" . wrap ("") ""
+  , ppVisible = xmobarColor grey4 "" . wrap ("") ""
   -- , ppVisibleNoWindows = Just(xmobarColor grey4 "")
   -- , ppHidden = xmobarColor grey2 "" 
   -- , ppHiddenNoWindows = xmobarColor grey2 ""
   -- , ppUrgent = xmobarColor orange "" . clickable wsIconFull
   , ppOrder = \(ws : _ : _ : extras) -> ws : extras
-  , ppExtras  = [ layoutColorIsActive s (logLayoutOnScreen s)
+  , ppExtras  = [ layoutColorActive s (logLayoutOnScreen s)
                 ,  titleColorIsActive s (shortenL 90 $ logTitleOnScreen s)
                 ]
   }
@@ -502,7 +529,9 @@ myXmobarPP s  = filterOutWsPP [scratchpadWorkspaceTag] . marshallPP s $ def
     layoutColorIsActive n l = do
       c <- withWindowSet $ return . W.screen . W.current
       if n == c then wrapL "<icon=" "_selected.xpm/>" l else wrapL "<icon=" ".xpm/>" l
-         
+    layoutColorActive n l = do
+      c <- withWindowSet $ return . W.screen . W.current
+      if n == c then xmobarColorL orange "" l else xmobarColorL grey3 "" l     
                           
 -- Run xmonad with the settings you specify. No need to modify this.
 --
