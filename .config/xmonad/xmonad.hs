@@ -10,9 +10,12 @@ import GHC.IO.Handle.Types (Handle)
 import Data.Ratio
 import Data.List (isInfixOf)
 import Data.Maybe (fromJust)
+import qualified Data.Map        as M
 import Control.Monad (unless, when)
 import Foreign.C (CInt)
 import Data.Foldable (find)
+import Data.Monoid
+import System.Exit
 
 import XMonad (MonadIO, WorkspaceId, Layout, Window, ScreenId, ScreenDetail, WindowSet, layoutHook, logHook, X, io, ScreenId(..), gets, windowset, xmonad)
 import XMonad hiding ((|||), float, Screen)
@@ -28,34 +31,33 @@ import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat, doCenterFloat, doR
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.WorkspaceHistory (workspaceHistoryHook)
 import XMonad.Hooks.StatusBar
+import XMonad.Hooks.SetWMName
+import XMonad.Hooks.FullscreenSupported (setFullscreenSupported)
 
 import XMonad.Layout.Tabbed
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Grid
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.NoBorders
--- spacing between tiles
 import XMonad.Layout.Spacing
-import Data.Monoid
-import System.Exit
 -- import XMonad.Layout.MultiToggle
 -- import XMonad.Layout.MultiToggle.Instances
-import XMonad.Hooks.SetWMName
+import XMonad.Layout.IndependentScreens
+import XMonad.Layout.LayoutCombinators
+import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
+
 import XMonad.Actions.CycleWS (prevScreen, nextScreen, shiftPrevScreen, shiftNextScreen, swapNextScreen, swapPrevScreen, toggleOrDoSkip)
 import XMonad.Actions.PhysicalScreens (getScreen, viewScreen, sendToScreen, onNextNeighbour, onPrevNeighbour)
 import XMonad.Actions.UpdatePointer (updatePointer)
-import XMonad.Layout.IndependentScreens
-import XMonad.Layout.LayoutCombinators
+import XMonad.Actions.OnScreen (onlyOnScreen)
+
 import XMonad.Util.WorkspaceCompare (getSortByXineramaRule)
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.Loggers (logLayoutOnScreen, logTitleOnScreen, shortenL, wrapL, xmobarColorL)
 
-import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 import qualified XMonad.StackSet as W
 import XMonad.StackSet (current, screen, visible, Screen, workspace, tag, sink, float, floating, RationalRect) 
-import qualified Data.Map        as M
 
-import XMonad.Hooks.FullscreenSupported (setFullscreenSupported)
 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
@@ -271,8 +273,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- mod-[1..9], Switch to workspace N
     -- mod-shift-[1..9], Move client to workspace N
     --
-    [((m .|. modm, k), windows $ f i)
-        | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
+    -- [((m .|. modm, k), windows $ f i)
+    --     | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
+    --     , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
+    [((m .|. modm, k), windows $ onCurrentScreen f i)
+        | (i, k) <- zip (workspaces' conf) [xK_1 .. xK_9]
         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
     ++
 
@@ -479,6 +484,8 @@ myStartupHook = do
         spawnOnce "~/.config/_scripts_/redshift.sh &"
         spawn "~/.config/_scripts_/post.sh"
         setWMName "LG3D"
+        modify $ \xstate -> xstate { windowset = onlyOnScreen 1 "1_1" (windowset xstate) }
+        modify $ \xstate -> xstate { windowset = onlyOnScreen 2 "2_1" (windowset xstate) }
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
