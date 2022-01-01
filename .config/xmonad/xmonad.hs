@@ -294,6 +294,8 @@ myAdditionalKeys =
   , ("M-[", onPrevNeighbour def W.view)
   , ("M-S-]", onNextNeighbour def shiftAndView)
   , ("M-S-[", onPrevNeighbour def shiftAndView)
+  , ("M-M1-]", onNextNeighbour def W.shift)
+  , ("M-M1-[", onPrevNeighbour def W.shift)
   ]
 
 ------------------------------------------------------------------------
