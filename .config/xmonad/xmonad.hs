@@ -393,6 +393,7 @@ myManageHook = composeAll
     , role  =? "pop-up" --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
     , role  =? "GtkFileChooserDialog" --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
     , className =? "Cypress" --> doCenterFloat
+    , className =? "Blueman-manager" --> doCenterFloat
     -- , className =? "Slack" --> doShift "1_9"
     , name =? "int_test - Chromium" --> doCenterFloat
     , name =? "win0" --> doCenterFloat
