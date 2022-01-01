@@ -281,27 +281,19 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
     ++
 
-    --
-    -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
-    -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
-    --
-    --[((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-    --    | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
-    --    , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
-
-    -- ++
-
     [((m .|. modm, key), f sc)
         | (key, sc) <- zip [xK_F10, xK_F11, xK_F12] [0..]
         , (f, m) <- [(viewScreen def, 0), (sendToScreen def, shiftMask)]]
+
+shiftAndView i = W.view i . W.shift i
 
 myAdditionalKeys :: [(String, X ())]
 myAdditionalKeys =
     -- workspace control
   [ ("M-]", onNextNeighbour def W.view)
   , ("M-[", onPrevNeighbour def W.view)
-  , ("M-S-]", onNextNeighbour def W.shift)
-  , ("M-S-[", onPrevNeighbour def W.shift)
+  , ("M-S-]", onNextNeighbour def shiftAndView)
+  , ("M-S-[", onPrevNeighbour def shiftAndView)
   ]
 
 ------------------------------------------------------------------------
