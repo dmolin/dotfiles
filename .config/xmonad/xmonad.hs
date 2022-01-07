@@ -468,7 +468,7 @@ myStartupHook = do
         spawn "~/.config/xmonad/xmonad-startup.sh"
         spawnOnce "volnoti -a 0.9"
         spawnOnce "hsetroot -cover ~/.config/xmonad/wallpapers/wp2608227-wallpaper-4k.jpg"
-        spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+        spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &"
         spawnOnce "xfce4-power-manager"
         spawnOnce "pamac-tray"
         spawnOnce "~/Applications/pcloud &"
