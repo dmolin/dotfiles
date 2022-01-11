@@ -398,6 +398,7 @@ myManageHook = composeAll
     , name =? "int_test - Chromium" --> doCenterFloat
     , name =? "win0" --> doCenterFloat
     , name =? "Firewall" --> doCenterFloat
+    , title =? "Blender Preferences" --> doCenterFloat
     , isDialog --> doCenterFloat
     , role =? "scratchpad" --> doCenterFloat
     ]
