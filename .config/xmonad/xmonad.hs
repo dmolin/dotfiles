@@ -394,7 +394,6 @@ myManageHook = composeAll
     , role  =? "GtkFileChooserDialog" --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
     , className =? "Cypress" --> doCenterFloat
     , className =? "Blueman-manager" --> doCenterFloat
-    -- , className =? "Slack" --> doShift "1_9"
     , name =? "int_test - Chromium" --> doCenterFloat
     , name =? "win0" --> doCenterFloat
     , name =? "Firewall" --> doCenterFloat
@@ -414,11 +413,13 @@ myManageHook = composeAll
 -- Defines a custom handler function for X Events. The function should
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
+-- myEventHook = dynamicPropertyChange "WM_NAME" (className =? "Slack" --> doShift "1_9")
+--  <+> multiScreenFocusHook
 --
 myEventHook :: Event -> X All
---myEventHook = mempty
-myEventHook = dynamicPropertyChange "WM_NAME" (className =? "Slack" --> doShift "1_9")
-  <+> multiScreenFocusHook
+myEventHook = mempty
+--myEventHook = dynamicPropertyChange "WM_NAME" 
+-- <+> multiScreenFocusHook
 
 multiScreenFocusHook :: Event -> X All
 multiScreenFocusHook MotionEvent { ev_x = x, ev_y = y } = do

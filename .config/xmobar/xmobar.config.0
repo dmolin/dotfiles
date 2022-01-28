@@ -26,7 +26,7 @@ Config { font = "xft:agave Nerd Font:pixelsize=13:antialias=true:hinting=true"
                                           "--low","lightblue"] 36000
                     , Run Volume "default" "Master" [] 10
 
-                    , Run Network "wlp7s0f3u2u3" ["-L","0","-H","32",
+                    , Run Network "wlp6s0" ["-L","0","-H","32",
                                           "--normal","green","--high","red", "-x", ""] 10
                     , Run Network "wlp5s0" ["-L","0","-H","32",
                                           "--normal","green","--high","red", "-x", ""] 10
@@ -42,5 +42,5 @@ Config { font = "xft:agave Nerd Font:pixelsize=13:antialias=true:hinting=true"
        , sepChar = "%"
        , alignSep = "}{"
        , template = "<icon=haskell_20.xpm/> %_XMONAD_LOG_0%   }\
-                    \{ %cpu% | %memory% | %wlp5s0% %wlp7s0f3u2u3% | <fn=1></fn> %EGLC% | %battery% | %default:Master% | <fc=#ee9a00>%date%</fc> %trayerpad%"
+                    \{ %cpu% | %memory% | %wlp5s0% %wlp6s0% | <fn=1></fn> %EGLC% | %battery% | %default:Master% | <fc=#ee9a00>%date%</fc> %trayerpad%"
        }
