@@ -477,7 +477,7 @@ myStartupHook = do
         spawnOnce "conky &"
         spawnOnce "nm-applet"
         spawnOnce "xautolock -time 40 -locker blurlock"
-        spawnOnce "fix-cursor"
+        spawnOnce "fix_xcursor"
         spawnOnce "~/.config/picom/start_picom.sh"
         spawnOnce "~/.config/_scripts_/redshift.sh &"
         spawn "~/.config/_scripts_/post.sh"
