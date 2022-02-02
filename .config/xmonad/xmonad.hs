@@ -62,7 +62,7 @@ import XMonad.StackSet (current, screen, visible, Screen, workspace, tag, sink, 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
-myTerminal      = "alacritty"
+myTerminal      = "kitty"
 color06         = "#ffffff"
 
 grey1, grey2, grey3, grey4, cyan, orange :: String
