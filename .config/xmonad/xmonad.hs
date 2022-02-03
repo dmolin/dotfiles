@@ -473,7 +473,7 @@ myStartupHook = do
         spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &"
         spawnOnce "xfce4-power-manager"
         spawnOnce "pamac-tray"
-        spawnOnce "~/Applications/pcloud &"
+        spawnOnce "~/.config/xmonad/scripts/start-pcloud.sh"
         spawnOnce "conky &"
         spawnOnce "nm-applet"
         spawnOnce "xautolock -time 40 -locker blurlock"
