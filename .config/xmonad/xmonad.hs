@@ -156,6 +156,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
 
     -- file manager
+    , ((modm, xK_F1), spawn "terminator --geometry 1600x1000 --role pop-up -e xplr")
     , ((modm, xK_F2), spawn "terminator --geometry 1600x1000 --role pop-up -e ranger")
     , ((modm, xK_F3), spawn "pcmanfm-qt")
 
@@ -173,8 +174,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- screenshots
     , ((0, xK_Print), spawn "flameshot gui -p ~/Pictures")
 
-    -- Lock the screen with mod + F1
-    , ((modm, xK_F1), spawn "betterlockscreen -l")
+    -- Lock the screen with mod + l
+    , ((modm, xK_backslash), spawn "betterlockscreen -l")
 
     ---------------------------------------------------
     -- Windows and Workspaces
