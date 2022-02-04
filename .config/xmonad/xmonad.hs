@@ -474,13 +474,11 @@ myStartupHook = do
         spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &"
         spawnOnce "xfce4-power-manager"
         spawnOnce "pamac-tray"
-        spawnOnce "~/.config/xmonad/scripts/start-pcloud.sh"
         spawnOnce "conky &"
         spawnOnce "nm-applet"
         spawnOnce "xautolock -time 40 -locker blurlock"
         spawnOnce "fix_xcursor"
         spawnOnce "~/.config/picom/start_picom.sh"
-        spawnOnce "~/.config/_scripts_/redshift.sh"
         spawn "~/.config/_scripts_/post.sh"
         setWMName "LG3D"
         modify $ \xstate -> xstate { windowset = onlyOnScreen 1 "1_1" (windowset xstate) }
