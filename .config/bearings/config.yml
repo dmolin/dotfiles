@@ -21,6 +21,5 @@ modules:
   max_depth: 3
 - type: git
   bg: "#1082d1"
-  _bg: "#ddbb44"
   fg: "#ffffff"
-  _bg: "#6666ff"
+  clean_bg: "#279a43"
