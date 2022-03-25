@@ -14,12 +14,11 @@ modules:
   failure_bg: "#bb4444"
 - type: cwd
   label: " %s"
-  _fg: "#000000"
   fg: "#ffffff"
-  _bg: "#ff8822"
   bg: "#ff6611"
   max_depth: 3
 - type: git
-  bg: "#1082d1"
-  fg: "#ffffff"
-  clean_bg: "#279a43"
+  bg: "#ff6611"
+  clean_bg: "#197820"
+  dirty_bg: "#fcbf00"
+  dirty_fg: "#222222"
