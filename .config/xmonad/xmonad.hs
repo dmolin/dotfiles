@@ -481,7 +481,7 @@ myStartupHook = do
         spawnOnce "xautolock -time 40 -locker blurlock"
         spawnOnce "fix_xcursor"
         spawnOnce "~/.config/picom/start_picom.sh"
-        spawn "~/.config/_scripts_/post.sh"
+        -- spawn "~/.config/_scripts_/huion.sh"
         setWMName "LG3D"
         modify $ \xstate -> xstate { windowset = onlyOnScreen 1 "1_1" (windowset xstate) }
         modify $ \xstate -> xstate { windowset = onlyOnScreen 2 "2_1" (windowset xstate) }
