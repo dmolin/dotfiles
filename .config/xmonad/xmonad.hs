@@ -150,10 +150,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm, xK_Return), spawn $ XMonad.terminal conf)
 
     -- launch dmenu
-    , ((modm,               xK_p     ), spawn "dmenu_run")
-
-    -- launch gmrun
-    , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
+    , ((modm .|. shiftMask, xK_p     ), spawn "dmenu_run")
 
     -- file manager
     , ((modm, xK_F1), spawn "terminator --geometry 1600x1000 --role pop-up -e xplr")
@@ -185,7 +182,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
      -- Rotate through the available layout algorithms
     , ((modm,               xK_space ), sendMessage NextLayout)
+    -- TODO:Map the mod+shift+space to PrevLayout
     , ((modm .|. shiftMask, xK_space ), spawn "rofi -modi drun -show drun")
+    , ((modm .|. shiftMask, xK_d ), spawn "rofi -modi drun -show drun")
     , ((modm, xK_d ), spawn "rofi -show window")
 
     -- Switch to specific layouts
@@ -211,6 +210,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Move focus to the next window
     , ((modm,               xK_Tab   ), windows W.focusDown)
+    , ((modm .|. shiftMask, xK_Tab   ), windows W.focusUp)
 
     -- Move focus to the next window
     , ((modm,               xK_k     ), windows W.focusDown)
@@ -243,15 +243,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_l     ), sendMessage Expand)
     , ((modm .|. mod1Mask,  xK_Right ), sendMessage Expand)
     , ((modm .|. mod1Mask,  xK_Up  ), sendMessage MirrorExpand)
-
-    -- Push window back into tiling (no need. modm + r does it all)
-    -- , ((modm .|. shiftMask,    xK_t     ), withFocused $ windows . W.sink)
-
-    -- Increment the number of windows in the master area
-    , ((modm              , xK_comma ), sendMessage (IncMasterN 1))
-
-    -- Deincrement the number of windows in the master area
-    , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
 
     -- Workspace controls
 
@@ -295,8 +286,15 @@ myAdditionalKeys =
   , ("M-[", onPrevNeighbour def W.view)
   , ("M-S-]", onNextNeighbour def shiftAndView)
   , ("M-S-[", onPrevNeighbour def shiftAndView)
-  , ("M-M1-]", onNextNeighbour def W.shift)
-  , ("M-M1-[", onPrevNeighbour def W.shift)
+  --, ("M-M1-]", onNextNeighbour def W.shift)
+  --, ("M-M1-[", onPrevNeighbour def W.shift)
+  , ("M-C-<Left>", onPrevNeighbour def W.view)
+  , ("M-C-<Right>", onNextNeighbour def W.view)
+  , ("M-C-S-<Left>", onPrevNeighbour def shiftAndView)
+  , ("M-C-S-<Right>", onNextNeighbour def shiftAndView)
+  -- increment/decrement master area windows
+  , ("M-=", sendMessage (IncMasterN 1))
+  , ("M--", sendMessage (IncMasterN (-1)))
   ]
 
 ------------------------------------------------------------------------
