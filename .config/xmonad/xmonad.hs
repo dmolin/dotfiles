@@ -401,6 +401,7 @@ myManageHook = composeAll
     -- , role =? "scratchpad" --> doCenterFloat
     , role =? "scratchpad" --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
     , className =? "qemu-system-x86_64" --> doCenterFloat
+    , className =? "SpeedCrunch" --> doCenterFloat
     ]
   where 
     role = stringProperty "WM_WINDOW_ROLE"
