@@ -169,7 +169,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- XF86AudioLowerVolume
     , ((modm, xK_F5), spawn "amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)")
     -- screenshots
-    , ((0, xK_Print), spawn "flameshot gui -p ~/Pictures")
+    , ((0, xK_Print), spawn "flameshot gui -c -p ~/Pictures")
+    , ((0 .|. controlMask, xK_Print), spawn "flameshot screen -n 1 -c -p ~/Pictures")
 
     -- Lock the screen with mod + l
     , ((modm, xK_backslash), spawn "betterlockscreen -l")
