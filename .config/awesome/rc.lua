@@ -14,6 +14,10 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
+
+local xresources = require("beautiful.xresources")
+local dpi = xresources.apply_dpi
+
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -268,7 +272,7 @@ globalkeys = gears.table.join(
     --awful.key({ modkey, }, "#51", function () awful.spawn.with_shell("betterlockscreen -l") end),
     awful.key({ }, "Print", function () awful.spawn.with_shell("flameshot gui -c -p ~/Pictures") end),
     awful.key({ modkey,  }, "Print", function () awful.spawn.with_shell("flameshot screen -n 1 -c -p ~/Pictures") end),
-    awful.key({ modkey, }, "#22", function () awful.spawn.with_shell("~/.config/rofi/scripts/powermenu.sh") end),
+    awful.key({ modkey, }, "BackSpace", function () awful.spawn.with_shell("~/.config/rofi/scripts/powermenu.sh") end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "Right", function () awful.client.swap.byidx(  1)    end,
@@ -584,8 +588,16 @@ client.connect_signal("mouse::enter", function(c)
     c:emit_signal("request::activate", "mouse_enter", {raise = false})
 end)
 
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+client.connect_signal("focus", 
+  function(c) 
+    c.border_color = beautiful.border_focus 
+    c.border_width = dpi(2)
+  end)
+client.connect_signal("unfocus", 
+  function(c) 
+    c.border_color = beautiful.border_normal 
+    c.border_width = dpi(1)
+  end)
 -- }}}
 
 -- Autostart applications
