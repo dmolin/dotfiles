@@ -21,7 +21,7 @@ case $chosen in
     $option0)
         betterlockscreen -l;;
     $option1)
-        pkill xmonad;;
+        pkill xmonad; pkill awesome;;
     $option2)
         systemctl reboot;;
     $option3)

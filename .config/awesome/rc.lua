@@ -45,7 +45,8 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_configuration_dir() .. "themes/default/theme.lua")
+theme = gears.filesystem.get_configuration_dir() .. "themes/default/theme.lua"
+beautiful.init(theme)
 beautiful.useless_gap = 5
 
 -- This is used later as the default terminal and editor to run.
@@ -197,6 +198,7 @@ awful.screen.connect_for_each_screen(function(s)
         filter  = awful.widget.tasklist.filter.focused,
         buttons = tasklist_buttons,
         style = {
+          bg_focus = beautiful.bg_normal
         }
     }
 
@@ -266,6 +268,7 @@ globalkeys = gears.table.join(
     --awful.key({ modkey, }, "#51", function () awful.spawn.with_shell("betterlockscreen -l") end),
     awful.key({ }, "Print", function () awful.spawn.with_shell("flameshot gui -c -p ~/Pictures") end),
     awful.key({ modkey,  }, "Print", function () awful.spawn.with_shell("flameshot screen -n 1 -c -p ~/Pictures") end),
+    awful.key({ modkey, }, "#22", function () awful.spawn.with_shell("~/.config/rofi/scripts/powermenu.sh") end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "Right", function () awful.client.swap.byidx(  1)    end,
