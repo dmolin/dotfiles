@@ -255,8 +255,8 @@ globalkeys = gears.table.join(
               {description = "show main menu", group = "awesome"}),
 
     -- Audio/Video general shortcuts
-    awful.key({ }, "#+19", function () awful.spawn("amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)") end, { description = "increase volume" }),
-    awful.key({ }, "#145", function () awful.spawn("amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)") end, { description = "decrease volume" }),
+    awful.key({ }, "#127", function () awful.spawn("amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)") end, { description = "increase volume" }),
+    awful.key({ }, "#78", function () awful.spawn("amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)") end, { description = "decrease volume" }),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "Right", function () awful.client.swap.byidx(  1)    end,
