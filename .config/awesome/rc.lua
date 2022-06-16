@@ -185,15 +185,19 @@ awful.screen.connect_for_each_screen(function(s)
     -- Create a taglist widget
     s.mytaglist = awful.widget.taglist {
         screen  = s,
-        filter  = awful.widget.taglist.filter.all,
+        --filter  = awful.widget.taglist.filter.all,
+        filter  = awful.widget.taglist.filter.noempty,
         buttons = taglist_buttons
     }
 
     -- Create a tasklist widget
     s.mytasklist = awful.widget.tasklist {
         screen  = s,
-        filter  = awful.widget.tasklist.filter.currenttags,
-        buttons = tasklist_buttons
+        --filter  = awful.widget.tasklist.filter.currenttags,
+        filter  = awful.widget.tasklist.filter.focused,
+        buttons = tasklist_buttons,
+        style = {
+        }
     }
 
     -- Create the wibox
@@ -255,8 +259,13 @@ globalkeys = gears.table.join(
               {description = "show main menu", group = "awesome"}),
 
     -- Audio/Video general shortcuts
-    awful.key({ }, "#+19", function () awful.spawn("amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)") end, { description = "increase volume" }),
-    awful.key({ }, "#145", function () awful.spawn("amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)") end, { description = "decrease volume" }),
+    awful.key({ modkey, }, "#19", function () awful.spawn.with_shell("amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)") end, { description = "increase volume" }),
+    awful.key({ modkey, }, "#145", function () awful.spawn.with_shell("amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)") end, { description = "decrease volume" }),
+    awful.key({ modkey, }, "F6", function () awful.spawn.with_shell("amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)") end, { description = "increase volume" }),
+    awful.key({ modkey, }, "F5", function () awful.spawn.with_shell("amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)") end, { description = "decrease volume" }),
+    --awful.key({ modkey, }, "#51", function () awful.spawn.with_shell("betterlockscreen -l") end),
+    awful.key({ }, "Print", function () awful.spawn.with_shell("flameshot gui -c -p ~/Pictures") end),
+    awful.key({ modkey,  }, "Print", function () awful.spawn.with_shell("flameshot screen -n 1 -c -p ~/Pictures") end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "Right", function () awful.client.swap.byidx(  1)    end,
@@ -279,6 +288,11 @@ globalkeys = gears.table.join(
         {description = "go back", group = "client"}),
 
     -- Standard program
+    
+    -- file managers
+    awful.key({ modkey, }, "F2", function () awful.spawn.with_shell("terminator --geometry 1600x1000 --role pop-up -e ranger") end),
+    awful.key({ modkey, }, "F3", function () awful.spawn.with_shell("pcmanfm-qt") end),
+
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
