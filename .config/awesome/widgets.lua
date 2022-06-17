@@ -10,7 +10,7 @@ local widgets = {}
 
 -- datetime 
 widgets.datetime = wibox.widget.textbox()
-vicious.register(widgets.datetime, vicious.widgets.date, "%b %d, %T", 1)
+vicious.register(widgets.datetime, vicious.widgets.date, "<span color='#FFFFFF'>%b %d, %T</span>", 1)
 
 widgets.battery = wibox.widget.progressbar()
 -- Register battery widget

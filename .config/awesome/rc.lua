@@ -59,7 +59,8 @@ end
 -- Themes define colours, icons, font and wallpapers.
 theme = gears.filesystem.get_configuration_dir() .. "themes/default/theme.lua"
 beautiful.init(theme)
-beautiful.useless_gap = 5
+-- beautiful.useless_gap = 5
+beautiful.taglist_shape = gears.shape.rectangle;
 
 -- This is used later as the default terminal and editor to run.
 terminal = "kitty"
@@ -242,7 +243,7 @@ awful.screen.connect_for_each_screen(function(s)
             -- mykeyboardlayout,
             wibox.layout.margin(wibox.widget.systray(), 3, 3, 3, 3),
             -- margins: left, right, top, bottom
-            wibox.layout.margin(widgets.datetime, 3, 3, 0, 0)
+            wibox.layout.margin(widgets.datetime, 5, 5, 0, 0)
         },
     }
 end)
@@ -281,8 +282,6 @@ globalkeys = gears.table.join(
       end,
       {description = "focus previous by index", group = "client"}
     ),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
-      {description = "show main menu", group = "awesome"}),
 
     -- Audio/Video general shortcuts
     awful.key({ modkey, }, "Pause", function () awful.spawn.with_shell("amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)") end, { description = "increase volume" }),
