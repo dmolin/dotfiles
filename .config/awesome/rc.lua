@@ -23,6 +23,13 @@ local widgets = require("widgets")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
+local BASE_DIR = gears.filesystem.get_configuration_dir()
+
+local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
+local net_speed_widget = require("awesome-wm-widgets.net-speed-widget.net-speed")
+local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
+local weather_widget = require("awesome-wm-widgets.weather-widget.weather")
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -189,6 +196,23 @@ awful.screen.connect_for_each_screen(function(s)
       }
     }
 
+    -- Create wibox with batwidget
+    batbox = wibox.layout.margin(
+        wibox.widget{ { max_value = 1, widget = widgets.battery,
+                        border_width = 0.5, border_color = "#000000",
+                        color = { type = "linear",
+                                  from = { 0, 0 },
+                                  to = { 0, 30 },
+                                  stops = { { 0, "#AECF96" },
+                                            { 1, "#FF5656" } } } },
+                      forced_height = 10, forced_width = 8,
+                      direction = 'east', color = beautiful.fg_widget,
+                      layout = wibox.container.rotate },
+        3, 3, 3, 3)
+    battery_args = {}
+    battery_args.show_current_level = true
+    battery_args.path_to_icons = BASE_DIR .. "icons/status/symbolic/"
+
     -- Create the wibox
     s.mywibox = awful.wibar({ position = "top", screen = s })
 
@@ -204,7 +228,18 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
+            net_speed_widget(),
+            wibox.layout.margin(
+              weather_widget({
+                api_key='b0d0f4cd245abb1f1c53bb42ab80be67',
+                coordinates = {51.503176, -0.038303},
+                show_hourly_forecast = true,
+                show_daily_forecast = true
+              }),
+              3, 3, 0, 0),
+            wibox.layout.margin(volume_widget(), 3, 3, 0, 0),
+            wibox.layout.margin(battery_widget(battery_args), 3, 3, 0, 0),
+            -- mykeyboardlayout,
             wibox.layout.margin(wibox.widget.systray(), 3, 3, 3, 3),
             -- margins: left, right, top, bottom
             wibox.layout.margin(widgets.datetime, 3, 3, 0, 0)
