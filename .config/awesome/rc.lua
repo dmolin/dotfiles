@@ -198,8 +198,8 @@ awful.screen.connect_for_each_screen(function(s)
     -- Create a tasklist widget
     s.mytasklist = awful.widget.tasklist {
         screen  = s,
-        --filter  = awful.widget.tasklist.filter.currenttags,
-        filter  = awful.widget.tasklist.filter.focused,
+        filter  = awful.widget.tasklist.filter.currenttags,
+        --filter  = awful.widget.tasklist.filter.focused,
         buttons = tasklist_buttons,
         style = {
           bg_focus = beautiful.bg_normal
@@ -265,8 +265,8 @@ globalkeys = gears.table.join(
               {description = "show main menu", group = "awesome"}),
 
     -- Audio/Video general shortcuts
-    awful.key({ modkey, }, "#19", function () awful.spawn.with_shell("amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)") end, { description = "increase volume" }),
-    awful.key({ modkey, }, "#145", function () awful.spawn.with_shell("amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)") end, { description = "decrease volume" }),
+    awful.key({ modkey, }, "Pause", function () awful.spawn.with_shell("amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)") end, { description = "increase volume" }),
+    awful.key({ modkey, }, "Scroll_Lock", function () awful.spawn.with_shell("amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)") end, { description = "decrease volume" }),
     awful.key({ modkey, }, "F6", function () awful.spawn.with_shell("amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)") end, { description = "increase volume" }),
     awful.key({ modkey, }, "F5", function () awful.spawn.with_shell("amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)") end, { description = "decrease volume" }),
     --awful.key({ modkey, }, "#51", function () awful.spawn.with_shell("betterlockscreen -l") end),
