@@ -85,7 +85,7 @@ awful.layout.layouts = {
     --awful.layout.suit.fair.horizontal,
     --awful.layout.suit.spiral,
     --awful.layout.suit.spiral.dwindle,
-    --awful.layout.suit.max,
+    awful.layout.suit.max,
     --awful.layout.suit.max.fullscreen,
     --awful.layout.suit.magnifier,
     --awful.layout.suit.corner.nw,
@@ -393,24 +393,29 @@ clientkeys = gears.table.join(
           c.minimized = true
       end ,
       {description = "minimize", group = "client"}),
-    awful.key({ modkey,           }, "m",
+		awful.key({ modkey, }, "m", 
+			function (c)
+				awful.layout.set(awful.layout.suit.max)
+			end,
+			{ description = "Switch to Maximized layout", group = "layout" }),
+    awful.key({ modkey, "Shift" }, "m",
       function (c)
           c.maximized = not c.maximized
           c:raise()
       end ,
-      {description = "(un)maximize", group = "client"}),
-    awful.key({ modkey, "Control" }, "m",
-      function (c)
-          c.maximized_vertical = not c.maximized_vertical
-          c:raise()
-      end ,
-      {description = "(un)maximize vertically", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "m",
-      function (c)
-          c.maximized_horizontal = not c.maximized_horizontal
-          c:raise()
-      end ,
-      {description = "(un)maximize horizontally", group = "client"})
+      {description = "(un)maximize", group = "client"})
+    --awful.key({ modkey, "Control" }, "m",
+      --function (c)
+          --c.maximized_vertical = not c.maximized_vertical
+          --c:raise()
+      --end ,
+      --{description = "(un)maximize vertically", group = "client"}),
+    --awful.key({ modkey, "Shift"   }, "m",
+      --function (c)
+          --c.maximized_horizontal = not c.maximized_horizontal
+          --c:raise()
+      --end ,
+      --{description = "(un)maximize horizontally", group = "client"})
 )
 
 -- Bind all key numbers to tags.
@@ -640,3 +645,4 @@ awful.spawn.with_shell("nm-applet")
 awful.spawn.with_shell("xautolock -time 40 -locker blurlock")
 awful.spawn.with_shell("fix_cursor")
 awful.spawn.with_shell("~/.config/awesome/post-start.sh")
+awful.spawn.with_shell("wmname LG3D")
