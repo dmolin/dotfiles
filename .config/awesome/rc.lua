@@ -378,10 +378,14 @@ clientkeys = gears.table.join(
       {description = "toggle floating", group = "client"}),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
       {description = "move to master", group = "client"}),
-    awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
+    awful.key({ modkey,           }, "\\",      function (c) c:move_to_screen()               end,
       {description = "move to screen", group = "client"}),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
       {description = "toggle keep on top", group = "client"}),
+    --awful.key({ modkey, "Shift"     }, "]",      function (c) c:move_to_screen()  end,
+      --{description = "move to right screen", group = "client"}),
+    --awful.key({ modkey, "Shift"     }, "[",      function (c) c:move_to_screen(screen:get_next_in_direction(c.screen, "left"))   end,
+      --{description = "move to left screen", group = "client"}),
     awful.key({ modkey,           }, "n",
       function (c)
           -- The client currently has the input focus, so it cannot be
@@ -510,17 +514,33 @@ awful.rules.rules = {
           "Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
           "Wpa_gui",
           "veromix",
+	  "VirtualBox Manager",
+	  "Manjaro Settings Manager",
+	  "alsamixer",
+	  "Lxappearance",
+	  "Pamac-manager",
+	  "Pavucontrol",
+	  "qt5ct",
+	  "Skype",
+	  "GParted",
+	  "Cypress",
+	  "SpeedCrunch",
+	  "qemu-system-x86_64",
           "xtightvncviewer"},
 
         -- Note that the name property shown in xprop might be set slightly after creation of the client
         -- and the name shown there might not match defined rules here.
         name = {
           "Event Tester",  -- xev.
+	  "int_test - Chromium",
+	  "win0",
+	  "Firewall"
         },
         role = {
           "AlarmWindow",  -- Thunderbird's calendar.
           "ConfigManager",  -- Thunderbird's about:config.
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
+	  "scratchpad"
         }
       }, properties = { floating = true }},
 
