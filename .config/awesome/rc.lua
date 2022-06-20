@@ -519,33 +519,33 @@ awful.rules.rules = {
           "Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
           "Wpa_gui",
           "veromix",
-	  "VirtualBox Manager",
-	  "Manjaro Settings Manager",
-	  "alsamixer",
-	  "Lxappearance",
-	  "Pamac-manager",
-	  "Pavucontrol",
-	  "qt5ct",
-	  "Skype",
-	  "GParted",
-	  "Cypress",
-	  "SpeedCrunch",
-	  "qemu-system-x86_64",
+	        "VirtualBox Manager",
+	        "Manjaro Settings Manager",
+	        "alsamixer",
+	        "Lxappearance",
+	        "Pamac-manager",
+	        "Pavucontrol",
+	        "qt5ct",
+	        "Skype",
+	        "GParted",
+	        "Cypress",
+	        "SpeedCrunch",
+	        "qemu-system-x86_64",
           "xtightvncviewer"},
 
         -- Note that the name property shown in xprop might be set slightly after creation of the client
         -- and the name shown there might not match defined rules here.
         name = {
           "Event Tester",  -- xev.
-	  "int_test - Chromium",
-	  "win0",
-	  "Firewall"
+	        "int_test - Chromium",
+	        "win0",
+	        "Firewall"
         },
         role = {
           "AlarmWindow",  -- Thunderbird's calendar.
           "ConfigManager",  -- Thunderbird's about:config.
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
-	  "scratchpad"
+	        "scratchpad"
         }
       }, properties = { floating = true }},
 
