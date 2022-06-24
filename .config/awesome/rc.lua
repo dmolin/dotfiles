@@ -547,11 +547,11 @@ awful.rules.rules = {
           "AlarmWindow",  -- Thunderbird's calendar.
           "ConfigManager",  -- Thunderbird's about:config.
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
-	        "scratchpad"
+	  "scratchpad"
         }
       }, properties = { 
         floating = true,
-	placement = awful.placement.centered
+	placement = awful.placement.centered + awful.placement.no_offscreen
       }},
 
     -- Add titlebars to normal clients and dialogs
