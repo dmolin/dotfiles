@@ -521,18 +521,18 @@ awful.rules.rules = {
           "Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
           "Wpa_gui",
           "veromix",
-	        "VirtualBox Manager",
-	        "Manjaro Settings Manager",
-	        "alsamixer",
-	        "Lxappearance",
-	        "Pamac-manager",
-	        "Pavucontrol",
-	        "qt5ct",
-	        "Skype",
-	        "GParted",
-	        "Cypress",
-	        "SpeedCrunch",
-	        "qemu-system-x86_64",
+          "VirtualBox Manager",
+          "Manjaro Settings Manager",
+          "alsamixer",
+          "Lxappearance",
+          "Pamac-manager",
+          "Pavucontrol",
+          "qt5ct",
+          "Skype",
+          "GParted",
+          "Cypress",
+          "SpeedCrunch",
+          "qemu-system-x86_64",
           "xtightvncviewer"},
 
         -- Note that the name property shown in xprop might be set slightly after creation of the client
@@ -549,7 +549,10 @@ awful.rules.rules = {
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
 	        "scratchpad"
         }
-      }, properties = { floating = true }},
+      }, properties = { 
+        floating = true,
+	placement = awful.placement.centered
+      }},
 
     -- Add titlebars to normal clients and dialogs
     --{ rule_any = {type = { "normal", "dialog" }
