@@ -539,9 +539,10 @@ awful.rules.rules = {
         -- and the name shown there might not match defined rules here.
         name = {
           "Event Tester",  -- xev.
-	        "int_test - Chromium",
-	        "win0",
-	        "Firewall"
+          "int_test - Chromium",
+          "win0",
+          "Firewall",
+	  --" "
         },
         role = {
           "AlarmWindow",  -- Thunderbird's calendar.
