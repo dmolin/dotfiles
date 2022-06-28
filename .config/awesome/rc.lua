@@ -325,7 +325,16 @@ globalkeys = gears.table.join(
       {description = "select next", group = "layout"}),
     awful.key({ modkey, "Mod1"   }, "space", function () awful.layout.inc(-1)                end,
       {description = "select previous", group = "layout"}),
-
+		awful.key({ modkey, }, "m", 
+			function ()
+				awful.layout.set(awful.layout.suit.max)
+			end,
+			{ description = "Switch to Maximized layout", group = "layout" }),
+		awful.key({ modkey, }, "e", 
+			function ()
+				awful.layout.set(awful.layout.suit.tile)
+			end,
+			{ description = "Switch to Tiled layout", group = "layout" }),
     awful.key({ modkey,           }, "Tab",
       function ()
           awful.client.focus.history.previous()
@@ -395,11 +404,6 @@ clientkeys = gears.table.join(
           c.minimized = true
       end ,
       {description = "minimize", group = "client"}),
-		awful.key({ modkey, }, "m", 
-			function (c)
-				awful.layout.set(awful.layout.suit.max)
-			end,
-			{ description = "Switch to Maximized layout", group = "layout" }),
     awful.key({ modkey, "Shift" }, "m",
       function (c)
           c.maximized = not c.maximized
