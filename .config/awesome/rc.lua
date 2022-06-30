@@ -17,7 +17,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
-local widgets = require("widgets")
+-- local widgets = require("widgets")
 
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
@@ -29,6 +29,8 @@ local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
 local net_speed_widget = require("awesome-wm-widgets.net-speed-widget.net-speed")
 local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
 local weather_widget = require("awesome-wm-widgets.weather-widget.weather")
+local datetime = require("widgets.datetime");
+local pomodoro = require("widgets.pomodoro");
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -197,19 +199,19 @@ awful.screen.connect_for_each_screen(function(s)
       }
     }
 
-    -- Create wibox with batwidget
-    batbox = wibox.layout.margin(
-        wibox.widget{ { max_value = 1, widget = widgets.battery,
-                        border_width = 0.5, border_color = "#000000",
-                        color = { type = "linear",
-                                  from = { 0, 0 },
-                                  to = { 0, 30 },
-                                  stops = { { 0, "#AECF96" },
-                                            { 1, "#FF5656" } } } },
-                      forced_height = 10, forced_width = 8,
-                      direction = 'east', color = beautiful.fg_widget,
-                      layout = wibox.container.rotate },
-        3, 3, 3, 3)
+    -- Create wibox with batwidget (not used)
+    --_batbox = wibox.layout.margin(
+        --wibox.widget{ { max_value = 1, widget = widgets.battery,
+                        --border_width = 0.5, border_color = "#000000",
+                        --color = { type = "linear",
+                                  --from = { 0, 0 },
+                                  --to = { 0, 30 },
+                                  --stops = { { 0, "#AECF96" },
+                                            --{ 1, "#FF5656" } } } },
+                      --forced_height = 10, forced_width = 8,
+                      --direction = 'east', color = beautiful.fg_widget,
+                      --layout = wibox.container.rotate },
+        --3, 3, 3, 3)
     battery_args = {}
     battery_args.show_current_level = true
     battery_args.path_to_icons = BASE_DIR .. "icons/status/symbolic/"
@@ -230,12 +232,14 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             net_speed_widget(),
+	    pomodoro,
             wibox.layout.margin(
               weather_widget({
-                api_key='b0d0f4cd245abb1f1c53bb42ab80be67',
+                api_key='0fa78e5d530e2b3382b022f0c850f777',
                 coordinates = {51.503176, -0.038303},
                 show_hourly_forecast = true,
-                show_daily_forecast = true
+                show_daily_forecast = true,
+		timeout = 600
               }),
               3, 3, 0, 0),
             wibox.layout.margin(volume_widget(), 3, 3, 0, 0),
@@ -243,7 +247,7 @@ awful.screen.connect_for_each_screen(function(s)
             -- mykeyboardlayout,
             wibox.layout.margin(wibox.widget.systray(), 3, 3, 3, 3),
             -- margins: left, right, top, bottom
-            wibox.layout.margin(widgets.datetime, 5, 5, 0, 0)
+            wibox.layout.margin(datetime, 5, 5, 0, 0)
         },
     }
 end)
