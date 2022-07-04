@@ -232,14 +232,14 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             net_speed_widget(),
-	    pomodoro,
+      pomodoro,
             wibox.layout.margin(
               weather_widget({
                 api_key='0fa78e5d530e2b3382b022f0c850f777',
                 coordinates = {51.503176, -0.038303},
                 show_hourly_forecast = true,
                 show_daily_forecast = true,
-		timeout = 600
+    timeout = 600
               }),
               3, 3, 0, 0),
             wibox.layout.margin(volume_widget(), 3, 3, 0, 0),
@@ -329,16 +329,16 @@ globalkeys = gears.table.join(
       {description = "select next", group = "layout"}),
     awful.key({ modkey, "Mod1"   }, "space", function () awful.layout.inc(-1)                end,
       {description = "select previous", group = "layout"}),
-		awful.key({ modkey, }, "m", 
-			function ()
-				awful.layout.set(awful.layout.suit.max)
-			end,
-			{ description = "Switch to Maximized layout", group = "layout" }),
-		awful.key({ modkey, }, "e", 
-			function ()
-				awful.layout.set(awful.layout.suit.tile)
-			end,
-			{ description = "Switch to Tiled layout", group = "layout" }),
+    awful.key({ modkey, }, "m", 
+      function ()
+        awful.layout.set(awful.layout.suit.max)
+      end,
+      { description = "Switch to Maximized layout", group = "layout" }),
+    awful.key({ modkey, }, "e", 
+      function ()
+        awful.layout.set(awful.layout.suit.tile)
+      end,
+      { description = "Switch to Tiled layout", group = "layout" }),
     awful.key({ modkey,           }, "Tab",
       function ()
           awful.client.focus.history.previous()
@@ -550,24 +550,38 @@ awful.rules.rules = {
           "int_test - Chromium",
           "win0",
           "Firewall",
-	  --" "
+          --" "
         },
         role = {
           "AlarmWindow",  -- Thunderbird's calendar.
           "ConfigManager",  -- Thunderbird's about:config.
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
-	  "scratchpad"
+          "scratchpad"
+        },
+        type = {
+          "dialog"
         }
       }, properties = { 
         floating = true,
-	placement = awful.placement.centered + awful.placement.no_offscreen
+        placement = awful.placement.centered + awful.placement.no_offscreen
       }},
+
+    { 
+      rule = {
+        class = "jetbrains-webstorm",
+        name = " "
+      }, 
+      properties = {
+        floating = true,
+        placement = awful.placement.centered
+      }
+    },
 
     -- Add titlebars to normal clients and dialogs
     --{ rule_any = {type = { "normal", "dialog" }
-    { rule_any = {type = { "dialog" }
-      }, properties = { titlebars_enabled = true }
-    },
+    --{ rule_any = {type = { "dialog" }
+      --}, properties = { titlebars_enabled = true }
+    --},
 
     -- Set Firefox to always map on the tag named "2" on screen 1.
     -- { rule = { class = "Firefox" },
