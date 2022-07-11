@@ -263,6 +263,8 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
+    awful.key({ modkey }, "d", function () awful.spawn("rofi -modi drun -show drun") end, 
+      { description = "run rofi", group="awesome" }),
     awful.key({ modkey }, "`", function () awful.spawn("rofi -modi drun -show drun") end, 
       { description = "run rofi", group="awesome" }),
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
