@@ -232,14 +232,13 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             net_speed_widget(),
-      pomodoro,
             wibox.layout.margin(
               weather_widget({
                 api_key='0fa78e5d530e2b3382b022f0c850f777',
                 coordinates = {51.503176, -0.038303},
                 show_hourly_forecast = true,
                 show_daily_forecast = true,
-    timeout = 600
+                timeout = 600
               }),
               3, 3, 0, 0),
             wibox.layout.margin(volume_widget(), 3, 3, 0, 0),
@@ -254,11 +253,11 @@ end)
 -- }}}
 
 -- {{{ Mouse bindings
-root.buttons(gears.table.join(
-  awful.button({ }, 3, function () mymainmenu:toggle() end),
-  awful.button({ }, 4, awful.tag.viewnext),
-  awful.button({ }, 5, awful.tag.viewprev)
-))
+--root.buttons(gears.table.join(
+  --awful.button({ }, 3, function () mymainmenu:toggle() end),
+  --awful.button({ }, 4, awful.tag.viewnext),
+  --awful.button({ }, 5, awful.tag.viewprev)
+--))
 -- }}}
 
 -- {{{ Key bindings
