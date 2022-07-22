@@ -30,7 +30,6 @@ local net_speed_widget = require("awesome-wm-widgets.net-speed-widget.net-speed"
 local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
 local weather_widget = require("awesome-wm-widgets.weather-widget.weather")
 local datetime = require("widgets.datetime");
-local pomodoro = require("widgets.pomodoro");
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -217,7 +216,7 @@ awful.screen.connect_for_each_screen(function(s)
     battery_args.path_to_icons = BASE_DIR .. "icons/status/symbolic/"
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s })
+    s.mywibox = awful.wibar({ position = "top", screen = s, bg = beautiful.bg_wibar })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
