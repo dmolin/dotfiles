@@ -14,7 +14,7 @@ local theme = {}
 theme.font          = "sans 10"
 
 theme.bg_normal     = "#222222AA"
-theme.bg_focus      = "#535d6c"
+theme.bg_focus      = "#535d6cAA"
 theme.bg_urgent     = "#ff0000"
 theme.bg_minimize   = "#444444"
 theme.bg_wibar      = "#222222AA"
@@ -98,7 +98,7 @@ theme.titlebar_maximized_button_focus_inactive  = themes_path.."default/titlebar
 theme.titlebar_maximized_button_normal_active = themes_path.."default/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = themes_path.."default/titlebar/maximized_focus_active.png"
 
-theme.wallpaper = themes_path.."default/deep_blue.jpg"
+theme.wallpaper = themes_path.."default/dawn.jpg"
 
 theme.systray_icon_spacing = 2
 

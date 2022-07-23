@@ -99,8 +99,19 @@ awful.screen.connect_for_each_screen(function(s)
       --filter  = awful.widget.tasklist.filter.focused,
       buttons = tasklist_buttons,
       style = {
-        bg_focus = beautiful.bg_normal
-      }
+        bg_focus = beautiful.bg_focus,
+				tasklist_shape_border_width_focus = 2,
+				tasklist_shape_border_color_focus = "#EEEEEE"
+      },
+			layout = {
+				spacing = 10,
+				spacing_widget = {
+					valign = center,
+					halign = center,
+					widget = wibox.container.place
+				},
+				layout = wibox.layout.flex.horizontal
+			}
     }
 
     -- Create wibox with batwidget (not used)
