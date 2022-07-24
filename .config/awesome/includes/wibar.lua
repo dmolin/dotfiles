@@ -155,11 +155,11 @@ awful.screen.connect_for_each_screen(function(s)
                 show_daily_forecast = true,
                 timeout = 600
               }),
-              3, 3, 0, 0),
+              0, 3, 0, 0),
             wibox.layout.margin(volume_widget(), 3, 3, 0, 0),
             wibox.layout.margin(battery_widget(battery_args), 3, 3, 0, 0),
             -- mykeyboardlayout,
-            wibox.layout.margin(wibox.widget.systray(), 3, 3, 3, 3),
+            wibox.layout.margin(wibox.widget.systray(), 3, 3, 5, 5),
             -- margins: left, right, top, bottom
             wibox.layout.margin(datetime, 5, 5, 0, 0)
         },

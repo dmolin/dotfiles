@@ -2,24 +2,17 @@
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
 
--- Standard awesome library
 gears = require("gears")
 awful = require("awful")
 require("awful.autofocus")
--- Widget and layout library
 wibox = require("wibox")
--- Theme handling library
 beautiful = require("beautiful")
--- Notification library
 naughty = require("naughty")
 menubar = require("menubar")
 hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
 xresources = require("beautiful.xresources")
 dpi = xresources.apply_dpi
-
--- Enable hotkeys help widget for VIM and other apps
--- when client with a matching name is opened:
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
