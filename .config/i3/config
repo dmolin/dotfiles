@@ -17,7 +17,7 @@ set $Alt Mod1
 
 set $monitor_left DP-0
 set $monitor_main DP-4
-set $monitor_right HDMI-1
+#set $monitor_right HDMI-1
 
 # set default desktop layout (default is tiling)
 # workspace_layout tabbed <stacking|tabbed>
@@ -25,6 +25,7 @@ set $monitor_right HDMI-1
 # Configure border style <normal|1pixel|pixel xx|none|pixel>
 default_border pixel 2
 default_floating_border pixel 2
+border_radius 3
 
 # Hide borders
 hide_edge_borders none
@@ -43,7 +44,7 @@ font xft:Iosevka 11
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec --no-startup-id terminator
+bindsym $mod+Return exec --no-startup-id kitty
 
 # kill focused window
 bindsym $mod+q kill
@@ -52,7 +53,8 @@ bindsym $mod+q kill
 bindsym $mod+Ctrl+q --release exec --no-startup-id xkill
 
 # start program launcher (D-Menu)
-bindsym $mod+d exec --no-startup-id dmenu_recency
+#bindsym $mod+d exec --no-startup-id dmenu_recency
+bindsym $mod+d exec --no-startup-id "rofi -modi drun -show drun"
 
 # launch categorized menu
 # bindsym $mod+z exec --no-startup-id morc_menu
@@ -75,7 +77,7 @@ bindsym XF86AudioMute exec --no-startup-id "amixer set Master toggle && if amixe
 #bindsym Pause exec --no-startup-id ~/.config/_scripts_/volume up
 #bindsym Scroll_Lock exec --no-startup-id ~/.config/_scripts_/volume down
 bindsym Pause exec --no-startup-id "amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)"  
-bindsym Scroll_Lock exec --no-startup-id "amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)" 
+BINDSYM scroll_Lock exec --no-startup-id "amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)" 
 
 ################################################################################################
 
@@ -85,8 +87,7 @@ bindsym Scroll_Lock exec --no-startup-id "amixer set Master 2%- && volnoti-show 
 
 # Shortcuts to start Applications
 bindsym $mod+Ctrl+b exec --no-startup-id terminator --role pop-up -e 'bmenu'
-bindsym $mod+e exec --no-startup-id terminator --geometry 1600x1000 --role pop-up -e ranger
-bindsym $mod+Shift+e exec --no-startup-id terminator -e ranger
+bindsym $mod+F2 exec --no-startup-id terminator --geometry 1600x1000 --role pop-up -e ranger
 bindsym $mod+F3 exec pcmanfm-qt
 bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
 #bindsym Print --release exec --no-startup-id ~/.config/_scripts_/screenshot-i3 -s
@@ -178,8 +179,8 @@ workspace $ws2 output $monitor_main
 workspace $ws3 output $monitor_main
 workspace $ws4 output $monitor_main
 workspace $ws5 output $monitor_main
-workspace $ws6 output $monitor_right
-workspace $ws7 output $monitor_right
+workspace $ws6 output $monitor_main
+workspace $ws7 output $monitor_left
 workspace $ws8 output $monitor_left
 workspace $ws9 output $monitor_left
 workspace $ws10 output $monitor_left
@@ -296,7 +297,8 @@ bindsym $mod+Shift+z restart
 #bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # Set shut down, restart and locking features
-bindsym $mod+BackSpace mode "$mode_system"
+bindsym $mod+BackSpace exec --no-startup-id "~/.config/rofi/scripts/powermenu.sh"
+bindsym $mod+Shift+BackSpace mode "$mode_system"
 set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown
 mode "$mode_system" {
     bindsym l exec --no-startup-id i3exit lock, mode "default"
@@ -332,16 +334,15 @@ exec --no-startup-id ~/.config/polybar/launch.sh i3 &
 exec --no-startup-id nm-applet
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id pamac-tray
-exec --no-startup-id clipit
+#exec --no-startup-id clipit
 exec --no-startup-id ~/Applications/pcloud &
-# exec --no-startup-id blueman-applet
-exec --no-startup-id conky &
+#exec --no-startup-id blueman-applet
+#exec --no-startup-id conky &
 exec --no-startup-id xautolock -time 40 -locker blurlock
 exec_always --no-startup-id fix_xcursor
 exec --no-startup-id ~/.config/picom/start_picom.sh
 exec --no-startup-id ~/.config/_scripts_/redshift.sh &
 exec --no-startup-id terminator -r scratchpad &
-exec --no-startup-id ~/.config/_scripts_/post.sh &
 
 #exec --no-startup-id ~/.config/_scripts_/start_variety.sh &
 
@@ -379,7 +380,8 @@ set_from_resource $term_color15    color15
 # Theme colors
 # class                   border  backgr. text    indic.   child_border
   #client.focused          #556064 #556064 #80FFF9 #FDF6E3
-  client.focused          #3EC2FF #5BA4CF #ffffff #FFFFFF #3EC2FF
+  #client.focused          #3EC2FF #5BA4CF #ffffff #FFFFFF #3EC2FF
+  client.focused          #FA830E #5BA4CF #ffffff #FFFFFF #FA830E
   client.focused_inactive #2F3D44 #2F3D44 #1ABC9C #454948
   client.unfocused        #2F3D44 #2F3D44 #1ABC9C #454948
   client.urgent           #CB4B16 #FDF6E3 #1ABC9C #268BD2

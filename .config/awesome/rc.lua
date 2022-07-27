@@ -13,6 +13,7 @@ hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
 xresources = require("beautiful.xresources")
 dpi = xresources.apply_dpi
+--treesome = require("treesome")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
