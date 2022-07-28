@@ -48,7 +48,7 @@ new_get_icon() {
     echo $icon
 }
 
-KEY="b0d0f4cd245abb1f1c53bb42ab80be67"
+KEY="$OPENWEATHER_APIKEY"
 CITY="London,UK"
 UNITS="metric"
 SYMBOL="°"
