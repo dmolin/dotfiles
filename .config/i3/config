@@ -77,7 +77,7 @@ bindsym XF86AudioMute exec --no-startup-id "amixer set Master toggle && if amixe
 #bindsym Pause exec --no-startup-id ~/.config/_scripts_/volume up
 #bindsym Scroll_Lock exec --no-startup-id ~/.config/_scripts_/volume down
 bindsym Pause exec --no-startup-id "amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)"  
-BINDSYM scroll_Lock exec --no-startup-id "amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)" 
+bindsym Scroll_Lock exec --no-startup-id "amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)" 
 
 ################################################################################################
 
@@ -154,9 +154,9 @@ bindsym $mod+Shift+minus move scratchpad
 # If there are multiple scratchpad windows, this command cycles through them.
 bindsym Ctrl+grave scratchpad show
 
-#navigate workspaces next / previous
-#bindsym $mod+Ctrl+Right workspace next
-#bindsym $mod+Ctrl+Left workspace prev
+#navigate workspaces next / previous (PgDn / PgUp)
+bindsym $mod+Next workspace next
+bindsym $mod+Prior workspace prev
 
 # Workspace names
 # to display names or symbols instead of plain workspace numbers you can use
@@ -196,16 +196,6 @@ bindsym $mod+8 workspace $ws8
 bindsym $mod+9 workspace $ws9
 bindsym $mod+0 workspace $ws10
 
-# Move focused container to workspace
-#bindsym $mod+Ctrl+1 move container to workspace $ws1
-#bindsym $mod+Ctrl+2 move container to workspace $ws2
-#bindsym $mod+Ctrl+3 move container to workspace $ws3
-#bindsym $mod+Ctrl+4 move container to workspace $ws4
-#bindsym $mod+Ctrl+5 move container to workspace $ws5
-#bindsym $mod+Ctrl+6 move container to workspace $ws6
-#bindsym $mod+Ctrl+7 move container to workspace $ws7
-#bindsym $mod+Ctrl+8 move container to workspace $ws8
-
 # Move to workspace with focused container
 bindsym $mod+Shift+1 move container to workspace $ws1; workspace $ws1
 bindsym $mod+Shift+2 move container to workspace $ws2; workspace $ws2
@@ -219,14 +209,18 @@ bindsym $mod+Shift+9 move container to workspace $ws9; workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10; workspace $ws10
 
 # Move workspaces between monitors
-bindsym $mod+$Alt+Up move workspace to output up
-bindsym $mod+$Alt+Down move workspace to output down
+#bindsym $mod+$Alt+Up move workspace to output up
+#bindsym $mod+$Alt+Down move workspace to output down
+
+# Move focus over to specific monitor
+bindsym $mod+ctrl+Left focus output left
+bindsym $mod+ctrl+Right focus output right
 
 # Open applications on specific workspaces
 assign [class="jetbrains-webstorm"] $ws2
 #assign [class="Chromium"] $ws3
 assign [class="NoSQLBooster"] $ws4
-assign [class="Slack"] $ws10
+assign [class="Slack"] $ws7
 
 # Open specific applications in floating mode
 for_window [title="alsamixer"] floating enable border pixel 1
@@ -311,10 +305,10 @@ mode "$mode_system" {
 }
 
 # Resize window (you can also use the mouse for that)
-bindsym $mod+ctrl+Left resize shrink width 5 px or 5 ppt
-bindsym $mod+ctrl+Right resize grow width 5 px or 5 ppt
-bindsym $mod+ctrl+Down resize shrink height 5 px or 5 ppt
-bindsym $mod+ctrl+Up resize grow height 5 px or 5 ppt
+bindsym $mod+$Alt+Left resize shrink width 5 px or 5 ppt
+bindsym $mod+$Alt+Right resize grow width 5 px or 5 ppt
+bindsym $mod+$Alt+Down resize shrink height 5 px or 5 ppt
+bindsym $mod+$Alt+Up resize grow height 5 px or 5 ppt
 
 # Lock screen
 bindsym $mod+l exec --no-startup-id blurlock
