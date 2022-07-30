@@ -25,7 +25,7 @@ set $monitor_main DP-4
 # Configure border style <normal|1pixel|pixel xx|none|pixel>
 default_border pixel 2
 default_floating_border pixel 2
-border_radius 3
+#border_radius 3
 
 # Hide borders
 hide_edge_borders none
