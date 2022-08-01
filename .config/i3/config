@@ -216,6 +216,9 @@ bindsym $mod+Shift+0 move container to workspace $ws10; workspace $ws10
 bindsym $mod+ctrl+Left focus output left
 bindsym $mod+ctrl+Right focus output right
 
+# Toggle between main/side monitor (this works only with 2 monitors)
+bindsym $mod+backslash focus output right
+
 # Open applications on specific workspaces
 assign [class="jetbrains-webstorm"] $ws2
 #assign [class="Chromium"] $ws3
