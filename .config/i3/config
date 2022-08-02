@@ -321,7 +321,7 @@ bindsym $mod+l exec --no-startup-id blurlock
 # ================================================
 exec --no-startup-id volnoti -a 0.9
 #exec --no-startup-id ~/.xprofile
-exec --no-startup-id hsetroot -root -fill wallpapers/wallhaven-q2o7kq.jpg
+exec --no-startup-id hsetroot -root -fill ~/.config/i3/wallpapers/wallhaven-q2o7kq.jpg
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id ~/.config/polybar/launch.sh i3 &
 exec --no-startup-id nm-applet

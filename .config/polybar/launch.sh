@@ -16,11 +16,9 @@ killall -q polybar
 DISPLAYS=`~/.config/_scripts_/set_displays.sh`
 MAIN_DISPLAY=`echo $DISPLAYS | awk '{print $1}'`
 TOP_DISPLAY=`echo $DISPLAYS | awk '{print $2}'`
-#THIRD_DISPLAY=`echo $DISPLAYS | awk '{print $3}'`
 
 export MAIN_DISPLAY
 export TOP_DISPLAY
-#export THIRD_DISPLAY
 
 echo "  -> waiting a bit..."
 sleep 2
