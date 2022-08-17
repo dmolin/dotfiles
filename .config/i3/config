@@ -319,6 +319,7 @@ bindsym $mod+l exec --no-startup-id blurlock
 # ================================================
 # Autostart applications
 # ================================================
+exec --no-startup-id ~/.config/i3/pulseaudio.sh
 exec --no-startup-id volnoti -a 0.9
 #exec --no-startup-id ~/.xprofile
 exec --no-startup-id hsetroot -root -fill ~/.config/i3/wallpapers/wallhaven-q2o7kq.jpg
