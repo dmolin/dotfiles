@@ -123,7 +123,7 @@ term xterm-kitty
 
 #window decorations
 window_border_width 1
-window_padding_width 0
+window_padding_width 1
 # active_border_color #00ff00
 # inactive_border_color #cccccc
 
@@ -227,6 +227,6 @@ map ctrl+shift+f11      toggle_fullscreen
 
 
 # BEGIN_KITTY_THEME
-# Gruvbox Material Light Medium
+# Misterioso
 include current-theme.conf
 # END_KITTY_THEME
