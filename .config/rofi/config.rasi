@@ -19,6 +19,7 @@ window {
     background-color: @background;
     border:           0;
     padding:          30;
+    width: 1000px;
 }
 listview {
     lines:                          10;
