@@ -24,8 +24,8 @@ get_icon() {
     echo $icon
 }
 
-KEY=""
-CITY=""
+KEY="$OPENWEATHER_APIKEY"
+CITY="London,UK"
 UNITS="metric"
 SYMBOL="°"
 
