@@ -25,7 +25,6 @@ set $monitor_main DP-4
 # Configure border style <normal|1pixel|pixel xx|none|pixel>
 default_border pixel 2
 default_floating_border pixel 2
-#border_radius 3
 
 # Hide borders
 hide_edge_borders none
@@ -279,6 +278,7 @@ for_window [class="Ptxconf.py"] floating enable move position center
 for_window [class="Kvantum Manager"] floating enable move position center
 for_window [class="Gufw.py"] floating enable move position center
 for_window [class="bauh"] floating enable move position center
+for_window [instance="Terminator Preferences"] floating enable move position center
 
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus

@@ -118,11 +118,11 @@ globalkeys = gears.table.join(
             )
           end
       end,
-      {description = "restore minimized", group = "client"}),
+      {description = "restore minimized", group = "client"})
 
     -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end,
-      {description = "show the menubar", group = "launcher"})
+    --awful.key({ modkey }, "p", function() menubar.show() end,
+    --  {description = "show the menubar", group = "launcher"})
 )
 
 clientkeys = gears.table.join(
@@ -160,7 +160,7 @@ clientkeys = gears.table.join(
           c.maximized = not c.maximized
           c:raise()
       end ,
-      {description = "(un)maximize", group = "client"})
+      {description = "(un)maximize", group = "client"}),
     --awful.key({ modkey, "Control" }, "m",
       --function (c)
           --c.maximized_vertical = not c.maximized_vertical
@@ -173,6 +173,9 @@ clientkeys = gears.table.join(
           --c:raise()
       --end ,
       --{description = "(un)maximize horizontally", group = "client"})
+    awful.key({ modkey }, "p", function (c) bling.module.tabbed.pick() end, { description = "add a client to a tabbed group" })
+    ,awful.key({ modkey, "Shift" }, "p", function (c) bling.module.tabbed.pop() end, { description = "remove the focused client from the tabbed group" })
+    ,awful.key({ "Control" }, "tab", function (c) bling.module.tabbed.iter() end, { description = "iterate through the focused tabbed group" })
 )
 
 -- Bind all key numbers to tags.

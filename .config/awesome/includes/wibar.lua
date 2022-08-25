@@ -132,7 +132,10 @@ awful.screen.connect_for_each_screen(function(s)
     battery_args.path_to_icons = BASE_DIR .. "icons/status/symbolic/"
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s, bg = beautiful.bg_wibar })
+    function rounded_shape (cr, width, height)
+      gears.shape.rounded_rect(cr, width, height, 10)
+    end
+    s.mywibox = awful.wibar({ position = "top", screen = s, bg = beautiful.bg_wibar, shape = rounded_shape, margins = {10, 10, 10, 10} })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
