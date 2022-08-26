@@ -196,6 +196,7 @@ bindsym $mod+l exec --no-startup-id blurlock
 exec --no-startup-id volnoti -a 0.9
 #exec --no-startup-id ~/.xprofile
 exec --no-startup-id hsetroot -root -fill ~/.config/i3/wallpapers/aesthetic4k.jpg
+exec --no-startup-id ~/.config/picom/start_picom.sh
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id ~/.config/polybar/launch.sh i3 &
 exec --no-startup-id nm-applet
@@ -207,6 +208,5 @@ exec --no-startup-id blueman-tray
 #exec --no-startup-id conky &
 exec --no-startup-id xautolock -time 40 -locker blurlock
 exec_always --no-startup-id fix_xcursor
-exec --no-startup-id ~/.config/picom/start_picom.sh
 exec --no-startup-id ~/.config/i3/post.sh
 exec --no-startup-id terminator -r scratchpad &
