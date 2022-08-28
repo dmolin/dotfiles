@@ -9,4 +9,4 @@
 ~/.config/i3/killAndWait.sh redshift
 redshift -P &>/dev/null &
 
-~/.config/xborders/launch.sh
+~/.config/xborders/launch.sh &
