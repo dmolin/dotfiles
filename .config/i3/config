@@ -97,7 +97,8 @@ bindsym $mod+F3 exec pcmanfm-qt
 #bindsym Ctrl+Print exec --no-startup-id ~/.config/_scripts_/screenshot-i3
 bindsym Print --release exec --no-startup-id flameshot gui -c -p ~/Pictures
 bindsym $mod+Print exec --no-startup-id flameshot screen -n 1 -c -p ~/Pictures
-# bindsym $mod+Shift+h exec xdg-open /usr/share/doc/manjaro/i3_help.pdf
+bindsym Ctrl+Print exec --no-startup-id flameshot screen -n 0 -c -p ~/Pictures
+bindsym $mod+F6 exec --no-startup-id tuxedo-control-center &
 
 # my conf: bindsym $mod+Shift+space exec --no-startup-id rofi -show
 
