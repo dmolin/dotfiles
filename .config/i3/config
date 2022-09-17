@@ -68,7 +68,6 @@ bindsym $mod+Shift+space exec --no-startup-id "rofi -show window"
 
 #exec --no-startup-id volumeicon
 #bindsym $mod+Ctrl+m exec terminator -e 'alsamixer'
-exec --no-startup-id ~/.config/_scripts_/start_audio.sh &
 #exec --no-startup-id pa-applet
 bindsym $mod+Ctrl+m exec pavucontrol
 
@@ -196,7 +195,7 @@ include ~/.config/i3/includes/gaps.conf
 # ================================================
 # Lock screen
 bindsym $mod+l exec --no-startup-id blurlock
-#exec --no-startup-id ~/.config/i3/pulseaudio.sh
+exec --no-startup-id ~/.config/i3/pulseaudio.sh
 exec --no-startup-id volnoti -a 0.9
 #exec --no-startup-id ~/.xprofile
 exec --no-startup-id hsetroot -root -fill ~/.config/i3/wallpapers/aesthetic4k.jpg
