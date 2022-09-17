@@ -180,6 +180,7 @@
             "always_enabled": true
           },
           "style": "diamond",
+	  "leading_diamond": "\ue0b2",
 	  "trailing_diamond": "\ue0b4",
           "template": " {{ if gt .Code 0 }}{{ .Meaning }}{{ else }}\u2714{{ end }} ",
           "type": "exit"
