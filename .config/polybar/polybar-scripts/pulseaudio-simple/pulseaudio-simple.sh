@@ -1,15 +1,23 @@
 #!/bin/sh
 
-muted=$(pamixer --sink 0 --get-mute)
+# check if pamixer is running
+pamixer 2>/dev/null
+if [ $? -ne 0 ]; then
+  #pamixer not running or in error
+  echo ""
+  exit 1
+fi
+
+muted=$(pamixer --sink 1 --get-mute)
 
 if [ "$muted" = true ]; then
     echo "#1 --"
 else
-    volume=$(pamixer --sink 0 --get-volume)
+    volume=$(pamixer --sink 1 --get-volume)
 
     if [ "$volume" -gt 49 ]; then
-        echo "#2 $volume %"
+        echo " $volume"
     else
-        echo "#3 $volume %"
+        echo " $volume"
     fi
 fi

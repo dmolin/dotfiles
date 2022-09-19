@@ -24,11 +24,11 @@ volume_print() {
 
     active_port=$(pacmd list-sinks | sed -n "/index: $sink/,/index:/p" | grep active)
     if echo "$active_port" | grep -q speaker; then
-        icon="#1"
+        icon=" "
     elif echo "$active_port" | grep -q headphones; then
-        icon="#2"
+        icon=" "
     else
-        icon="#3"
+        icon=" "
     fi
 
     muted=$(pamixer --sink "$sink" --get-mute)
