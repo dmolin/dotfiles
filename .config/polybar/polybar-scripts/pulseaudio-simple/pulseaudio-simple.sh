@@ -8,12 +8,12 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-muted=$(pamixer --sink 1 --get-mute)
+muted=$(pamixer --get-mute)
 
 if [ "$muted" = true ]; then
     echo "#1 --"
 else
-    volume=$(pamixer --sink 1 --get-volume)
+    volume=$(pamixer --get-volume)
 
     if [ "$volume" -gt 49 ]; then
         echo " $volume"
