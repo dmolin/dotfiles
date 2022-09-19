@@ -16,8 +16,8 @@ else
     volume=$(pamixer --get-volume)
 
     if [ "$volume" -gt 49 ]; then
-        echo " $volume"
+        echo "  $volume"
     else
-        echo " $volume"
+        echo "  $volume"
     fi
 fi
