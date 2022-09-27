@@ -18,6 +18,8 @@ set $Alt Mod1
 set $monitor_left DP-0
 set $monitor_main DP-4
 
+include ~/.config/i3/includes/displays.conf
+
 # set default desktop layout (default is tiling)
 # workspace_layout tabbed <stacking|tabbed>
 
@@ -81,6 +83,7 @@ bindsym XF86AudioMute exec --no-startup-id "amixer set Master toggle && if amixe
 bindsym Pause exec --no-startup-id "amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)"  
 bindsym Scroll_Lock exec --no-startup-id "amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)" 
 
+bindsym $mod+F9 exec --no-startup-id ~/.config/i3/toggle-headphones.sh &
 ################################################################################################
 
 # Screen brightness controls
@@ -100,6 +103,15 @@ bindsym Ctrl+Print exec --no-startup-id flameshot screen -n 0 -c -p ~/Pictures
 bindsym $mod+F6 exec --no-startup-id tuxedo-control-center &
 
 # my conf: bindsym $mod+Shift+space exec --no-startup-id rofi -show
+
+#######
+# Monitor layouts
+######
+
+bindsym $mod+F10 exec --no-startup-id ~/.config/i3/pulseaudio.sh &
+bindsym $mod+F11 exec --no-startup-id ~/.config/i3/internal.sh &
+bindsym $mod+F12 exec --no-startup-id ~/.config/i3/external.sh &
+
 
 focus_follows_mouse yes
 
