@@ -16,8 +16,12 @@ CONNECTED=`bluetoothctl info $DEVICE | grep "Connected" | awk '{print $2}'`
 
 if [ "$CONNECTED" = "yes" ]; then
   # disconnect
+  notify-send "Disconnecting bluetooth headphones..."
   bluetoothctl disconnect $DEVICE >> /tmp/toggle-headphones.log
 else
   # connect
+  notify-send "Connecting bluetooth headphones..."
   bluetoothctl connect $DEVICE >> /tmp/toggle-headphones.log
 fi
+
+notify-send "Done"
