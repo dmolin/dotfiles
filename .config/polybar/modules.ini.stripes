@@ -6,11 +6,6 @@
 ;empty = 
 ;indicator = ⏽
 ;
-;
-[settings]
-format-padding = 2
-label-foreground = ${colors.light-white}
-format-foreground = ${colors.orange}
 
 [module/pulseaudio]
 type = internal/pulseaudio
@@ -62,8 +57,8 @@ interval = 3.0
 ;label-connected-padding = 1
 ;label-connected = "%{F34A5FA}  %local_ip% [ %downspeed:09:9%   %upspeed:09:9%]%{F}"
 ;label-connected = "  %local_ip% [ %downspeed%   %upspeed%]"
-label-connected = "%{FCf6D0C}%{F}  %local_ip% [ %downspeed%]"
-;label-connected-background = ${colors.orange}
+label-connected = "  %local_ip% [ %downspeed%]"
+label-connected-background = ${colors.orange}
 label-connected-foreground = ${colors.light-white}
 ;label-connected-padding-right = 1
 ;label-connected-background = #295E80
@@ -75,9 +70,17 @@ format-disconnected =
 ;label-disconnected-foreground = ${colors.foreground-alt}
 
 
+[module/wifinova]
+inherit = section/wifi
+interface = wlp5s0
+
 [module/wifipulse]
 inherit = section/wifi
 interface = wlp3s0
+
+[module/wifidesktop]
+inherit = section/wifi
+interface = wlp6s0
 
 ; basic block from which memory and cpu inherit
 [section/stats]
@@ -156,8 +159,20 @@ interval = 600
 label-font = 2
 ;label-padding-right = 1
 label = %output%
-;label-background = ${colors.orange}
+label-background = ${colors.orange}
 label-foreground = ${colors.light-white}
+
+[module/updates]
+type = custom/script
+exec = ~/.config/polybar/polybar-scripts/updates-arch-combined/updates-arch-combined.sh
+interval = 120
+click-left = pamac-manager --updates &
+label-font = 1
+label = %output%
+format-prefix = "  "
+;format-prefix = "  "
+;format-prefix-foreground = #FFBB00
+;format-underline = #CFB315
 
 [module/battery]
 type = internal/battery
@@ -237,22 +252,19 @@ exec = date '+%d-%m-%Y %H:%M:%S'
 ;format-prefix-padding = 1
 ;format-prefix-background = #3B6566
 ;format-prefix-foreground = #EEE
-label = %output%
-format-prefix =  
-format-prefix-padding-right = 2
+label =  %output%
 ;label = %output%
 ;label-padding-right = 1
-;label-background = ${colors.orange}
+label-background = ${colors.orange}
 label-foreground = ${colors.light-white}
 click-left = ~/.config/polybar/polybar-scripts/calendar.sh
 
 [module/cputemp]
 type = custom/script
+;exec = sensors | grep Tctl | sed s/+// | awk '{print $2}'
 exec = ~/.config/polybar/polybar-scripts/cpu-temperature.sh
 label = %output%
 label-padding = 1
-label-foreground = ${colors.light-white}
-format-foreground = ${colors.orange}
 format-prefix =  
 format-padding = 1
 
@@ -265,14 +277,11 @@ interval = 2
 type = custom/script
 exec = ~/.config/polybar/polybar-scripts/battery-combined-shell/battery-combined-shell.sh
 interval = 10
-;format-padding = 2
+format-padding = 2
 
 [module/pulseaudio-simple]
 type = custom/script
 exec = ~/.config/polybar/polybar-scripts/pulseaudio-simple/pulseaudio-simple.sh
-format-prefix = 
-label-foreground = ${colors.light-white}
-format-prefix-padding-right = 2
 interval = 2
 
 [module/bluetooth-headphones]

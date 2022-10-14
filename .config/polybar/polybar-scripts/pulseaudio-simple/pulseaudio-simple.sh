@@ -11,13 +11,13 @@ fi
 muted=$(pamixer --get-mute)
 
 if [ "$muted" = true ]; then
-    echo "#1 --"
+    echo "--"
 else
     volume=$(pamixer --get-volume)
 
     if [ "$volume" -gt 49 ]; then
-        echo "  $volume"
+        echo "$volume"
     else
-        echo "  $volume"
+        echo "$volume"
     fi
 fi

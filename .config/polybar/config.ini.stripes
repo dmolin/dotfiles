@@ -18,8 +18,13 @@
 
 [colors]
 ;background = ${xrdb:color0:#222}
-background = #bb14191d
-background-alt = #bb14191d
+;background = #bb14191d
+;;;background = #14191d
+;background-alt = #bb14191d
+;;;background-alt = #14191d
+background = #213033
+background-alt = #213033
+background-solid = #df14191d
 ;background-alt = #13856e
 foreground = #61c2ff
 foreground-alt = #ffdfdf
@@ -31,6 +36,16 @@ icon-positive = #61BD4F
 icon-negative = #EF5350
 active = #FFA20D
 ws-active = #888
+dark-yellow = #C7AD34
+dark-grey = #777
+light-white = #EEE
+#orange = #CF6D0C
+orange = #58595C
+
+[glyph]
+gleft = 
+_gright = 
+gright = 
 
 [bar/common]
 monitor = ${env:MONITOR:HDMI-0}
@@ -38,28 +53,29 @@ enable-ipc = true
 width = 100%
 offset-x = 0%
 ;offset-y = 1%
-radius = 8
-height = 24pt
+;;;radius = 8
+height = 20pt
 fixed-center = true
 background = ${colors.background}
 foreground = ${colors.foreground}
 line-size = 2pt
 line-color = #f00
-border-size = 4pt
-border-left-size = 8pt
-border-right-size = 8pt
-border-bottom-size = 0pt
+;;;border-size = 4pt
+;;;border-left-size = 8pt
+;;;border-right-size = 8pt
+;;;border-bottom-size = 0pt
 ;border-color = #00000000
 padding-left = 12pt
 padding-right = 12pt
 padding-top = 0
 padding-bottom = 0
-module-margin-left = 1
-module-margin-right = 1
-separator = " "
+module-margin-left = 0
+module-margin-right = 0
+;separator = " "
 ;font-0 = Iosevka Nerd Font:style=Regular:pixelsize=11;1
 font-0 = FantasqueSansMono Nerd Font:style=Regular:pixelsize=11;2
 font-1 = Weather Icons:size=11;0
+font-2 = Iosevka:style=Regular:pixelsize=20;5
 wm-restack = i3
 ; set the following line to true if using multiple bars on the same line
 override-redirect = false
@@ -85,7 +101,7 @@ bottom = false
 monitor = ${env:MONITOR:HDMI-0}
 modules-left = i3 
 modules-center = xwindow
-modules-right = network wifinova wifilenovo wifidesktop cputemp weather battery pulseaudio datetime
+modules-right = network pre wifipulse wifinova wifidesktop post cputemp pre weather post battery battery2 pulseaudio-simple bluetooth-headphones pre datetime post
 tray-position = right
 tray-scale = 1
 tray-padding = 0
@@ -99,15 +115,30 @@ inherit = bar/common
 monitor = ${env:MONITOR}
 bottom = true
 modules-left = i3 xwindow
-modules-right = network wifidesktop cputemp weather pulseaudio datetime
+modules-right = network pre wifidesktop post cputemp pre weather post pulseaudio-simple bluetooth-headphones pre datetime post
 
 ;==================================================
 ; STOCK MODULES
 ;==================================================
 
+[module/pre]
+type = custom/text
+content-background = ${colors.background}
+content-foreground = ${colors.orange}
+content = ${glyph.gright}
+content-font = 3
+margin = 0
+
+[module/post]
+type = custom/text
+content-foreground = ${colors.background}
+content-background = ${colors.orange}
+content = ${glyph.gright}
+content-font = 3
+
 [module/xwindow]
 type = internal/xwindow
-label = %title:0:45:...%
+label = %{FFA830E}%title:0:45:...%%{F}
 
 [module/i3]
 type = internal/i3
@@ -122,8 +153,10 @@ label-empty =
 label-empty-padding = 0
 
 label-focused = %name%
-label-focused-background = #3C5E5C
-label-focused-foreground = ${colors.foreground-alt}
+;label-focused-background = #3C5E5C
+label-focused-background = ${colors.orange}
+;label-focused-foreground = ${colors.foreground-alt}
+label-focused-foreground = #fff
 label-focused-padding = 1
 label-focused-underline=#EEEEEE
 
