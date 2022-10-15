@@ -46,8 +46,8 @@ color_post=""
 if [ "$ac" -eq 1 ]; then
     icon=""
 
-    if [ "$battery_percent" -gt 97 ]; then
-        echo "$icon"
+    if [ "$battery_percent" -gt 98 ]; then
+        echo "%{FB5C7B9}$icon%{F} PWR"
     else
         echo "$icon $battery_percent%"
     fi
