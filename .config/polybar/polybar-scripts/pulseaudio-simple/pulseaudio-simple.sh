@@ -8,7 +8,9 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-muted=$(pamixer --get-mute)
+volume = `amixer sget Master | grep "Front Left:" | awk '{ print $5 }'`
+#muted=$(pamixer --get-mute)
+
 
 if [ "$muted" = true ]; then
     echo "--"

@@ -108,7 +108,7 @@ bindsym $mod+F6 exec --no-startup-id tuxedo-control-center &
 # Monitor layouts
 ######
 
-bindsym $mod+F10 exec --no-startup-id ~/.config/i3/pulseaudio.sh &
+bindsym $mod+F10 exec --no-startup-id ~/.config/i3/pipewire.sh &
 bindsym $mod+F11 exec --no-startup-id ~/.config/i3/internal.sh &
 bindsym $mod+F12 exec --no-startup-id ~/.config/i3/external.sh &
 
