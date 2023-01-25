@@ -10,3 +10,7 @@
 redshift -P &>/dev/null &
 
 ~/.config/xborders/launch.sh &
+systemctl --user start xscreensaver
+
+#xset dpms 0 0 1800
+#xset s 1800

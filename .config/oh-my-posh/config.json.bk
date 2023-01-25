@@ -7,10 +7,17 @@
         {
           "background": "#d3d7cf",
           "foreground": "#000000",
-          "leading_diamond": "\u256d\u2500\ue0b2",
+          "leading_diamond": "\ue0b6",
           "style": "diamond",
           "template": " {{ if .WSL }}WSL at {{ end }}{{.Icon}} ",
           "type": "os"
+        },
+        {
+          "background": "#d3d7cf",
+          "foreground": "#000000",
+          "style": "powerline",
+          "template": " {{ .HostName }} ",
+          "type": "session"
         },
         {
           "background": "#3465a4",
@@ -172,18 +179,11 @@
           "properties": {
             "always_enabled": true
           },
-          "style": "powerline",
+          "style": "diamond",
+	  "leading_diamond": "\ue0b2",
+	  "trailing_diamond": "\ue0b4",
           "template": " {{ if gt .Code 0 }}{{ .Meaning }}{{ else }}\u2714{{ end }} ",
           "type": "exit"
-        },
-        {
-          "background": "#d3d7cf",
-          "foreground": "#000000",
-          "invert_powerline": true,
-          "style": "diamond",
-          "template": " {{ .CurrentDate | date .Format }} \uf017 ",
-          "trailing_diamond": "\ue0b0\u2500\u256e",
-          "type": "time"
         }
       ],
       "type": "prompt"
@@ -194,23 +194,15 @@
       "segments": [
         {
           "foreground": "#d3d7cf",
+	  "foreground_templates": [
+            "{{ if gt .Code 0 }}#ff0000{{ end }}"
+	  ],
           "style": "plain",
-          "template": "\u2570\u2500",
+          "template": "\u276f",
           "type": "text"
         }
       ],
       "type": "prompt"
-    },
-    {
-      "segments": [
-        {
-          "foreground": "#d3d7cf",
-          "style": "plain",
-          "template": "\u2500\u256f",
-          "type": "text"
-        }
-      ],
-      "type": "rprompt"
     }
   ],
   "console_title_template": "{{ .Shell }} in {{ .Folder }}",
