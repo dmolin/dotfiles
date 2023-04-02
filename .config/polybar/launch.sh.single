@@ -1,0 +1,30 @@
+#!/bin/bash
+:
+
+echo "  -> killing running instances..."
+# Terminate already running instances
+killall -q polybar
+
+DISPLAYS=`~/.config/_scripts_/set_displays.sh`
+MONITORS_COUNT=`echo $DISPLAYS | wc -w`
+MAIN_DISPLAY=`echo $DISPLAYS | awk '{print $1}'`
+SIDE_DISPLAY=`echo $DISPLAYS | awk '{print $2}'`
+POLY_MONITOR=$MAIN_DISPLAY
+
+#echo "MAIN is $POLY_MONITOR"
+
+echo "  -> waiting a bit..."
+sleep 2
+
+# if we've 2 displays we launch the bar on the secondary one (the laptop),
+# otherwise we launch it on the current one (the only one present)
+if [ "$MONITORS_COUNT" = "2" ]; then
+  echo ""
+  POLY_MONITOR=$SIDE_DISPLAY
+fi
+
+#echo $POLY_MONITOR
+
+# Launch bar
+echo "  -> starting new process..." | tee -a /tmp/polybar1.log
+MONITOR=$POLY_MONITOR polybar main >> /tmp/polybar1.log 2>&1 & disown

@@ -15,8 +15,8 @@ focus_wrapping no
 set $mod Mod4
 set $Alt Mod1
 
-set $monitor_left DP-0
-set $monitor_main DP-4
+set $monitor_laptop DP-0
+set $monitor_desktop HDMI-A-0
 
 include ~/.config/i3/includes/displays.conf
 
@@ -24,11 +24,13 @@ include ~/.config/i3/includes/displays.conf
 # workspace_layout tabbed <stacking|tabbed>
 
 # Configure border style <normal|1pixel|pixel xx|none|pixel>
+##default_border pixel 2
 default_border none
 default_floating_border pixel 2
 
 # Hide borders
 hide_edge_borders none
+#hide_edge_borders smart
 #hide_edge_borders smart
 #smart_gaps on
 
