@@ -7,6 +7,7 @@ hsetroot -root -fill ~/.config/qtile/wallpapers/aesthetic4k.jpg &
 nm-applet &
 #xfce4-power-manager &
 pamac-tray &
+blueman-applet &
 blueman-tray &
 ~/.config/i3/killAndWait.sh pcloud
 ~/Applications/pcloud &>/dev/null &

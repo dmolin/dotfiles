@@ -44,6 +44,26 @@ def float_to_front(qtile) -> None:
         if window.floating:
             window.cmd_bring_to_front()
 
+def toggle_focus_floating():
+    '''Toggle focus between floating window and other windows in group'''
+
+    @lazy.function
+    def _toggle_focus_floating(qtile):
+        group = qtile.current_group
+        switch = 'non-float' if qtile.current_window.floating else 'float'
+
+        for win in reversed(group.focus_history):
+            if switch=='float' and win.floating:
+                # win.focus(warp=False)
+                group.focus(win)
+                win.cmd_bring_to_front()
+                return
+            if switch=='non-float' and not win.floating:
+                # win.focus(warp=False)
+                group.focus(win)
+                return
+    return _toggle_focus_floating
+
 keys = [
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
@@ -79,7 +99,8 @@ keys = [
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     # Toggle between different layouts as defined below
     Key([mod, "control"], "space", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([mod], "Tab", float_to_front(), desc="Toggle between floating/docked windows"),
+    #Key([mod], "Tab", float_to_front(), desc="Toggle between floating/docked windows"),
+    Key([mod], "Tab", toggle_focus_floating(), desc="Toggle between floating/docked windows"),
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
@@ -119,11 +140,6 @@ layoutConfig = {
     "border_normal": "#413939",
     "border_width": 3,
 }
-
-floating_layout = layout.Floating(
-    float_rules=[*layout.Floating.default_float_rules],
-    border_focus="#FA830E"
-)
 
 layouts = [
     layout.Columns(**layoutConfig),
@@ -319,7 +335,9 @@ floating_layout = layout.Floating(
         Match(func=lambda c: c.has_fixed_size()),
         Match(func=lambda c: c.has_fixed_ratio()),
         Match(func=lambda c: bool(c.is_transient_for()))
-    ]
+    ],
+    border_focus="#FA830E",
+    border_width=3,
 )
 auto_fullscreen = True
 focus_on_window_activation = "smart"
