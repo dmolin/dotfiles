@@ -21,7 +21,7 @@ case $chosen in
     $option0)
         betterlockscreen -l;;
     $option1)
-        pkill awesome; pkill i3;;
+        pkill qtile;;
     $option2)
         systemctl reboot;;
     $option3)
