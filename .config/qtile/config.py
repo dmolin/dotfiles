@@ -139,6 +139,7 @@ layoutConfig = {
     "border_focus_stack": "#FA830E",
     "border_normal": "#413939",
     "border_width": 3,
+    "margin": 5
 }
 
 layouts = [
