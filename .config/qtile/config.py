@@ -275,7 +275,7 @@ mouse = [
 ]
 
 groups.append(ScratchPad('scratchpad', [
-    DropDown('term', "terminator", width=0.7, height=0.7, x=0.15, y=0.15, opacity=0.9),
+    DropDown('term', "terminator", width=0.7, height=0.7, x=0.15, y=0.15, opacity=1),
 ]))
 keys.extend([
     Key(["control"], "grave", lazy.group['scratchpad'].dropdown_toggle('term'))
@@ -309,15 +309,13 @@ floating_layout = layout.Floating(
         Match(wm_class="Gnome-disks"),
         Match(wm_class="gnome-calendar"),
         Match(wm_class="pcmanfm-qt", role="pop-up"),
-        Match(wm_type="splash"),
-        Match(wm_type="notification"),
-        Match(wm_type="utility"),
         Match(title="PayPal Checkout"),
         Match(wm_class="SpeedCrunch"),
         Match(wm_class="Nm-connection-editor"),
         Match(wm_class="Steam"),
         Match(wm_class="Blueman-manager"),
         Match(wm_class="Cypress"),
+        Match(wm_class="zoom"),
         Match(title="int_test - Chromium"),
         Match(title="win0"),
         Match(title="Event Tester"),
@@ -327,7 +325,6 @@ floating_layout = layout.Floating(
         Match(title="Preferences"),
         Match(wm_type="utility"),
         Match(wm_type="notification"),
-        Match(wm_type="splash"),
         Match(wm_type="confirm"),
         Match(wm_type="splash"),
         Match(wm_type="dialog"),
