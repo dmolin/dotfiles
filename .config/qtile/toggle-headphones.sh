@@ -2,7 +2,7 @@
 :
 
 # identify the headphones first
-DEVICE=`bluetoothctl devices | grep OpenRun | awk '{print $2}'`
+DEVICE=`bluetoothctl devices | grep Shokz | awk '{print $2}'`
 
 if [ -z "$DEVICE" ]; then
   # no value. abort

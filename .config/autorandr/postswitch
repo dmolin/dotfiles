@@ -1,0 +1,6 @@
+#!/bin/bash
+:
+hsetroot -root -fill /home/user/.config/qtile/wallpapers/aesthetic4k.jpg
+$(which qtile) cmd-obj -o cmd -f reconfigure_screens
+#$(which qtile) cmd-obj -o cmd -f reload_config
+notify-send -i display "Display profile" "$AUTORANDR_CURRENT_PROFILE"

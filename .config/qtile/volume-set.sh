@@ -1,3 +1,3 @@
 #!/bin/bash
 :
-amixer set Master $1 && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)
+amixer -D pulse set Master $1 && volnoti-show $(amixer -D pulse get Master | grep -Po '[0-9]+(?=%)' | head -1)

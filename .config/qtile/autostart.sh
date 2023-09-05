@@ -16,3 +16,5 @@ blueman-tray &
 redshift -P &>/dev/null &
 
 systemctl --user start xscreensaver
+
+~/.config/qtile/reconfigure_screens

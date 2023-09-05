@@ -174,7 +174,7 @@ commonWidgets = [
     widget.Sep(),
     widget.OpenWeather(
         app_key=os.environ.get("OPENWEATHER_APIKEY"),
-        coordinates={"latitude": "51.5085", "longitude": "-0.1257"}
+        coordinates={"latitude": "51.267748", "longitude": "1.061893" }
     ),
     widget.Sep(),
     #widget.CPU(),
@@ -229,7 +229,7 @@ screens = [
 			    widget.Prompt(),
 			    widget.WindowName(),
 			    *commonWidgets,
-                widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
+                widget.Clock(format="%Y-%m-%d %a %H:%M:%S"),
             ],
             24,
             opacity=0.8
@@ -302,6 +302,7 @@ floating_layout = layout.Floating(
         Match(wm_class="Lightdm-settings"),
         Match(wm_class="Manjaro Settings Manager"),
         Match(wm_class="Pamac-manager"),
+        Match(wm_class="pamac-manager"),
         Match(wm_class="Pavucontrol"),
         Match(wm_class="qt5ct"),
         Match(wm_class="Qtconfig-qt4"),
