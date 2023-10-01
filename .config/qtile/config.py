@@ -24,10 +24,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from libqtile import bar, layout, widget, hook
+from libqtile import bar, layout, widget, hook, qtile
 from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown
 from libqtile.lazy import lazy
-from libqtile.utils import guess_terminal
+from libqtile.utils import guess_terminal, send_notification
+from tabbed import Tabbed
 import os
 import subprocess
 
@@ -144,7 +145,8 @@ layoutConfig = {
 
 layouts = [
     layout.Columns(**layoutConfig),
-    layout.Max(),
+    #layout.Max(**layoutConfig),
+    Tabbed(**layoutConfig),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
@@ -153,9 +155,9 @@ layouts = [
     # layout.MonadWide(),
     # layout.RatioTile(),
     # layout.Tile(),
-    # layout.TreeTab(),
     # layout.VerticalTile(),
     # layout.Zoomy(),
+    # layout.TreeTab(),
 ]
 
 widget_defaults = dict(
@@ -181,12 +183,20 @@ commonWidgets = [
     #widget.Sep(),
     #widget.Bluetooth(),
     #widget.Sep(),
-    #widget.BatteryIcon(),
-    widget.Battery(),
+    widget.BatteryIcon(),
+    widget.Battery(
+        full_char="",
+        notify_below=10,
+        low_foreground='FFFF00',
+        low_percentage=0.1
+    ),
     widget.Sep(),
-    widget.Volume(),
-    widget.Sep()
+    #widget.Volume(),
+    #widget.Sep()
 ]
+
+# Tabbed layout (Max layout "tweaked"...)
+tabs = widget.TaskList()
 
 screens = [
     Screen(
@@ -216,6 +226,7 @@ screens = [
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
+        top=bar.Bar([tabs], size=28)
     ),
     Screen(
         bottom=bar.Bar(
@@ -234,6 +245,7 @@ screens = [
             24,
             opacity=0.8
         ),
+        top=bar.Bar([tabs], size=28)
     ),
 ]
 
@@ -370,3 +382,56 @@ def dialogs(window):
     if(window.window.get_wm_type() == 'dialog'
         or window.window.get_wm_transient_for()):
         window.floating = True
+
+
+# Hooks for tabbed layout
+def show_or_hide_tabs(screen=None, offset=0):
+    if screen is None:
+        screen = qtile.current_screen
+
+    bar = screen.top
+    if not bar:
+        return
+
+    if screen.group.layout.name == 'max':
+        nwindows = len(screen.group.windows) + offset
+        if nwindows > 1:
+            bar.show()
+        else:
+            if bar.window:
+                bar.show(False)
+    else:
+        if bar.window:
+            bar.show(False)
+
+
+@hook.subscribe.layout_change
+def update_tabs_layout_change(layout, group):
+    show_or_hide_tabs()
+
+
+@hook.subscribe.setgroup
+def update_tabs_setgroup():
+    for screen in qtile.screens:
+        show_or_hide_tabs(screen)
+
+
+@hook.subscribe.startup_complete
+def update_tabs_startup_complete():
+    for screen in qtile.screens:
+        show_or_hide_tabs(screen)
+
+
+# Change bar color on active screen
+@hook.subscribe.focus_change
+def check_bar():
+    send_notification("focus changed")
+    for screen in qtile.screens:
+        if screen is qtile.current_screen:
+            send_notification("activating bar border")
+            screen.bottom.border_color = "#FF0000"
+            screen.bottom.background = "#FF0000"
+        else:
+            send_notification("removing bar border")
+            screen.bottom.border_color = "#000"
+            screen.bottom.background = "#00FF00"

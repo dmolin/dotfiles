@@ -1,5 +1,6 @@
 #!/bin/bash
 :
+#appimagelauncherd &
 volnoti -a 0.9
 hsetroot -root -fill ~/.config/qtile/wallpapers/aesthetic4k.jpg &
 ~/.config/picom/start_picom.sh &
