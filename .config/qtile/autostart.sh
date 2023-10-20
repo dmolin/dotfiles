@@ -11,11 +11,13 @@ pamac-tray &
 blueman-applet &
 blueman-tray &
 ~/.config/i3/killAndWait.sh pcloud
-~/Applications/pcloud &>/dev/null &
+~/bin/pcloud &>/dev/null &
 
 ~/.config/i3/killAndWait.sh redshift
 redshift -P &>/dev/null &
 
 systemctl --user start xscreensaver
+~/.config/i3/killAndWait.sh cryptomator
+cryptomator &>/dev/null &
 
-~/.config/qtile/reconfigure_screens
+#~/.config/qtile/reconfigure_screens

@@ -122,7 +122,6 @@ keys = [
     #Key([], "Pause", lazy.spawn("amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)")),
     #Key([], "Scroll_Lock", lazy.spawn("amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)")),
     Key([], "Print", lazy.spawn("flameshot gui -c -p /home/user/Pictures")),
-    Key(["control"], "Print", lazy.spawn("flameshot screen")),
     Key([mod], "BackSpace", lazy.spawn("/home/user/.config/rofi/scripts/powermenu.sh")),
     Key([mod], "backslash", lazy.next_screen(), desc="Move focus to the next display"),
     Key([mod], "F2", lazy.spawn("terminator --geometry 1600x1000 --role pop-up -e ranger")),
@@ -145,7 +144,6 @@ layoutConfig = {
 }
 
 tabbedConfig = {
-    "hspace": 1,
     "margin": 5,
     "border_width": 3,
     "border_focus": "#FA830E",
@@ -167,12 +165,12 @@ layouts = [
     # layout.Tile(),
     # layout.VerticalTile(),
     # layout.Zoomy(),
-    #layout.TreeTab(),
+    # layout.TreeTab(),
 ]
 
 widget_defaults = dict(
     font="sans",
-    fontsize=14,
+    fontsize=12,
     padding=5,
 )
 extension_defaults = widget_defaults.copy()
@@ -228,7 +226,7 @@ screens = [
                 widget.Clock(format="%Y-%m-%d %a %H:%M:%S"),
                 #widget.QuickExit(),
             ],
-            28,
+            24,
             opacity=0.8
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
@@ -248,7 +246,7 @@ screens = [
 			    *commonWidgets,
                 widget.Clock(format="%Y-%m-%d %a %H:%M:%S"),
             ],
-            28,
+            24,
             opacity=0.8
         ),
     ),
@@ -348,8 +346,6 @@ floating_layout = layout.Floating(
         Match(wm_type="dialog"),
         Match(wm_type="toolbar"),
         Match(wm_type="file_progress"),
-        Match(title="Cryptomator"),
-        Match(wm_class="org.cryptomator.launcher.Cryptomator$MainApp"),
         Match(func=lambda c: c.has_fixed_size()),
         Match(func=lambda c: c.has_fixed_ratio()),
         Match(func=lambda c: bool(c.is_transient_for()))
