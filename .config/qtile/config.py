@@ -171,24 +171,36 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font="sans",
+    #font="sans",
+    #font="NotoSansMono Nerd Font",
+    font="JetBrains Mono Bold",
     fontsize=14,
     padding=5,
 )
 extension_defaults = widget_defaults.copy()
+
+def Separator():
+    return widget.Image(
+        filename="~/.config/qtile/assets/2.png"
+    )
 
 commonWidgets = [
     #widget.TextBox("default config", name="default"),
     #widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
     # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
     # widget.StatusNotifier(),
-    widget.Net(),
-    widget.Sep(),
+
+    Separator(),
+    widget.Net(
+        format='{down:.0f}{down_suffix} ↓↑ {up:.0f}{up_suffix}'
+    ),
+    Separator(),
     widget.OpenWeather(
+        format='{main_temp} °{units_temperature} {weather_details}',
         app_key=os.environ.get("OPENWEATHER_APIKEY"),
         coordinates={"latitude": "51.267748", "longitude": "1.061893" }
     ),
-    widget.Sep(),
+    Separator(),
     #widget.CPU(),
     #widget.Sep(),
     #widget.Bluetooth(),
@@ -200,7 +212,13 @@ commonWidgets = [
         low_foreground='FFFF00',
         low_percentage=0.1
     ),
-    widget.Sep(),
+    widget.Image(
+        filename="~/.config/qtile/assets/5.png"
+    ),
+    widget.Clock(
+        background="#282738",
+        format="<b>%Y-%m-%d %a %H:%M:%S</b>"
+    ),
     #widget.Volume(),
     #widget.Sep()
 ]
@@ -209,12 +227,24 @@ screens = [
     Screen(
         bottom=bar.Bar(
             [
-			    widget.CurrentLayout(),
 			    widget.GroupBox(
+                    background='#282738',
 			        highlight_method='block',
 			        this_screen_border='404040',
 			        this_current_screen_border='FA830E'
 			    ),
+                widget.Image(
+                    filename='~/.config/qtile/assets/6.png',
+                ),
+                widget.Image(
+                    filename='~/.config/qtile/assets/layout.png'
+                ),
+			    widget.CurrentLayout(
+                    font="JetBrains Mono Bold",
+                ),
+                widget.Image(
+                    filename='~/.config/qtile/assets/1.png',
+                ),
 			    widget.Prompt(),
 			    widget.WindowName(),
 			    widget.Chord(
@@ -224,12 +254,15 @@ screens = [
 			        name_transform=lambda name: name.upper(),
 			    ),
 			    *commonWidgets,
-                widget.Systray(),
-                widget.Clock(format="%Y-%m-%d %a %H:%M:%S"),
+                widget.Systray(
+                    background="#282738"
+                ),
                 #widget.QuickExit(),
             ],
             28,
-            opacity=0.8
+            #opacity=0.8,
+            #background='#282738',
+            background='#353446'
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
@@ -246,7 +279,6 @@ screens = [
 			    widget.Prompt(),
 			    widget.WindowName(),
 			    *commonWidgets,
-                widget.Clock(format="%Y-%m-%d %a %H:%M:%S"),
             ],
             28,
             opacity=0.8
@@ -350,6 +382,7 @@ floating_layout = layout.Floating(
         Match(wm_type="file_progress"),
         Match(title="Cryptomator"),
         Match(wm_class="org.cryptomator.launcher.Cryptomator$MainApp"),
+        Match(wm_class="com.github.tchx84.Flatseal"),
         Match(func=lambda c: c.has_fixed_size()),
         Match(func=lambda c: c.has_fixed_ratio()),
         Match(func=lambda c: bool(c.is_transient_for()))
