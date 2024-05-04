@@ -4,8 +4,9 @@
 ps x | grep pcloud | grep -v grep > /dev/null
 if [ "$?" -eq 1 ]; then
   echo "starting pCloud..."
-  ~/Applications/pcloud &>/dev/null &
-  sleep 2
+  name=`find ~/Applications -name "pcloud*"`
+  $name &>/dev/null &
+  sleep 10
 fi
 
 cd /mnt/data && rsync -aAXvxt --delete cryptomator_vault ~/pCloudDrive/pCloud\ Sync > /tmp/backupcrypto.log

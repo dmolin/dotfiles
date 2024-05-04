@@ -20,4 +20,7 @@ systemctl --user start xscreensaver
 ~/.config/i3/killAndWait.sh cryptomator
 cryptomator &>/dev/null &
 
+# Map wacom stylus to main screen
+~/.config/_scripts_/remap-wacom.sh &
+
 #~/.config/qtile/reconfigure_screens

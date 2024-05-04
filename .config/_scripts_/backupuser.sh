@@ -16,6 +16,7 @@ function makeExclusions () {
 cd /home
 borg rename ${BORGARCHIVE} ${TODAY}-pre
 borg create \
+  -e user/.cache \
   -e user/tmp \
   -e user/borgmount \
   -e user/pCloudDrive \
@@ -26,11 +27,14 @@ borg create \
   -e user/cryptomator \
   -e user/.local/share/Cryptomator \
   -e user/Development/Hubro/backups \
+  -e user/Development/Hubro/manti.master \
+  -e user/Development/Hubro/manti.debug \
+  -e user/Development/Hubro/manti.e2e \
   -e user/.local/share/Steam/steamapps \
   `makeExclusions app` \
   `makeExclusions worker` \
   `makeExclusions cronworker` \
   -x --stats --progress --compression lz4 ${BORGARCHIVE} user
 borg delete ${BORGARCHIVE}-pre
-borg compact ${BORGDIR}
+#borg compact ${BORGDIR}
 

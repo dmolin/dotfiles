@@ -1,12 +1,10 @@
 [global_config]
+  handle_size = 2
   borderless = True
-  tab_position = hidden
   scroll_tabbar = True
-  homogeneous_tabbar = False
-  inactive_color_offset = 1.0
+  inactive_color_offset = 0.7521367521367521
+  enabled_plugins = CurrDirOpen, SaveLastSessionLayout, LaunchpadBugURLHandler, LaunchpadCodeURLHandler, APTURLHandler
   suppress_multiple_term_dialog = True
-  title_use_system_font = False
-  title_font = Iosevka Term SS09 Light 11
 [keybindings]
   go_up = <Primary>Up
   go_down = <Primary>Down
@@ -20,19 +18,21 @@
     background_color = "#282828"
     background_darkness = 0.9
     background_type = transparent
-    cursor_color = "#aaaaaa"
+    cursor_fg_color = "#282828"
+    cursor_bg_color = "#ebdbb2"
     font = Iosevka Term Light 11
     foreground_color = "#ebdbb2"
     show_titlebar = False
     scrollbar_position = hidden
-    scrollback_lines = 5000
+    scroll_on_output = True
+    scrollback_lines = 25000
+    palette = "#241f31:#cc0000:#4e9a06:#c4a000:#3465a4:#75507b:#06989a:#d3d7cf:#555753:#ef2929:#8ae234:#fce94f:#729fcf:#ad7fa8:#34e2e2:#eeeeec"
     use_system_font = False
   [[light]]
     icon_bell = False
     background_color = "#fbf1c7"
     background_darkness = 0.83
     background_type = transparent
-    cursor_color = "#aaaaaa"
     foreground_color = "#3c3836"
     show_titlebar = False
     scrollback_lines = 50000
@@ -44,4 +44,24 @@
     [[[child1]]]
       type = Terminal
       parent = window0
+      profile = default
+  [[SaveLastSessionLayout]]
+    [[[child0]]]
+      type = Window
+      parent = ""
+      order = 0
+      position = 0:0
+      maximised = False
+      fullscreen = False
+      size = 2683, 1482
+      title = qtile
+      last_active_term = 40e4ecbf-4673-4e0a-9ad7-5dd1df7f19f7
+      last_active_window = True
+    [[[terminal1]]]
+      type = Terminal
+      parent = child0
+      order = 0
+      profile = default
+      uuid = 40e4ecbf-4673-4e0a-9ad7-5dd1df7f19f7
+      directory = /home/user/.config/qtile
 [plugins]
