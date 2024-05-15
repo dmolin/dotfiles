@@ -1,1 +1,1 @@
-/home/user/Development/qtile_tabbed/tabbed.py
+./plugins/qtile_tabbed/tabbed.py

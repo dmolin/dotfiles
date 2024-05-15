@@ -6,8 +6,11 @@ return {
 				enable = false,
 			},
 			ui = {
-				number = true,
-				signcolumn = true,
+				-- number = true,
+				absolutenumber_unfocussed = true,
+				relativenumber = true,
+				hybridnumber = true,
+				signcolumn = false,
 				cursorcolumn = false,
 				winhighlight = true,
 			},

@@ -1,0 +1,21 @@
+extends javascript
+
+snippet unitt
+	/* eslint-env mocha, es6 */
+	/* eslint one-var: 0  no-unused-vars: 0 */
+	// @ts-nocheck
+	import { sinon, resetDatabase, describe, beforeEach, afterEach, expect, it } from "/imports/platform/_testing";
+
+	describe("integrations/lti/server/lti_launch", () => {
+		let sandbox: any;
+
+		beforeEach(() => {
+			resetDatabase();
+			sandbox = sinon.createSandbox();
+		});
+
+		afterEach(() => {
+			sandbox.restore();
+		});
+	});
+

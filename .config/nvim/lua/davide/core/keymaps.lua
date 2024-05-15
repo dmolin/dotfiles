@@ -37,6 +37,10 @@ keymap.set("n", "<A-Right>", "<cmd>vertical resize +5<cr>", { desc = "Expand spl
 keymap.set("n", "<A-Down>", "<cmd>resize -5<cr>", { desc = "Shrink split vertically" })
 keymap.set("n", "<A-Up>", "<cmd>resize +5<cr>", { desc = "Expand split vertically" })
 
+-- moving around in a buffer
+keymap.set("n", "<C-j>", "<C-e>", { desc = "Scroll down a few lines" })
+keymap.set("n", "<C-k>", "<C-y>", { desc = "Scroll up a few lines" })
+
 -- useful shortcuts
 --
 -- C-o -> go back to previous file
@@ -47,7 +51,7 @@ keymap.set("n", "<A-Up>", "<cmd>resize +5<cr>", { desc = "Expand split verticall
 -- a -> create new file or folder (folder ends with "/")
 -- e -> rename file
 -- d -> delete file
--- Shift + >> Indent line
+-- Shift + >> Indent line, also "=="
 -- Shift + << Unindent line
 --   this will also applye to multiple lines if you have a visual selection
 --

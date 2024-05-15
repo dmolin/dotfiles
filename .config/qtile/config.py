@@ -33,6 +33,7 @@ from libqtile.config import (
     Click,
     Drag,
     DropDown,
+    EzKey,
     Group,
     Key,
     KeyChord,
@@ -207,6 +208,10 @@ keys = [
     # Key([mod], "F12", lazy.spawn("/home/user/.config/qtile/external.sh")),
     Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +10%")),
     Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10%-")),
+    EzKey("M-h", lazy.layout.left()),
+    EzKey("M-l", lazy.layout.right()),
+    EzKey("M-j", lazy.layout.down()),
+    EzKey("M-k", lazy.layout.up()),
 ]
 
 layoutConfig = {
@@ -230,6 +235,7 @@ tabbedConfig = {
 layouts = [
     layout.Columns(**layoutConfig),
     Tabbed(**tabbedConfig),
+    # Bonsai(**{"window_border-size": 1, "tab_bar_height": 20}),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
@@ -323,9 +329,10 @@ screens = [
                 # widget.Image(
                 # filename='~/.config/qtile/assets/1.png',
                 # ),
-                widget.Spacer(),
-                widget.WindowName(),
-                widget.Spacer(),
+                # widget.Spacer(),
+                widget.WindowName(
+                    fmt="[{}]",
+                ),
                 # widget.Chord(
                 # chords_colors={
                 # "launch": ("#ff0000", "#ffffff"),
@@ -366,8 +373,9 @@ screens = [
                 widget.CurrentLayout(
                     font="JetBrains Mono Bold",
                 ),
-                widget.Spacer(),
-                widget.WindowName(),
+                widget.WindowName(
+                    fmt="[{}]",
+                ),
                 *commonWidgets,
             ],
             28,
@@ -396,8 +404,9 @@ screens = [
                 widget.CurrentLayout(
                     font="JetBrains Mono Bold",
                 ),
-                widget.Spacer(),
-                widget.WindowName(),
+                widget.WindowName(
+                    fmt="[{}]",
+                ),
                 *commonWidgets,
             ],
             28,
@@ -422,7 +431,7 @@ if len(screens) == 3:
                     (
                         lazy.to_screen(0)
                         if i.name in "123456"
-                        else lazy.to_screen(1) if i.name in "789" else lazy.to_screen(2)
+                        else lazy.to_screen(2) if i.name in "789" else lazy.to_screen(1)
                     ),
                     lazy.group[i.name].toscreen(),
                 ),
@@ -434,7 +443,7 @@ if len(screens) == 3:
                     (
                         lazy.to_screen(0)
                         if i.name in "123456"
-                        else lazy.to_screen(1) if i.name in "789" else lazy.to_screen(2)
+                        else lazy.to_screen(2) if i.name in "789" else lazy.to_screen(1)
                     ),
                     lazy.group[i.name].toscreen(),
                 ),
@@ -581,13 +590,11 @@ def dialogs(window):
 @hook.subscribe.client_new
 def open_in_workspace(client):
     if client.name == "Slack":
-        client.togroup("0")
+        client.togroup("9")
     elif client.name == "NoSQLBooster for MongoDB":
         client.togroup("4")
     elif client.name == "telegram-desktop":
-        client.togroup("9")
-    elif client.name == "jetbrains-webstorm":
-        client.togroup("2")
+        client.togroup("8")
 
 
 # this fixes the bug where some apps opens modal windows in the background instead of the front
