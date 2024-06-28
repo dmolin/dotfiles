@@ -4,7 +4,6 @@
   scroll_tabbar = True
   inactive_color_offset = 0.7521367521367521
   enabled_plugins = CurrDirOpen, SaveLastSessionLayout, LaunchpadBugURLHandler, LaunchpadCodeURLHandler, APTURLHandler
-  suppress_multiple_term_dialog = True
 [keybindings]
   go_up = <Primary>Up
   go_down = <Primary>Down
@@ -50,18 +49,31 @@
       type = Window
       parent = ""
       order = 0
-      position = 0:0
+      position = 3136:351
       maximised = False
       fullscreen = False
-      size = 2683, 1482
-      title = qtile
-      last_active_term = 40e4ecbf-4673-4e0a-9ad7-5dd1df7f19f7
+      size = 2688, 1489
+      title = user
+      last_active_term = f202ec29-e163-40d8-a4a4-f00cf2c4e74d
       last_active_window = True
-    [[[terminal1]]]
-      type = Terminal
+    [[[child1]]]
+      type = VPaned
       parent = child0
       order = 0
+      position = 162
+      ratio = 0.1091644204851752
+    [[[terminal2]]]
+      type = Terminal
+      parent = child1
+      order = 0
       profile = default
-      uuid = 40e4ecbf-4673-4e0a-9ad7-5dd1df7f19f7
-      directory = /home/user/.config/qtile
+      uuid = 784f6793-84fb-471d-a990-1e8139aa2c3b
+      directory = /home/user
+    [[[terminal3]]]
+      type = Terminal
+      parent = child1
+      order = 1
+      profile = default
+      uuid = f202ec29-e163-40d8-a4a4-f00cf2c4e74d
+      directory = /home/user
 [plugins]

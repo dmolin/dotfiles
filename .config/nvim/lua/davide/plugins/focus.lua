@@ -1,3 +1,4 @@
+-- this is just used to make the focused window stand out more
 return {
 	"nvim-focus/focus.nvim",
 	config = function()

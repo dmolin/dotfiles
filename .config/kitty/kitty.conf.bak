@@ -3,18 +3,22 @@
 # For examples and explanations, see here: https://gist.github.com/nicbet/8d232f277e4dcd71a30ffb788e6b95af
 
 # Fully featured
-font_family      Iosevka Term SS09 Light
+#font_family      Iosevka Term SS09 Light
 #font_family      FuraCode Nerd Font Mono
+#font_family      Terminess Nerd Font Mono
+#font_family      Hack Nerd Font 
+#font_family      AnonymicePro Nerd Font
+font_family      Iosevka Light
 italic_font      auto
 bold_font        auto
 bold_italic_font auto
 
 # Font size (in pts)
-font_size        11.0
+font_size        13.0
 
 # The amount the font size is changed by (in pts) when increasing/decreasing
 # the font size in a running terminal.
-font_size_delta 2
+font_size_delta 1
 
 # Nord theme - ported from https://github.com/arcticicestudio/nord-hyper
 # foreground            #D8DEE9
@@ -123,7 +127,7 @@ term xterm-kitty
 
 #window decorations
 window_border_width 1
-window_padding_width 1
+window_padding_width 2
 # active_border_color #00ff00
 # inactive_border_color #cccccc
 
@@ -225,8 +229,10 @@ map ctrl+shift+minus    decrease_font_size
 map ctrl+shift+backspace restore_font_size
 map ctrl+shift+f11      toggle_fullscreen
 
+adjust_line_height 110%
+
 
 # BEGIN_KITTY_THEME
-# Misterioso
+# Jellybeans
 include current-theme.conf
 # END_KITTY_THEME

@@ -12,7 +12,7 @@ return {
 
 		files.setup()
 
-		keymap.set("n", "<leader>ee", function()
+		keymap.set("n", "<leader>em", function()
 			local mf = require("mini.files")
 			if not mf.close() then
 				mf.open(vim.api.nvim_buf_get_name(0))

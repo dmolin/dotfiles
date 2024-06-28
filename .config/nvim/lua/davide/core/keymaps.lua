@@ -2,7 +2,7 @@ vim.g.mapleader = " "
 
 local keymap = vim.keymap -- for conciseness
 
-keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
+-- keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 
@@ -38,8 +38,8 @@ keymap.set("n", "<A-Down>", "<cmd>resize -5<cr>", { desc = "Shrink split vertica
 keymap.set("n", "<A-Up>", "<cmd>resize +5<cr>", { desc = "Expand split vertically" })
 
 -- moving around in a buffer
-keymap.set("n", "<C-j>", "<C-e>", { desc = "Scroll down a few lines" })
-keymap.set("n", "<C-k>", "<C-y>", { desc = "Scroll up a few lines" })
+keymap.set("n", "<C-s>", ":+5<CR>", { desc = "Scroll down a few lines" })
+keymap.set("n", "<C-a>", ":-5<CR>", { desc = "Scroll up a few lines" })
 
 -- useful shortcuts
 --
@@ -54,4 +54,4 @@ keymap.set("n", "<C-k>", "<C-y>", { desc = "Scroll up a few lines" })
 -- Shift + >> Indent line, also "=="
 -- Shift + << Unindent line
 --   this will also applye to multiple lines if you have a visual selection
---
+--  ` -> see marks

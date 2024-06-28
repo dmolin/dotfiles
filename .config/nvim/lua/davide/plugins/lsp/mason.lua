@@ -37,8 +37,13 @@ return {
 				"emmet_ls",
 				"prismals",
 				"pyright",
+				-- "rust_analyzer",
 			},
 		})
+
+		mason_lspconfig.setup_handlers = {
+			["rust_analyzer"] = function() end,
+		}
 
 		mason_tool_installer.setup({
 			ensure_installed = {

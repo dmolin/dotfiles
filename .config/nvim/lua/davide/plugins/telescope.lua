@@ -29,7 +29,7 @@ local function path_display(_, path)
 	if filename == stripped_path or stripped_path == "" then
 		return filename
 	end
-	return string.format("%s ~ %s", filename, stripped_path)
+	return string.format(" %s\t\t\t%s", filename, stripped_path)
 end
 
 return {
@@ -54,10 +54,12 @@ return {
 				mappings = {
 					-- define mappings when in "i"nsert mode
 					i = {
-						["<C-k>"] = actions.move_selection_previous, -- move to prev result
-						["<C-j>"] = actions.move_selection_next, -- move to next result
+						-- ["<S-k>"] = actions.move_selection_previous, -- move to prev result
+						-- ["<S-j>"] = actions.move_selection_next, -- move to next result
 						-- send selected item to quickfix list:
 						["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+						["<C-h>"] = actions.select_vertical,
+						["<C-v>"] = actions.select_horizontal,
 					},
 				},
 			},
@@ -84,5 +86,6 @@ return {
 		keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
 		keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
 		keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Find Todos" })
+		keymap.set("n", "<leader>fx", "<cmd>Telescope registers<cr>", { desc = "Find in Registers" })
 	end,
 }
