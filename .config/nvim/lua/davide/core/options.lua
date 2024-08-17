@@ -16,6 +16,7 @@ opt.wrap = false
 -- search settings
 opt.ignorecase = true -- ignore case when searching
 opt.smartcase = true -- if you include mixed case, assume you want case-sensitive
+opt.inccommand = "split" -- show live preview of substitution
 
 opt.cursorline = true
 
@@ -33,5 +34,8 @@ opt.clipboard:append("unnamedplus") -- use system clipboard as default register
 -- split windows
 opt.splitright = true -- split vertical window to the right
 opt.splitbelow = true -- split horizontal window to the bottom
+
+-- undo file
+opt.undofile = true -- save undo history to file
 
 vim.o.showtabline = 2

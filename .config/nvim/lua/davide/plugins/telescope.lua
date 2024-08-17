@@ -54,8 +54,8 @@ return {
 				mappings = {
 					-- define mappings when in "i"nsert mode
 					i = {
-						-- ["<S-k>"] = actions.move_selection_previous, -- move to prev result
-						-- ["<S-j>"] = actions.move_selection_next, -- move to next result
+						["<C-k>"] = actions.move_selection_previous, -- move to prev result
+						["<C-j>"] = actions.move_selection_next, -- move to next result
 						-- send selected item to quickfix list:
 						["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
 						["<C-h>"] = actions.select_vertical,

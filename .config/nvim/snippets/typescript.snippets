@@ -1,6 +1,6 @@
 extends javascript
 
-snippet unitt
+snippet tunit
 	/* eslint-env mocha, es6 */
 	/* eslint one-var: 0  no-unused-vars: 0 */
 	// @ts-nocheck
@@ -9,8 +9,8 @@ snippet unitt
 	describe("integrations/lti/server/lti_launch", () => {
 		let sandbox: any;
 
-		beforeEach(() => {
-			resetDatabase();
+		beforeEach(async () => {
+			await resetDatabase();
 			sandbox = sinon.createSandbox();
 		});
 
@@ -19,3 +19,12 @@ snippet unitt
 		});
 	});
 
+snippet tdesc
+	describe("", () => {
+		it("", async () => {
+		});
+	});
+
+snippet tit
+	it("", async () => {
+	});

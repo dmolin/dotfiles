@@ -42,7 +42,7 @@ keymap.set("n", "<C-s>", ":+5<CR>", { desc = "Scroll down a few lines" })
 keymap.set("n", "<C-a>", ":-5<CR>", { desc = "Scroll up a few lines" })
 
 -- useful shortcuts
---
+-- C-6 -> jump back/forth between last two buffers
 -- C-o -> go back to previous file
 -- SPACE-ca -> Suggested code actions (useful with errors)
 -- SPACE-rn -> smart rename of a variable or function in all its usages!

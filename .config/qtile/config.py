@@ -483,7 +483,8 @@ groups.append(
         "scratchpad",
         [
             DropDown(
-                "term", "terminator", width=0.7, height=0.7, x=0.15, y=0.15, opacity=1
+                # "term", "terminator", width=0.7, height=0.7, x=0.15, y=0.15, opacity=1
+                "term", "kitty", width=0.7, height=0.7, x=0.15, y=0.15, opacity=1
             ),
         ],
     )
@@ -503,6 +504,7 @@ floating_layout = layout.Floating(
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
         Match(role="pop-up"),
+        Match(wm_class="pop-up"),
         Match(wm_class="confirmreset"),  # gitk
         Match(wm_class="makebranch"),  # gitk
         Match(wm_class="maketag"),  # gitk
@@ -514,10 +516,10 @@ floating_layout = layout.Floating(
         Match(wm_class="Manjaro Settings Manager"),
         Match(wm_class="Pamac-manager"),
         Match(wm_class="pamac-manager"),
-        Match(wm_class="Pavucontrol"),
         Match(wm_class="qt5ct"),
         Match(wm_class="Qtconfig-qt4"),
         Match(wm_class="VirtualBox Manager"),
+        Match(wm_class="VirtualBoxVM"),
         Match(wm_class="Gnome-disks"),
         Match(wm_class="gnome-calendar"),
         Match(wm_class="pcmanfm-qt", role="pop-up"),
@@ -534,6 +536,7 @@ floating_layout = layout.Floating(
         Match(wm_class="tuxedo-control-center"),
         Match(wm_instance_class="pcloud"),
         Match(wm_class="hp-toolbox"),
+        Match(wm_class="pavucontrol"),
         Match(title="Preferences"),
         Match(wm_type="utility"),
         Match(wm_type="notification"),
@@ -590,7 +593,7 @@ def dialogs(window):
 @hook.subscribe.client_new
 def open_in_workspace(client):
     if client.name == "Slack":
-        client.togroup("9")
+        client.togroup("8")
     elif client.name == "NoSQLBooster for MongoDB":
         client.togroup("4")
     elif client.name == "telegram-desktop":

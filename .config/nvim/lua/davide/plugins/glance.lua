@@ -21,8 +21,8 @@ return {
 					["<S-Tab>"] = actions.previous_location, -- Bring the cursor to the previous location skipping groups in the list
 					["<C-u>"] = actions.preview_scroll_win(5),
 					["<C-d>"] = actions.preview_scroll_win(-5),
-					["h"] = actions.jump_vsplit,
-					["v"] = actions.jump_split,
+					["h"] = actions.jump_vsplit, -- open the selected entry in a new horizontal split
+					["v"] = actions.jump_split, -- open the selected entry in a new vertical split
 					["t"] = actions.jump_tab,
 					["<CR>"] = actions.jump,
 					["o"] = actions.jump,

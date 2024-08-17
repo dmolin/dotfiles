@@ -49,31 +49,18 @@
       type = Window
       parent = ""
       order = 0
-      position = 3136:351
+      position = 288:196
       maximised = False
       fullscreen = False
-      size = 2688, 1489
-      title = user
-      last_active_term = f202ec29-e163-40d8-a4a4-f00cf2c4e74d
+      size = 1600, 1000
+      title = /bin/bash
+      last_active_term = c9b1b87f-f413-41e9-975c-707cc98b3943
       last_active_window = True
-    [[[child1]]]
-      type = VPaned
+    [[[terminal1]]]
+      type = Terminal
       parent = child0
       order = 0
-      position = 162
-      ratio = 0.1091644204851752
-    [[[terminal2]]]
-      type = Terminal
-      parent = child1
-      order = 0
       profile = default
-      uuid = 784f6793-84fb-471d-a990-1e8139aa2c3b
-      directory = /home/user
-    [[[terminal3]]]
-      type = Terminal
-      parent = child1
-      order = 1
-      profile = default
-      uuid = f202ec29-e163-40d8-a4a4-f00cf2c4e74d
-      directory = /home/user
+      uuid = c9b1b87f-f413-41e9-975c-707cc98b3943
+      directory = None
 [plugins]

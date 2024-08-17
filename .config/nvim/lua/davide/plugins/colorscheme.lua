@@ -14,6 +14,11 @@ return {
 
 		require("tokyonight").setup({
 			style = "night",
+			styles = {
+				sidebars = "dark",
+			},
+			sidebars = { "qf", "help" },
+			dim_inactive = false,
 			on_colors = function(colors)
 				colors.bg = bg
 				colors.bg_dark = bg_dark
@@ -40,5 +45,8 @@ return {
 			end,
 		})
 		vim.cmd("colorscheme tokyonight")
+
+		vim.api.nvim_set_hl(0, "diffRemoved", { fg = "#F0626E" })
+		vim.api.nvim_set_hl(0, "diffAdded", { fg = "#86C72C" })
 	end,
 }
