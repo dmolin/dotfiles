@@ -23,4 +23,4 @@ cryptomator &>/dev/null &
 # Map wacom stylus to main screen
 ~/.config/_scripts_/remap-wacom.sh &
 
-#~/.config/qtile/reconfigure_screens
+~/.config/qtile/reconfigure_screens

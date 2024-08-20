@@ -39,3 +39,4 @@ opt.splitbelow = true -- split horizontal window to the bottom
 opt.undofile = true -- save undo history to file
 
 vim.o.showtabline = 2
+vim.g.maplocalleader = ","

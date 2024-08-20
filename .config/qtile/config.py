@@ -205,7 +205,7 @@ keys = [
     Key([mod], "F6", lazy.spawn("tuxedo-control-center")),
     Key([mod], "F9", lazy.spawn("/home/user/.config/qtile/toggle-headphones.sh")),
     # Key([mod], "F11", lazy.spawn("/home/user/.config/qtile/internal.sh")),
-    # Key([mod], "F12", lazy.spawn("/home/user/.config/qtile/external.sh")),
+    Key([mod], "F12", lazy.spawn("/home/user/.config/qtile/external.sh")),
     Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +10%")),
     Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10%-")),
     EzKey("M-h", lazy.layout.left()),
