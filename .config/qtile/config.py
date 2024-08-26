@@ -199,7 +199,8 @@ keys = [
     Key(
         [mod],
         "F2",
-        lazy.spawn("terminator --geometry 1600x1000 --role pop-up -e ranger"),
+        # lazy.spawn("terminator --geometry 1600x1000 --role pop-up -e yazi"),
+        lazy.spawn("kitty --class wide-pop-up yazi"),
     ),
     Key([mod], "F3", lazy.spawn("pcmanfm-qt")),
     Key([mod], "F6", lazy.spawn("tuxedo-control-center")),
@@ -484,7 +485,7 @@ groups.append(
         [
             DropDown(
                 # "term", "terminator", width=0.7, height=0.7, x=0.15, y=0.15, opacity=1
-                "term", "kitty", width=0.7, height=0.7, x=0.15, y=0.15, opacity=1
+                "term", "kitty", width=0.8, height=0.8, x=0.1, y=0.1, opacity=1
             ),
         ],
     )
@@ -504,7 +505,9 @@ floating_layout = layout.Floating(
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
         Match(role="pop-up"),
+        Match(wm_class="Timeshift-gtk"),
         Match(wm_class="pop-up"),
+        Match(wm_class="wide-pop-up"),
         Match(wm_class="confirmreset"),  # gitk
         Match(wm_class="makebranch"),  # gitk
         Match(wm_class="maketag"),  # gitk

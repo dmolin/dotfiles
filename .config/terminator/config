@@ -45,22 +45,4 @@
       parent = window0
       profile = default
   [[SaveLastSessionLayout]]
-    [[[child0]]]
-      type = Window
-      parent = ""
-      order = 0
-      position = 288:196
-      maximised = False
-      fullscreen = False
-      size = 1600, 1000
-      title = /bin/bash
-      last_active_term = c9b1b87f-f413-41e9-975c-707cc98b3943
-      last_active_window = True
-    [[[terminal1]]]
-      type = Terminal
-      parent = child0
-      order = 0
-      profile = default
-      uuid = c9b1b87f-f413-41e9-975c-707cc98b3943
-      directory = None
 [plugins]
