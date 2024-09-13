@@ -70,10 +70,10 @@ local function worker(user_args)
             border = '#75715E'
         },
         naughty = {
-            bg = beautiful.notification_bg or beautiful.bg,
-            fg = beautiful.notification_fg or beautiful.fg,
-            focus_date_bg = beautiful.notification_fg or beautiful.fg,
-            focus_date_fg = beautiful.notification_bg or beautiful.bg,
+            bg = beautiful.notification_bg or beautiful.bg or beautiful.bg_normal,
+            fg = beautiful.notification_fg or beautiful.fg or beautiful.fg_normal,
+            focus_date_bg = beautiful.notification_fg or beautiful.fg or beautiful.fg_normal,
+            focus_date_fg = beautiful.notification_bg or beautiful.bg or beautiful.bg_normal,
             weekend_day_bg = beautiful.bg_focus,
             weekday_fg = beautiful.fg,
             header_fg = beautiful.fg,
@@ -98,6 +98,7 @@ local function worker(user_args)
     local next_month_button = args.next_month_button or 4
     local previous_month_button = args.previous_month_button or 5
     local start_sunday = args.start_sunday or false
+    local week_numbers = args.week_numbers or false
 
     local styles = {}
     local function rounded_shape(size)
@@ -154,11 +155,14 @@ local function worker(user_args)
             widget:set_markup(props.markup(widget:get_text()))
         end
         -- Change bg color for weekends
-        local d = { year = date.year, month = (date.month or 1), day = (date.day or 1) }
-        local weekday = tonumber(os.date('%w', os.time(d)))
-        local default_bg = (weekday == 0 or weekday == 6)
-            and calendar_themes[theme].weekend_day_bg
-            or calendar_themes[theme].bg
+        local default_bg
+        if (flag == "normal") then
+            local d = { year = date.year, month = (date.month or 1), day = (date.day or 1) }
+            local weekday = tonumber(os.date('%w', os.time(d)))
+            default_bg = (weekday == 0 or weekday == 6)
+                and calendar_themes[theme].weekend_day_bg
+                or calendar_themes[theme].bg
+        end
         local ret = wibox.widget {
             {
                 {
@@ -186,6 +190,7 @@ local function worker(user_args)
         fn_embed = decorate_cell,
         long_weekdays = true,
         start_sunday = start_sunday,
+        week_numbers = week_numbers,
         widget = wibox.widget.calendar.month
     }
 
@@ -198,6 +203,23 @@ local function worker(user_args)
         border_color = calendar_themes[theme].border,
         widget = cal
     }
+    
+	local auto_hide_timer = gears.timer({
+		timeout = user_args.timeout or 2,
+		single_shot = true,
+		callback = function()
+			calendar_widget.toggle()
+		end,
+	})
+
+	popup:connect_signal("mouse::leave", function()
+        if user_args.auto_hide then 
+		    auto_hide_timer:again()
+        end
+	end)
+	popup:connect_signal("mouse::enter", function()
+		auto_hide_timer:stop()
+	end)
 
     popup:buttons(
             awful.util.table.join(
@@ -221,6 +243,7 @@ local function worker(user_args)
     function calendar_widget.toggle()
 
         if popup.visible then
+            auto_hide_timer:stop()
             -- to faster render the calendar refresh it and just hide
             cal:set_date(nil) -- the new date is not set without removing the old one
             cal:set_date(os.date('*t'))
@@ -232,14 +255,23 @@ local function worker(user_args)
                 awful.placement.top(popup, { margins = { top = 30 }, parent = awful.screen.focused() })
             elseif placement == 'top_right' then
                 awful.placement.top_right(popup, { margins = { top = 30, right = 10}, parent = awful.screen.focused() })
+            elseif placement == 'top_left' then
+                awful.placement.top_left(popup, { margins = { top = 30, left = 10}, parent = awful.screen.focused() })
             elseif placement == 'bottom_right' then
                 awful.placement.bottom_right(popup, { margins = { bottom = 30, right = 10},
+                    parent = awful.screen.focused() })
+            elseif placement == 'bottom_left' then
+                awful.placement.bottom_left(popup, { margins = { bottom = 30, left = 10},
                     parent = awful.screen.focused() })
             else
                 awful.placement.top(popup, { margins = { top = 30 }, parent = awful.screen.focused() })
             end
 
             popup.visible = true
+            if user_args.auto_hide then
+                auto_hide_timer:start()
+            end
+
 
         end
     end

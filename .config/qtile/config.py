@@ -485,7 +485,13 @@ groups.append(
         [
             DropDown(
                 # "term", "terminator", width=0.7, height=0.7, x=0.15, y=0.15, opacity=1
-                "term", "kitty", width=0.8, height=0.8, x=0.1, y=0.1, opacity=1
+                "term",
+                "kitty",
+                width=0.8,
+                height=0.8,
+                x=0.1,
+                y=0.1,
+                opacity=1,
             ),
         ],
     )
@@ -596,7 +602,7 @@ def dialogs(window):
 @hook.subscribe.client_new
 def open_in_workspace(client):
     if client.name == "Slack":
-        client.togroup("8")
+        client.togroup("9")
     elif client.name == "NoSQLBooster for MongoDB":
         client.togroup("4")
     elif client.name == "telegram-desktop":

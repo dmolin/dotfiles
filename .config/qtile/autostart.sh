@@ -24,3 +24,8 @@ cryptomator &>/dev/null &
 ~/.config/_scripts_/remap-wacom.sh &
 
 ~/.config/qtile/reconfigure_screens
+
+xscreensaver -no-splash &
+
+# disable scroll lock
+setxkbmap -option "ctrl:nocaps"

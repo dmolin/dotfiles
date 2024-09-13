@@ -40,3 +40,20 @@ opt.undofile = true -- save undo history to file
 
 vim.o.showtabline = 2
 vim.g.maplocalleader = ","
+
+-- disable caps lock while vim is running
+-- vim.cmd("au VimEnter * silent !setxkbmap -option caps:none")
+local api = vim.api
+
+-- Disable caps lock while vim is running
+--[[
+api.nvim_create_autocmd("VimEnter", {
+	pattern = "*",
+	command = "!setxkbmap -option ctrl:nocaps",
+})
+
+api.nvim_create_autocmd("VimLeave", {
+	pattern = "*",
+	command = "!setxkbmap -option",
+})
+--]]

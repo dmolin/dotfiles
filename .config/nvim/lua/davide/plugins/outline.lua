@@ -14,4 +14,13 @@ return {
 			relative_width = false,
 		},
 	},
+	--[[config = function()
+		require("outline").setup({
+			outline_window = {
+				position = "left",
+				width = 50,
+				relative_width = false,
+			},
+		})
+	end,--]]
 }

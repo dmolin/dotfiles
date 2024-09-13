@@ -22,6 +22,7 @@ case $chosen in
         betterlockscreen -l;;
     $option1)
         pkill qtile;;
+        pkill awesome;;
     $option2)
         systemctl reboot;;
     $option3)

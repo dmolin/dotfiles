@@ -29,7 +29,8 @@ return {
 				opts.desc = "Show LSP references"
 				keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
 
-				--opts.desc = "Go to declaration"
+				opts.desc = "Go to declaration"
+				-- already mapped by vim
 				--keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
 
 				opts.desc = "Go to definition"
@@ -111,16 +112,7 @@ return {
 					capabilities = capabilities,
 				})
 			end,
-			["tsserver"] = function()
-				local function organize_imports()
-					local params = {
-						command = "_typescript.organizeImports",
-						arguments = { vim.api.nvim_buf_get_name(0) },
-						title = "",
-					}
-					vim.lsp.buf.execute_command(params)
-				end
-
+			["ts_ls"] = function()
 				local function remove_unused_imports()
 					vim.lsp.buf.code_action({
 						apply = true,
@@ -130,18 +122,9 @@ return {
 						},
 					})
 				end
-				lspconfig["tsserver"].setup({
+				lspconfig["ts_ls"].setup({
 					capabilities = capabilities,
-					commands = {
-						OrganizeImports = {
-							organize_imports,
-							description = "Organize Imports",
-						},
-						RemoveUnusedImports = {
-							remove_unused_imports,
-							description = "Remove Unused Imports",
-						},
-					},
+					commands = {},
 					on_attach = function(client, bufnr)
 						client.server_capabilities.documentFormattingProvider = false
 						client.server_capabilities.documentRangeFormattingProvider = false
@@ -160,30 +143,64 @@ return {
 							},
 						},
 					},
+					init_options = {
+						hostInfo = "neovim",
+						preferences = {
+							quotePreference = "double",
+							importModuleSpecifierPreference = "non-relative",
+							-- importModuleSpecifierPreference = "relative",
+						},
+					},
+					handlers = {
+						["textDocument/publishDiagnostics"] = function(_, result, ctx, config)
+							if result.diagnostics == nil then
+								return
+							end
+
+							-- ignore some tsserver diagnostics
+							local idx = 1
+							while idx <= #result.diagnostics do
+								local entry = result.diagnostics[idx]
+
+								local formatter = require("format-ts-errors")[entry.code]
+								entry.message = formatter and formatter(entry.message) or entry.message
+
+								-- codes: https://github.com/microsoft/TypeScript/blob/main/src/compiler/diagnosticMessages.json
+								if entry.code == 80001 then
+									-- { message = "File is a CommonJS module; it may be converted to an ES module.", }
+									table.remove(result.diagnostics, idx)
+								else
+									idx = idx + 1
+								end
+							end
+
+							vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx, config)
+						end,
+					},
 				})
 			end,
-			["svelte"] = function()
-				-- configure svelte server
-				lspconfig["svelte"].setup({
-					capabilities = capabilities,
-					on_attach = function(client, bufnr)
-						vim.api.nvim_create_autocmd("BufWritePost", {
-							pattern = { "*.js", "*.ts" },
-							callback = function(ctx)
-								-- Here use ctx.match instead of ctx.file
-								client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
-							end,
-						})
-					end,
-				})
-			end,
-			["graphql"] = function()
-				-- configure graphql language server
-				lspconfig["graphql"].setup({
-					capabilities = capabilities,
-					filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
-				})
-			end,
+			-- ["svelte"] = function()
+			-- 	-- configure svelte server
+			-- 	lspconfig["svelte"].setup({
+			-- 		capabilities = capabilities,
+			-- 		on_attach = function(client, bufnr)
+			-- 			vim.api.nvim_create_autocmd("BufWritePost", {
+			-- 				pattern = { "*.js", "*.ts" },
+			-- 				callback = function(ctx)
+			-- 					-- Here use ctx.match instead of ctx.file
+			-- 					client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
+			-- 				end,
+			-- 			})
+			-- 		end,
+			-- 	})
+			-- end,
+			-- ["graphql"] = function()
+			-- 	-- configure graphql language server
+			-- 	lspconfig["graphql"].setup({
+			-- 		capabilities = capabilities,
+			-- 		filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
+			-- 	})
+			-- end,
 			["emmet_ls"] = function()
 				-- configure emmet language server
 				lspconfig["emmet_ls"].setup({
