@@ -72,7 +72,8 @@ return {
 				keymap.set(
 					"n",
 					"<leader>ri",
-					":lua vim.lsp.buf.code_action({apply = true, context = {only = {'source.removeUnusedImports.ts'}, diagnostics = {}}})<CR>",
+					-- ":lua vim.lsp.buf.code_action({apply = true, context = {only = {'source.removeUnusedImports.ts'}, diagnostics = {}}})<CR>",
+					"<cmd>TSToolsRemoveUnusedImports<CR>",
 					opts
 				) -- mapping to remove unused imports
 			end,
@@ -96,6 +97,7 @@ return {
 					capabilities = capabilities,
 				})
 			end,
+			--[[
 			["ts_ls"] = function()
 				lspconfig["ts_ls"].setup({
 					capabilities = capabilities,
@@ -154,6 +156,7 @@ return {
 					},
 				})
 			end,
+      --]]
 			["emmet_ls"] = function()
 				-- configure emmet language server
 				lspconfig["emmet_ls"].setup({

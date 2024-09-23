@@ -38,6 +38,9 @@ opt.splitbelow = true -- split horizontal window to the bottom
 -- undo file
 opt.undofile = true -- save undo history to file
 
+-- free buffers for hidden windows
+opt.bufhidden = "unload"
+
 vim.o.showtabline = 2
 vim.g.maplocalleader = ","
 
