@@ -78,22 +78,6 @@ return {
 			end,
 		})
 
-		-- auto-remove unused imports when saving a file
-		--[[
-		vim.api.nvim_create_autocmd("BufWritePre", {
-			pattern = { "*.tsx", "*.ts" },
-			callback = function()
-				vim.lsp.buf.code_action({
-					apply = true,
-					context = {
-						only = { "source.removeUnusedImports.ts" },
-						diagnostics = {},
-					},
-				})
-			end,
-		})
-    --]]
-
 		-- used to enable autocompletion (assign to every lsp server config)
 		local capabilities = cmp_nvim_lsp.default_capabilities()
 
@@ -113,15 +97,6 @@ return {
 				})
 			end,
 			["ts_ls"] = function()
-				local function remove_unused_imports()
-					vim.lsp.buf.code_action({
-						apply = true,
-						context = {
-							only = { "source.removeUnusedImports.ts" },
-							diagnostics = {},
-						},
-					})
-				end
 				lspconfig["ts_ls"].setup({
 					capabilities = capabilities,
 					commands = {},
@@ -179,28 +154,6 @@ return {
 					},
 				})
 			end,
-			-- ["svelte"] = function()
-			-- 	-- configure svelte server
-			-- 	lspconfig["svelte"].setup({
-			-- 		capabilities = capabilities,
-			-- 		on_attach = function(client, bufnr)
-			-- 			vim.api.nvim_create_autocmd("BufWritePost", {
-			-- 				pattern = { "*.js", "*.ts" },
-			-- 				callback = function(ctx)
-			-- 					-- Here use ctx.match instead of ctx.file
-			-- 					client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
-			-- 				end,
-			-- 			})
-			-- 		end,
-			-- 	})
-			-- end,
-			-- ["graphql"] = function()
-			-- 	-- configure graphql language server
-			-- 	lspconfig["graphql"].setup({
-			-- 		capabilities = capabilities,
-			-- 		filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
-			-- 	})
-			-- end,
 			["emmet_ls"] = function()
 				-- configure emmet language server
 				lspconfig["emmet_ls"].setup({
@@ -213,7 +166,6 @@ return {
 						"sass",
 						"scss",
 						"less",
-						"svelte",
 					},
 				})
 			end,
@@ -234,37 +186,6 @@ return {
 					},
 				})
 			end,
-			--[[
-			["rust_analyzer"] = function()
-				lspconfig["rust_analyzer"].setup({
-					settings = {
-						["rust-analyzer"] = {
-							assist = {
-								importMergeBehavior = "last",
-							},
-							cargo = {
-								loadOutDirsFromCheck = true,
-							},
-							procMacro = {
-								enable = true,
-							},
-							diagnostics = {
-								enable = true,
-								experimental = {
-									enable = true,
-								},
-							},
-						},
-					},
-					capabilities = capabilities,
-					filetypes = {
-						"rust",
-						"rs",
-					},
-					root_dir = lspconfig.util.root_pattern("Cargo.toml", "rust-project.json"),
-				})
-			end,
-      --]]
 		})
 	end,
 }

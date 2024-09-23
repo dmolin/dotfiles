@@ -1,4 +1,6 @@
 return {
+	--[[
+  -- Debugger Adapter Protocol (used to trance and debug apps)
 	{
 		"mfussenegger/nvim-dap",
 	},
@@ -25,4 +27,5 @@ return {
 			end
 		end,
 	},
+  --]]
 }
