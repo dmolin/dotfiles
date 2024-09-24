@@ -60,3 +60,4 @@ api.nvim_create_autocmd("VimLeave", {
 	command = "!setxkbmap -option",
 })
 --]]
+--
