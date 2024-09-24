@@ -17,6 +17,7 @@ function delete_unused_buffers()
 	end
 
 	-- Delete unused buffers
+	local deleted = 0
 	for _, buf in ipairs(buffers) do
 		if
 			not used_buffers[buf]
@@ -25,10 +26,11 @@ function delete_unused_buffers()
 		then
 			-- vim.print("Deleting buffer: " .. buf)
 			vim.api.nvim_buf_delete(buf, { force = true })
+			deleted = deleted + 1
 		end
 	end
 
-	print("Unused buffers have been deleted.")
+	print(deleted, "unused buffers have been deleted.")
 end
 
 vim.api.nvim_create_user_command("DeleteUnusedBuffers", delete_unused_buffers, {})
