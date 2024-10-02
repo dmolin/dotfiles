@@ -5,18 +5,20 @@ return {
 		local nvimtree = require("nvim-tree")
 
 		-- recommended settings from nvim-tree documentation
-		vim.g.loaded_netrw = 1
-		vim.g.loaded_netrwPlugin = 1
+		-- vim.g.loaded_netrw = 1
+		-- vim.g.loaded_netrwPlugin = 1
+		-- vim.opt.termguicolors = true
 
 		nvimtree.setup({
 			view = {
-				width = 35,
+				width = 40,
 				number = true,
 			},
 			-- change folder arrow icons
 			renderer = {
+				group_empty = true,
 				indent_markers = {
-					enable = true,
+					enable = false,
 				},
 				icons = {
 					glyphs = {
@@ -41,10 +43,12 @@ return {
 				custom = { ".DS_Store" },
 			},
 			git = {
+				enable = true,
 				ignore = false,
 			},
 			diagnostics = {
-				enable = false,
+				enable = true,
+				show_on_dirs = true,
 			},
 		})
 

@@ -19,7 +19,30 @@ local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
 local net_speed_widget = require("awesome-wm-widgets.net-speed-widget.net-speed")
 local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
 local weather_api_widget = require("awesome-wm-widgets.weather-api-widget.weather")
-local scratch = require("scratch")
+local dpi = require("beautiful.xresources").apply_dpi
+
+-- configure the notification library
+naughty.config.presets = {
+	critical = {
+		bg = "#ff0000",
+		fg = "#ffffff",
+		timeout = 0,
+		-- icon = "/usr/share/icons/Adwaita/48x48/status/dialog-error.png",
+	},
+	normal = {
+		bg = "#dd6600",
+		fg = "#ffffff",
+		timeout = 5,
+	},
+	info = {
+		bg = "#0000ff",
+		fg = "#ffffff",
+		timeout = 5,
+	},
+}
+naughty.config.defaults.icon_size = dpi(32)
+naughty.config.padding = dpi(8)
+naughty.config.spacing = dpi(8)
 
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
