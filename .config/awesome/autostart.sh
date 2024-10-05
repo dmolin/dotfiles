@@ -43,7 +43,7 @@ check_and_start "xscreensaver" "xscreensaver -no-splash"
 
 # disable scroll lock
 # this has been moved to .xprofile. if it doesn't work, re-enable it here
-# setxkbmap -option "ctrl:nocaps"
+setxkbmap -option "ctrl:nocaps"
 
 # this has been moved to .xprofile. if it doesn't work, re-enable it here
 # xmodmap ~/.Xmodmap

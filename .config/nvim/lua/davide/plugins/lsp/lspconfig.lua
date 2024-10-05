@@ -5,7 +5,7 @@ return {
 		"hrsh7th/cmp-nvim-lsp",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
 		{ "folke/neodev.nvim", opts = {} },
-    "williambowman/mason.nvim"
+		"williambowman/mason.nvim",
 	},
 	config = function()
 		-- import lspconfig plugin
@@ -85,7 +85,9 @@ return {
 
 		-- Change the Diagnostic symbols in the sign column (gutter)
 		-- (not in youtube nvim video)
-		local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
+
+		-- local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
+		local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = " " }
 		for type, icon in pairs(signs) do
 			local hl = "DiagnosticSign" .. type
 			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
@@ -188,6 +190,12 @@ return {
 							},
 						},
 					},
+				})
+			end,
+			["zls"] = function()
+				-- configure zig language server
+				lspconfig["zls"].setup({
+					capabilities = capabilities,
 				})
 			end,
 		})
