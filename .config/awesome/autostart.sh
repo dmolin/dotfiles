@@ -47,3 +47,6 @@ setxkbmap -option "ctrl:nocaps"
 
 # this has been moved to .xprofile. if it doesn't work, re-enable it here
 # xmodmap ~/.Xmodmap
+xmodmap -e 'clear mod1'
+xmodmap -e 'clear control'
+xmodmap /home/user/.Xmodmap

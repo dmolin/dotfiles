@@ -1,4 +1,5 @@
 return {
+	-- inspect functions and variables definitions
 	"dnlhc/glance.nvim",
 	config = function()
 		local glance = require("glance")

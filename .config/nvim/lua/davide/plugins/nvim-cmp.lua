@@ -1,5 +1,7 @@
 return {
-	"hrsh7th/nvim-cmp",
+	-- "hrsh7th/nvim-cmp",
+	"iguanacucumber/magazine.nvim",
+	name = "nvim-cmp",
 	event = "InsertEnter",
 	dependencies = {
 		"hrsh7th/cmp-buffer", -- source for text in buffer
@@ -59,6 +61,11 @@ return {
 					maxwidth = 50,
 					ellipsis_char = "...",
 				}),
+			},
+
+			window = {
+				completion = cmp.config.window.bordered(),
+				documentation = cmp.config.window.bordered(),
 			},
 		})
 	end,

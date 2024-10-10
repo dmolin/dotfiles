@@ -9,7 +9,7 @@ return {
 		event = "VeryLazy",
 	},
   --]]
-	-- Virtual text context for neovim treesitter
+	-- Virtual text context for neovim treesitter (on the end of each block/function)
 	{
 		"andersevenrud/nvim_context_vt",
 	},

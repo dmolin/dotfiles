@@ -8,6 +8,17 @@ return {
 		"williambowman/mason.nvim",
 	},
 	config = function()
+		local border = {
+			{ "🭽", "FloatBorder" },
+			{ "▔", "FloatBorder" },
+			{ "🭾", "FloatBorder" },
+			{ "▕", "FloatBorder" },
+			{ "🭿", "FloatBorder" },
+			{ "▁", "FloatBorder" },
+			{ "🭼", "FloatBorder" },
+			{ "▏", "FloatBorder" },
+		}
+
 		-- import lspconfig plugin
 		local lspconfig = require("lspconfig")
 
@@ -100,7 +111,6 @@ return {
 					capabilities = capabilities,
 				})
 			end,
-			--[[
 			["ts_ls"] = function()
 				lspconfig["ts_ls"].setup({
 					capabilities = capabilities,
@@ -132,6 +142,11 @@ return {
 						},
 					},
 					handlers = {
+						["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
+						["textDocument/signatureHelp"] = vim.lsp.with(
+							vim.lsp.handlers.signature_help,
+							{ border = border }
+						),
 						["textDocument/publishDiagnostics"] = function(_, result, ctx, config)
 							if result.diagnostics == nil then
 								return
@@ -159,7 +174,6 @@ return {
 					},
 				})
 			end,
-      --]]
 			["emmet_ls"] = function()
 				-- configure emmet language server
 				lspconfig["emmet_ls"].setup({
