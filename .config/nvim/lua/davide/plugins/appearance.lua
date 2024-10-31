@@ -9,6 +9,10 @@ return {
 		event = "VeryLazy",
 	},
   --]]
+	-- nvim component library
+	{
+		"MunifTanjim/nui.nvim",
+	},
 	-- Virtual text context for neovim treesitter (on the end of each block/function)
 	{
 		"andersevenrud/nvim_context_vt",

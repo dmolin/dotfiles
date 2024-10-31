@@ -106,7 +106,29 @@ local term_scratch = bling.module.scratchpad({
 	dont_focus_before_close = false, -- When set to true, the scratchpad will be closed by the toggle function regardless of whether its focused or not. When set to false, the toggle function will first bring the scratchpad into focus and only close it on a second call
 	--rubato = {x = anim_x, y = anim_y}                 -- Optional. This is how you can pass in the rubato tables for animations. If you don't want animations, you can ignore this option.
 })
---
+
+local function resize_client(c)
+	local s = c.screen or awful.screen.focused()
+
+	if not s then
+		gears.debug.print_warning("No screen found for client")
+		return
+	end
+
+	c.geometry = {
+		x = s.geometry.width * 0.15,
+		y = s.geometry.height * 0.15,
+		width = s.geometry.width * 0.7,
+		height = s.geometry.height * 0.75,
+	}
+	-- awful.placement.centered(c, { honor_workarea = true, honor_padding = true })
+end
+
+-- function to toggle the scratchpad
+function toggle_scratchpad()
+	resize_client(term_scratch)
+	term_scratch:toggle()
+end
 
 -- Run autostart.sh
 awful.spawn.with_shell("~/.config/awesome/autostart.sh")
@@ -341,7 +363,8 @@ globalkeys = gears.table.join(
 
 	-- Scratchpad
 	awful.key({ modkey }, "`", function()
-		term_scratch:toggle()
+		-- term_scratch:toggle()
+		toggle_scratchpad()
 	end, { description = "toggle scratchpad", group = "Scratchpad" }),
 
 	-- Layout manipulation
@@ -430,6 +453,16 @@ globalkeys = gears.table.join(
 	awful.key({ modkey }, "F9", function()
 		awful.spawn("/home/user/.config/qtile/toggle-headphones.sh")
 	end, { description = "decrease volume", group = "media" }),
+
+	awful.key({ modkey }, "F2", function()
+		awful.spawn("kitty --class yazi yazi", {
+			callback = function(c)
+				gears.timer.delayed_call(function()
+					resize_client(c)
+				end)
+			end,
+		})
+	end, { description = "file manager", group = "launcher" }),
 
 	awful.key({ modkey }, "F3", function()
 		awful.spawn("pcmanfm-qt")
@@ -620,6 +653,31 @@ awful.rules.rules = {
 			awful.placement.centered(c, { honor_workarea = true, honor_padding = true })
 			gears.timer.delayed_call(function()
 				c.urgent = false
+			end)
+		end,
+	},
+	{
+		rule_any = {
+			class = { "yazi" },
+		},
+		properties = {
+			floating = true,
+			skip_taskbar = false,
+			ontop = false,
+			minimized = true,
+			sticky = true,
+			width = screen_width * 0.7,
+			height = screen_height * 0.75,
+		},
+		callback = function(c)
+			gears.timer.delayed_call(function()
+				resize_client(c)
+				awful.placement.centered(c, { honor_workarea = true, honor_padding = true })
+				c.urgent = false
+			end)
+
+			c:connect_signal("property::screen", function(c)
+				resize_client(c)
 			end)
 		end,
 	},

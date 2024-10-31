@@ -212,6 +212,39 @@ return {
 					capabilities = capabilities,
 				})
 			end,
+			["clangd"] = function()
+				lspconfig["clangd"].setup({
+					capabilities = capabilities,
+					handlers = {
+						["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
+						["textDocument/signatureHelp"] = vim.lsp.with(
+							vim.lsp.handlers.signature_help,
+							{ border = border }
+						),
+						["textDocument/publishDiagnostics"] = function(_, result, ctx, config)
+							if result.diagnostics == nil then
+								return
+							end
+
+							-- ignore some clangd diagnostics
+							local idx = 1
+							while idx <= #result.diagnostics do
+								local entry = result.diagnostics[idx]
+
+								-- codes: https://clang.llvm.org/extra/clangd/Features.html#diagnostics
+								if entry.code == 1001 then
+									-- { message = "implicit conversion changes signedness: 'int' to 'unsigned long'", }
+									table.remove(result.diagnostics, idx)
+								else
+									idx = idx + 1
+								end
+							end
+
+							vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx, config)
+						end,
+					},
+				})
+			end,
 		})
 	end,
 }

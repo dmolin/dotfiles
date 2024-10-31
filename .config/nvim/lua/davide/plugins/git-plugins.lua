@@ -56,6 +56,9 @@ return {
 			"sindrets/diffview.nvim",
 			"nvim-telescope/telescope.nvim",
 		},
+		opts = {
+			graph_style = "kitty",
+		},
 		config = true,
 	},
 	{

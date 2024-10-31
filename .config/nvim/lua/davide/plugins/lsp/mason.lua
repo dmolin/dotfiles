@@ -33,6 +33,7 @@ return {
 				-- list of servers for mason to install
 				ensure_installed = {
 					-- "ts_ls",
+					"clangd", -- C/C++ language server
 					"html",
 					"cssls",
 					"lua_ls",

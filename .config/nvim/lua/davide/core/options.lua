@@ -2,6 +2,7 @@ vim.cmd("let g:netrw_liststyle = 3")
 
 local opt = vim.opt
 
+opt.showmode = true
 opt.relativenumber = true
 opt.number = true
 
@@ -43,6 +44,10 @@ opt.bufhidden = "unload"
 
 vim.o.showtabline = 2
 vim.g.maplocalleader = ","
+
+vim.diagnostic.config({
+	float = { border = "single" },
+})
 
 -- disable caps lock while vim is running
 -- vim.cmd("au VimEnter * silent !setxkbmap -option caps:none")

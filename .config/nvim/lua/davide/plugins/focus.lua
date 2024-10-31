@@ -33,7 +33,8 @@ return {
 			})
 		end,
 	},
-	-- dim the inactive buffer, so the focused one stands out more
+	-- highlight only the portion of the code you're editing
+	--[[
 	{
 		"folke/twilight.nvim",
 		opts = {
@@ -42,4 +43,5 @@ return {
 			-- refer to the configuration section below
 		},
 	},
+  --]]
 }
